@@ -9,6 +9,11 @@ import SwiftUI
 
 struct ExtraSetup: View {
   @Binding var playableCharacters: [Character]
+  @Binding var playersAssignedCharacters: [Character]
+  
+  private var assignedCharacterNames: [String] {
+    playersAssignedCharacters.map { $0.name }
+  }
   var body: some View {
     ScrollView(showsIndicators: false) {
       Text("额外设置")
@@ -33,6 +38,7 @@ struct ExtraSetup: View {
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 10)
+            .opacity(assignedCharacterNames.contains(character.name.wrappedValue) ? 1 : 0.5)
           }
         }
       }
@@ -41,6 +47,6 @@ struct ExtraSetup: View {
   }
 }
 
-#Preview {
-  ExtraSetup(playableCharacters: .constant([]))
-}
+//#Preview {
+//  ExtraSetup(playableCharacters: .constant([]))
+//}

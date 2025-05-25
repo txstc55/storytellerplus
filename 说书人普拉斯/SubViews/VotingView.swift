@@ -109,6 +109,7 @@ struct VotingView: View{
             }
           }
           .padding(.horizontal, 5)
+          .padding(.vertical, 10)
         }
         Spacer()
         HStack{

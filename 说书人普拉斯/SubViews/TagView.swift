@@ -26,7 +26,7 @@ struct TagView: View{
   }
   var body: some View{
     ZStack{
-      Color.mainbg.opacity(0.1)
+      Color.mainbg.opacity(0.3)
         .edgesIgnoringSafeArea(.all)
         .zIndex(1)
       if showTagEditor{

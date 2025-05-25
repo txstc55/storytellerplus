@@ -25,6 +25,11 @@ struct ConversationView: View {
     ZStack {
       Color.mainbg
         .edgesIgnoringSafeArea(.all)
+        .onTapGesture(count: 2) {
+          withAnimation(.easeInOut(duration: 0.3)) {
+            showConversation = false
+          }
+        }
       
       VStack {
         ScrollView {
@@ -354,26 +359,26 @@ struct ConversationView: View {
         .padding(.vertical, 10)
         .padding(.horizontal, 5)
       }
-      .frame(width: 800, height: 600)
+      .frame(width: 800)
       .clipShape(RoundedRectangle(cornerRadius: 20))
       .overlay(
         RoundedRectangle(cornerRadius: 20)
-          .stroke(.black, lineWidth: 2)
+          .stroke(.black, lineWidth: 3)
       )
-      Image(systemName: "xmark")
-        .font(.system(size: 14, weight: .bold))
-        .foregroundColor(.black)
-        .frame(width: 30, height: 30)
-        .background(Color.mainbg)
-        .clipShape(Circle())
-        .overlay(Circle().stroke(Color.black, lineWidth: 2))
-        .padding(10)
-        .offset(x: 395, y: -295)
-        .onTapGesture {
-          withAnimation(.easeInOut(duration: 0.3)) {
-            showConversation = false
-          }
-        }
+//      Image(systemName: "xmark")
+//        .font(.system(size: 14, weight: .bold))
+//        .foregroundColor(.black)
+//        .frame(width: 30, height: 30)
+//        .background(Color.mainbg)
+//        .clipShape(Circle())
+//        .overlay(Circle().stroke(Color.black, lineWidth: 2))
+//        .padding(10)
+//        .offset(x: 395, y: -295)
+//        .onTapGesture {
+//          withAnimation(.easeInOut(duration: 0.3)) {
+//            showConversation = false
+//          }
+//        }
     }
   }
 }

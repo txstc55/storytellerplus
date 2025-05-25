@@ -40,8 +40,13 @@ struct CharacterSelectionView: View {
   }
   var body: some View{
     ZStack {
-      Color.mainbg.opacity(0.1)
+      Color.mainbg.opacity(0.3)
         .edgesIgnoringSafeArea(.all)
+        .onTapGesture(count: 2) {
+          withAnimation(.easeInOut(duration: 0.3)) {
+            selectNewCharacter = false
+          }
+        }
       
       ScrollView {
         HStack{
@@ -269,7 +274,8 @@ struct CharacterSelectionView: View {
 //        .padding()
       }
       .background(Color.mainbg)
-      .frame(width: 800, height: 600)
+      .frame(width: 800, height: 800)
+      .clipShape(RoundedRectangle(cornerRadius: 20))
       .overlay(
         RoundedRectangle(cornerRadius: 20)
           .stroke(Color.black, lineWidth: 3)
@@ -284,7 +290,7 @@ struct CharacterSelectionView: View {
         .clipShape(Circle())
         .overlay(Circle().stroke(Color.black, lineWidth: 2))
         .padding(10)
-        .offset(x: 395, y: -295)
+        .offset(x: 395, y: -395)
         .onTapGesture {
           withAnimation(.easeInOut(duration: 0.3)) {
             selectNewCharacter = false

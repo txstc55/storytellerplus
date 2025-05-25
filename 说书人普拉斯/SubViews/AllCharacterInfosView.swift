@@ -50,7 +50,7 @@ struct AllCharacterInfosView: View {
   var body: some View {
     ZStack {
       Color.mainbg.ignoresSafeArea(.all)
-        .onTapGesture {
+        .onTapGesture(count: 2) {
           showAllCharacterInfos = false
         }
       ScrollView(showsIndicators: false) {
@@ -219,7 +219,7 @@ struct AllCharacterInfosView: View {
               }
               .frame(maxHeight: .infinity, alignment: .top)
               VStack{
-                ForEach(demonsMiddleIndex..<minions.count, id: \.self) { index in
+                ForEach(demonsMiddleIndex..<demons.count, id: \.self) { index in
                   let character = demons[index]
                   CharacterInfoCard(character: character, characterNameColor: Color.demon)
                     .padding(.bottom, 10)
@@ -228,6 +228,54 @@ struct AllCharacterInfosView: View {
               .frame(maxHeight: .infinity, alignment: .top)
             }
           } // end of hstack for the minions characters
+          Rectangle()
+            .fill(Color.black)
+            .frame(height: 4)
+            .padding(.vertical, 30)
+        }
+        if (travelers.count > 0){
+          HStack {
+            VStack{
+              Spacer()
+              Text("旅")
+                .font(.system(size: 30, design: .rounded))
+                .fontWeight(.black)
+                .foregroundColor(Color.traveler)
+              Text("行")
+                .font(.system(size: 30, design: .rounded))
+                .fontWeight(.black)
+                .foregroundColor(Color.traveler)
+              Text("者")
+                .font(.system(size: 30, design: .rounded))
+                .fontWeight(.black)
+                .foregroundColor(Color.traveler)
+              Spacer()
+            }
+            .frame(maxHeight: .infinity)
+            if (travelers.count == 1){
+              CharacterInfoCard(character: travelers[0], characterNameColor: Color.traveler)
+                .padding(.bottom, 10)
+                .frame(maxHeight: .infinity, alignment: .top)
+            }else{
+              
+              VStack{
+                ForEach(0..<travelersMiddleIndex, id: \.self) { index in
+                  let character = travelers[index]
+                  CharacterInfoCard(character: character, characterNameColor: Color.traveler)
+                    .padding(.bottom, 10)
+                }
+              }
+              .frame(maxHeight: .infinity, alignment: .top)
+              VStack{
+                ForEach(travelersMiddleIndex..<travelers.count, id: \.self) { index in
+                  let character = travelers[index]
+                  CharacterInfoCard(character: character, characterNameColor: Color.traveler)
+                    .padding(.bottom, 10)
+                }
+              }
+              .frame(maxHeight: .infinity, alignment: .top)
+            }
+          } // end of hstack for the travelers characters
           Rectangle()
             .fill(Color.black)
             .frame(height: 4)

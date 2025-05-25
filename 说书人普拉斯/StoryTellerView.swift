@@ -200,7 +200,7 @@ struct StoryTellerView: View {
             .padding(.top, 10)
           Group{
             if (gameState == 0){
-              ExtraSetup(playableCharacters: $playableCharacters)
+              ExtraSetup(playableCharacters: $playableCharacters, playersAssignedCharacters: $playersAssignedCharacters)
             }else if (gameState == 1 || gameState == 3){
               OrderView(playersAssignedCharacters: $playersAssignedCharacters, playableCharacters: $playableCharacters, firstNightOrder: $firstNightOrder, currentlyAwakePlayerIndex: $currentlyAwakePlayerIndex, allLogs: $allLogs)
             }else if (gameState == 2){
