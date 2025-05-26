@@ -273,7 +273,7 @@ struct ConversationView: View {
                 .padding(.vertical, 5)
               }else if type == 13{
                 HStack{
-                  Text("恶魔得知不在场身份: \(entry.message)")
+                  Text("恶魔得知伪装: \(entry.message)")
                     .font(.system(size: 25, design: .rounded))
                     .fontWeight(.bold)
                     .foregroundColor(.black)

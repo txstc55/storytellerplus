@@ -63,7 +63,7 @@ struct GameLogEntry: Identifiable, Hashable, Codable {
     case 12:
       return "\(messager)号玩家 \(characterName) 复活"
     case 13:
-      return "恶魔得知不在场身份: \(message)"
+      return "恶魔得知伪装: \(message)"
     case 14:
       return "\(messager)号玩家 \(characterName) \(message)，来源为：\(source)"
     default:

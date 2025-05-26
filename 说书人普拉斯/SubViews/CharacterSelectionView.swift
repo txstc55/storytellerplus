@@ -7,6 +7,7 @@
 import SwiftUI
 struct CharacterSelectionView: View {
   @Binding var playableCharacters: [Character]
+  @Binding var travelersInPlay: [Character]
   @Binding var currentSelectedPlayerID: Int
   @Binding var selectNewCharacter: Bool
   @Binding var playersAssignedCharacters: [Character]
@@ -14,30 +15,15 @@ struct CharacterSelectionView: View {
   @Binding var gameState: Int
   @Binding var allLogs: [GameLogEntry]
   
-  var selectedCharacterNames: [String] {
-    playersAssignedCharacters.map { $0.name }
-  }
+  @State private var selectedCharacterNames: [String] = []
   
   let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 6)
-  var townsfolks: [Character] {
-    playableCharacters.filter { $0.team == "townsfolk" }
-  }
-  
-  var outsiders: [Character] {
-    playableCharacters.filter { $0.team == "outsider" }
-  }
-  
-  var minions: [Character] {
-    playableCharacters.filter { $0.team == "minion" }
-  }
-  
-  var demons: [Character] {
-    playableCharacters.filter { $0.team == "demon" }
-  }
-  
-  var travelers: [Character] {
-    playableCharacters.filter { $0.team == "traveler" }
-  }
+  @State private var townsfolks: [Character] = []
+  @State private var outsiders: [Character] = []
+  @State private var minions: [Character] = []
+  @State private var demons: [Character] = []
+  @State private var travelers: [Character] = []
+  @State private var officialTravelers: [Character] = []
   var body: some View{
     ZStack {
       Color.mainbg.opacity(0.3)
@@ -218,7 +204,7 @@ struct CharacterSelectionView: View {
         }
         .padding()
         HStack{
-          Text("旅行者")
+          Text("剧本旅行者")
             .font(.system(size: 30, design: .rounded))
             .fontWeight(.bold)
           Spacer()
@@ -259,19 +245,48 @@ struct CharacterSelectionView: View {
           }
         }
         .padding()
-//        Button(action: {
-//          selectNewCharacter = false
-//        }) {
-//          Text("返回")
-//            .font(.system(size: 20, design: .rounded))
-//            .fontWeight(.bold)
-//            .foregroundColor(.black)
-//            .padding(.horizontal, 20)
-//            .padding(.vertical, 8)
-//            .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.black, lineWidth: 3))
-//        }
-//        .contentShape(Rectangle())
-//        .padding()
+        HStack{
+          Text("官方旅行者")
+            .font(.system(size: 30, design: .rounded))
+            .fontWeight(.bold)
+          Spacer()
+        }
+        .padding()
+        .padding(.horizontal, 20)
+        LazyVGrid(columns: columns, spacing: 20) {
+          ForEach(officialTravelers, id: \.id) { character in
+            VStack {
+              CachedImageView(urlString: character.imageURL)
+                .frame(width: 60, height: 60)
+                .clipShape(Circle())
+              
+              Text(character.name)
+                .font(.system(size: 15, design: .rounded))
+                .fontWeight(.bold)
+                .foregroundColor(.black)
+            }
+            .padding()
+            .background(Color.white.opacity(0.2))
+            .cornerRadius(10)
+            .overlay(RoundedRectangle(cornerRadius: 10)
+              .stroke(Color.black, lineWidth: selectedCharacterNames.contains(character.name) ? 3 : 0))
+            .onTapGesture {
+              assignCharacter(to: currentSelectedPlayerID, character: character, playersAssignedCharacters: &playersAssignedCharacters, notPresentedGoodCharacters: &notPresentedGoodCharacters)
+              selectNewCharacter = false
+              if gameState != 0{
+                // we assigned a new character not in start phase
+                // add a log
+                if currentSelectedPlayerID <= 20{
+                  allLogs.append(GameLogEntry(message: "获得角色：\(character.name)", messager: currentSelectedPlayerID + 1, source: "说书人", type: 0))
+                }else{
+                  // give the demon a cover
+                  allLogs.append(GameLogEntry(message: "\(character.name)", messager: 0, source: "说书人", type: 13))
+                }
+              }
+            }
+          }
+        }
+        .padding()
       }
       .background(Color.mainbg)
       .frame(width: 800, height: 800)
@@ -281,6 +296,16 @@ struct CharacterSelectionView: View {
           .stroke(Color.black, lineWidth: 3)
       )
       .animation(.easeInOut(duration: 0.3), value: selectNewCharacter)
+      .onAppear(){
+        townsfolks = playableCharacters.filter { $0.team == "townsfolk" }
+        outsiders = playableCharacters.filter { $0.team == "outsider" }
+        minions = playableCharacters.filter { $0.team == "minion" }
+        demons = playableCharacters.filter { $0.team == "demon" }
+        travelers = travelersInPlay
+        let travelersName = travelersInPlay.map { $0.name }
+        officialTravelers = playableCharacters.filter { $0.team == "traveler" && !travelersName.contains($0.name) }
+        selectedCharacterNames = playersAssignedCharacters.map { $0.name }
+      }
       
       Image(systemName: "xmark")
         .font(.system(size: 14, weight: .bold))

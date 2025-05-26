@@ -77,11 +77,15 @@ struct StoryTellerView: View {
   // FOR VOTING
   @State private var playersHasDeathVote: [Bool] = []
   
+  // FOR FABLED CHARACTERS
+  @State private var showFabledCharactersSelection: Bool = false
+  @State private var selectedFabledCharacters: [Character] = []
+  
   
   var body: some View {
     ZStack{
       if (selectNewCharacter){
-        CharacterSelectionView(playableCharacters: $playableCharacters, currentSelectedPlayerID: $currentSelectedPlayerID, selectNewCharacter: $selectNewCharacter, playersAssignedCharacters: $playersAssignedCharacters, notPresentedGoodCharacters: $notPresentedGoodCharacters, gameState: $gameState, allLogs: $allLogs)
+        CharacterSelectionView(playableCharacters: $playableCharacters, travelersInPlay: $travelers, currentSelectedPlayerID: $currentSelectedPlayerID, selectNewCharacter: $selectNewCharacter, playersAssignedCharacters: $playersAssignedCharacters, notPresentedGoodCharacters: $notPresentedGoodCharacters, gameState: $gameState, allLogs: $allLogs)
           .zIndex(11)
       }
       
@@ -93,7 +97,7 @@ struct StoryTellerView: View {
       }// end of the if loop for showing menu
       
       if selectNewReminder{
-        TagView(allReminders: $allReminders, playersAssignedCharacters: $playersAssignedCharacters, playersStates: $playersStates, currentSelectedPlayerIDForReminder: $currentSelectedPlayerIDForReminder, selectNewReminder: $selectNewReminder, selectedReminderIndex: $selectedReminderIndex, characters: $characters, gameState: $gameState, allLogs: $allLogs)
+        TagView(allReminders: $allReminders, playersAssignedCharacters: $playersAssignedCharacters, playersStates: $playersStates, currentSelectedPlayerIDForReminder: $currentSelectedPlayerIDForReminder, selectNewReminder: $selectNewReminder, selectedReminderIndex: $selectedReminderIndex, characters: $characters, gameState: $gameState, allLogs: $allLogs, selectedFabledCharacters: $selectedFabledCharacters)
           .zIndex(12)
       }
       
@@ -106,8 +110,13 @@ struct StoryTellerView: View {
           .zIndex(14)
       }
       if showAllCharacterInfos{
-        AllCharacterInfosView(playableCharacters: $playableCharacters, showAllCharacterInfos: $showAllCharacterInfos)
+        AllCharacterInfosView(playableCharacters: $playableCharacters, showAllCharacterInfos: $showAllCharacterInfos, travelersInPlay: $travelers)
           .zIndex(15)
+      }
+      
+      if showFabledCharactersSelection{
+        FabledSelectionView(fabledInPlay: $fabled, characters: $characters, selectedFabledCharacters: $selectedFabledCharacters, showFabledCharactersSelection: $showFabledCharactersSelection)
+          .zIndex(16)
       }
         
       
@@ -138,7 +147,9 @@ struct StoryTellerView: View {
                       playersHasDeathVote: $playersHasDeathVote,
                       aliveCount: $aliveCount,
                       gameState: $gameState,
-                      allLogs: $allLogs)
+                      allLogs: $allLogs,
+                      numCols: 3
+          )
         }
         .frame(maxWidth: .infinity)
 //        .padding(.horizontal, 10)
@@ -146,7 +157,19 @@ struct StoryTellerView: View {
         .shadow(color: .black.opacity(0.2), radius: 5, x: 3, y: 5)
         //        Spacer()
         VStack{
+          FabledListView(selectedFabledCharacters: $selectedFabledCharacters, showFabledCharactersSelection: $showFabledCharactersSelection)
+            .animation(.easeInOut(duration: 0.3), value: selectedFabledCharacters)
+            .padding(.horizontal)
+            .frame(width: 110)
+//            .frame(maxHeight: .infinity)
+            .background(Color.mainbg)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .overlay(
+              RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.black.opacity(1), lineWidth: 3)
+            )
           Spacer()
+////            .frame(maxHeight: .infinity)
           FakeCover(playersAssignedCharacters: $playersAssignedCharacters, notPresentedGoodCharacters: $notPresentedGoodCharacters, selectNewCharacter: $selectNewCharacter, currentSelectedPlayerID: $currentSelectedPlayerID)
             .animation(.easeInOut(duration: 0.3), value: notPresentedGoodCharacters)
             .padding()
@@ -157,11 +180,12 @@ struct StoryTellerView: View {
               RoundedRectangle(cornerRadius: 10)
                 .stroke(Color.black.opacity(1), lineWidth: 3)
             )
+//            .padding(.top, 10)
         }
         .zIndex(1)
         
         VStack{
-          VStack{
+          VStack(spacing: 2){
             PlayInfo(playName: $playName, playAuthor: $playAuthor)
               .padding(.top, 10)
               .padding(.bottom, 5)
@@ -179,9 +203,8 @@ struct StoryTellerView: View {
               .padding(.horizontal, 10)
               .padding(.bottom, 10)
               .frame(maxWidth: .infinity)
-            Spacer()
           } // end of the vstack for meta information
-          .frame(height: 140)
+          .frame(height: 120)
           .background(Color.mainbg)
           .clipShape(RoundedRectangle(cornerRadius: 10))
           .overlay(
@@ -272,6 +295,7 @@ struct StoryTellerView: View {
             self.allLogs = decoded.allLogs
             self.firstNightOrder = decoded.firstNightOrder
             self.currentlyAwakePlayerIndex = decoded.currentlyAwakePlayerIndex
+            self.selectedFabledCharacters = decoded.selectedFabledCharacters
             
             print("[Load] Successfully restored saved game.")
           } catch {
@@ -310,7 +334,8 @@ struct StoryTellerView: View {
         selectedReminderIndex: selectedReminderIndex,
         allLogs: allLogs,
         firstNightOrder: firstNightOrder,
-        currentlyAwakePlayerIndex: currentlyAwakePlayerIndex
+        currentlyAwakePlayerIndex: currentlyAwakePlayerIndex,
+        selectedFabledCharacters: selectedFabledCharacters
       )
       
       if let encoded = try? JSONEncoder().encode(saveData) {
@@ -325,6 +350,7 @@ struct StoryTellerView: View {
     .animation(.easeInOut(duration: 0.3), value: showNotepad)
     .animation(.easeInOut(duration: 0.3), value: showConversation)
     .animation(.easeInOut(duration: 0.3), value: showAllCharacterInfos)
+    .animation(.easeInOut(duration: 0.3), value: showFabledCharactersSelection)
   } // end of body
   
 }

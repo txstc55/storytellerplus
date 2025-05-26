@@ -30,31 +30,33 @@ struct GameSaveData: Codable {
   let playAuthor: String
   let gameState: Int
   let characters: [Character]
-
+  
   let playersAssignedCharacters: [Character]
   let playersIsAlive: [Bool]
   let playersHasDeathVote: [Bool]
   let aliveCount: Int
-
+  
   let playableCharacters: [Character]
   let travelers: [Character]
   let fabled: [Character]
   let notPresentedGoodCharacters: [Character]
-
+  
   let jinxList: [Jinx]
   let allReminders: [Reminder]
   let playersStates: [[Reminder]]
-
+  
   let currentSelectedPlayerID: Int
   let selectNewCharacter: Bool
-
+  
   let currentSelectedPlayerIDForReminder: Int
   let selectNewReminder: Bool
   let selectedReminderIndex: Int
-
+  
   let allLogs: [GameLogEntry]
   let firstNightOrder: Bool
   let currentlyAwakePlayerIndex: Int
+  
+  let selectedFabledCharacters: [Character]
 }
 
 
@@ -73,7 +75,7 @@ func loadGameData(
 ) {
   for jsonItem in playJSON {
     guard let id = jsonItem["id"] as? String else { continue }
-
+    
     if id == "_meta" {
       playName = (jsonItem["name"] as? String).flatMap { $0.isEmpty ? nil : $0 } ?? "无名剧本"
       playAuthor = (jsonItem["author"] as? String).flatMap { $0.isEmpty ? nil : $0 } ?? "无名作者"
@@ -85,7 +87,7 @@ func loadGameData(
           jinxList.append(Jinx(name: name, imageURL: "", type: 0, description: description))
         }
       }
-
+      
     } else if id.contains("_meta") {
       let jinx = Jinx(
         name: jsonItem["name"] as? String ?? "",
@@ -94,7 +96,7 @@ func loadGameData(
         description: jsonItem["ability"] as? String ?? ""
       )
       jinxList.append(jinx)
-
+      
     } else {
       guard let name = jsonItem["name"] as? String else {
         alertMessage = "ID: \(id) 角色名称缺失"
@@ -106,26 +108,26 @@ func loadGameData(
         showAlert = true
         continue
       }
-
+      
       let firstNight = (jsonItem["firstNight"] as? Double)
-        ?? (jsonItem["firstNight"] as? Int).map(Double.init)
-        ?? 0
+      ?? (jsonItem["firstNight"] as? Int).map(Double.init)
+      ?? 0
       let otherNight = (jsonItem["otherNight"] as? Double)
-        ?? (jsonItem["otherNight"] as? Int).map(Double.init)
-        ?? 0
-
+      ?? (jsonItem["otherNight"] as? Int).map(Double.init)
+      ?? 0
+      
       let firstNightReminder = jsonItem["firstNightReminder"] as? String ?? ""
       let otherNightReminder = jsonItem["otherNightReminder"] as? String ?? ""
       let setup = jsonItem["setup"] as? Bool ?? false
-
+      
       guard let team = jsonItem["team"] as? String else {
         alertMessage = "ID: \(id) 角色阵营缺失"
         showAlert = true
         continue
       }
-
+      
       let imageURL = jsonItem["image"] as? String ?? ""
-
+      
       let character = Character(
         id: id,
         name: name,
@@ -138,7 +140,7 @@ func loadGameData(
         team: team,
         imageURL: imageURL
       )
-
+      
       switch team {
       case "fabled":
         fabled.append(character)
@@ -148,26 +150,31 @@ func loadGameData(
       default:
         playableCharacters.append(character)
       }
-
+      
       characters.append(character)
-
+      
       let reminders = (jsonItem["reminders"] as? [String] ?? []).map {
         Reminder(from: name, effect: $0, isGlobal: false)
       }
       let remindersGlobal = (jsonItem["remindersGlobal"] as? [String] ?? []).map {
         Reminder(from: name, effect: $0, isGlobal: true)
       }
-
+      
       allReminders.append(contentsOf: reminders)
       allReminders.append(contentsOf: remindersGlobal)
     }
   }
-
+  
   // Add default characters and reminders
   characters.append(contentsOf: [善良, 邪恶, 爪牙, 恶魔])
-  playableCharacters.append(contentsOf: travlerCharactersGlobal)
-  travelers.append(contentsOf: travlerCharactersGlobal)
-  characters.append(contentsOf: travlerCharactersGlobal)
+  
+  // now we check for all the character names
+  let characterNames = characters.map { $0.name }
+  let fabledCharacterNames = fabled.map { $0.name }
+  playableCharacters.append(contentsOf: travlerCharactersGlobal.filter { !characterNames.contains($0.name) })
+  characters.append(contentsOf: travlerCharactersGlobal.filter { !characterNames.contains($0.name) }) // add the global traveler characters if the name doesnt exist already
+  characters.append(contentsOf: fabledCharactersGlobal.filter { !fabledCharacterNames.contains($0.name) }) // we add the global fabled characters if the name doesnt exist already
   allReminders.append(contentsOf: [善良标记, 邪恶标记])
   allReminders.append(contentsOf: travelerRemindersGlobal)
+  allReminders.append(contentsOf: fabledRemindersGlobal)
 }

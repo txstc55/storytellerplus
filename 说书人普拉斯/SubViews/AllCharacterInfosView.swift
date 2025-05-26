@@ -34,17 +34,20 @@ struct CharacterInfoCard: View {
 struct AllCharacterInfosView: View {
   @Binding var playableCharacters: [Character]
   @Binding var showAllCharacterInfos: Bool
+  @Binding var travelersInPlay: [Character] // there can be extra travelers that are pre defined
   
   @State private var townsfolks: [Character] = []
   @State private var outsiders: [Character] = []
   @State private var minions: [Character] = []
   @State private var demons: [Character] = []
   @State private var travelers: [Character] = []
+  @State private var officialTravelers: [Character] = []
   @State private var townsfolksMiddleIndex: Int = 0
   @State private var outsidersMiddleIndex: Int = 0
   @State private var minionsMiddleIndex: Int = 0
   @State private var demonsMiddleIndex: Int = 0
   @State private var travelersMiddleIndex: Int = 0
+  @State private var officialTravelersMiddleIndex: Int = 0
   
   
   var body: some View {
@@ -237,6 +240,14 @@ struct AllCharacterInfosView: View {
           HStack {
             VStack{
               Spacer()
+              Text("剧")
+                .font(.system(size: 30, design: .rounded))
+                .fontWeight(.black)
+                .foregroundColor(Color.traveler)
+              Text("本")
+                .font(.system(size: 30, design: .rounded))
+                .fontWeight(.black)
+                .foregroundColor(Color.traveler)
               Text("旅")
                 .font(.system(size: 30, design: .rounded))
                 .fontWeight(.black)
@@ -281,6 +292,62 @@ struct AllCharacterInfosView: View {
             .frame(height: 4)
             .padding(.vertical, 30)
         }
+        if (officialTravelers.count > 0){
+          HStack {
+            VStack{
+              Spacer()
+              Text("官")
+                .font(.system(size: 30, design: .rounded))
+                .fontWeight(.black)
+                .foregroundColor(Color.traveler)
+              Text("方")
+                .font(.system(size: 30, design: .rounded))
+                .fontWeight(.black)
+                .foregroundColor(Color.traveler)
+              Text("旅")
+                .font(.system(size: 30, design: .rounded))
+                .fontWeight(.black)
+                .foregroundColor(Color.traveler)
+              Text("行")
+                .font(.system(size: 30, design: .rounded))
+                .fontWeight(.black)
+                .foregroundColor(Color.traveler)
+              Text("者")
+                .font(.system(size: 30, design: .rounded))
+                .fontWeight(.black)
+                .foregroundColor(Color.traveler)
+              Spacer()
+            }
+            .frame(maxHeight: .infinity)
+            if (officialTravelers.count == 1){
+              CharacterInfoCard(character: officialTravelers[0], characterNameColor: Color.traveler)
+                .padding(.bottom, 10)
+                .frame(maxHeight: .infinity, alignment: .top)
+            }else{
+              
+              VStack{
+                ForEach(0..<officialTravelersMiddleIndex, id: \.self) { index in
+                  let character = officialTravelers[index]
+                  CharacterInfoCard(character: character, characterNameColor: Color.traveler)
+                    .padding(.bottom, 10)
+                }
+              }
+              .frame(maxHeight: .infinity, alignment: .top)
+              VStack{
+                ForEach(officialTravelersMiddleIndex..<officialTravelers.count, id: \.self) { index in
+                  let character = officialTravelers[index]
+                  CharacterInfoCard(character: character, characterNameColor: Color.traveler)
+                    .padding(.bottom, 10)
+                }
+              }
+              .frame(maxHeight: .infinity, alignment: .top)
+            }
+          } // end of hstack for the travelers characters
+          Rectangle()
+            .fill(Color.black)
+            .frame(height: 4)
+            .padding(.vertical, 30)
+        }
       }
       .frame(width: 800)
       .padding(.horizontal, 30)
@@ -290,12 +357,15 @@ struct AllCharacterInfosView: View {
       outsiders  = playableCharacters.filter { $0.team == "outsider" }
       minions    = playableCharacters.filter { $0.team == "minion" }
       demons     = playableCharacters.filter { $0.team == "demon" }
-      travelers  = playableCharacters.filter { $0.team == "traveler" }
+      travelers  = travelersInPlay
+      let travelersNames = travelersInPlay.map { $0.name }
+      officialTravelers = playableCharacters.filter { $0.team == "traveler" && !travelersNames.contains($0.name) }
       townsfolksMiddleIndex = computeMiddleIndex(for: townsfolks)
       outsidersMiddleIndex = computeMiddleIndex(for: outsiders)
       minionsMiddleIndex = computeMiddleIndex(for: minions)
       demonsMiddleIndex = computeMiddleIndex(for: demons)
       travelersMiddleIndex = computeMiddleIndex(for: travelers)
+      officialTravelersMiddleIndex = computeMiddleIndex(for: officialTravelers)
     }
   }
   

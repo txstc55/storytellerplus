@@ -305,7 +305,7 @@ struct VotingView: View{
               .frame(height: 2)
           }
           LazyVGrid(columns: columns, spacing: 20){
-            ForEach(0..<6, id: \.self) { index in
+            ForEach(0..<7, id: \.self) { index in
               let trueIndex = 21 + index
               let name = trueIndex == 21 ? "说" : (trueIndex < 25 ? "票" : "负")
               Text(name)
@@ -327,6 +327,7 @@ struct VotingView: View{
             }
           }
           .padding(.horizontal, 5)
+          .padding(.bottom, 20)
         }
         Spacer()
         HStack{

@@ -16,7 +16,7 @@ struct ExtraSetup: View {
   }
   var body: some View {
     ScrollView(showsIndicators: false) {
-      Text("额外设置")
+      Text("设置调整")
         .font(.system(size: 25, design: .rounded))
         .fontWeight(.bold)
         .padding(.top, 10)

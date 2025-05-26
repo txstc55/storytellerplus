@@ -213,13 +213,14 @@ struct PlayersView: View {
   @Binding var aliveCount: Int
   @Binding var gameState: Int
   @Binding var allLogs: [GameLogEntry]
+  let numCols: Int
   
   
   var body: some View {
-    ForEach(0 ..< Int(ceil(Double(playersAssignedCharacters.count) / 3.0)), id: \.self) { rowIndex in
+    ForEach(0 ..< Int(ceil(Double(playersAssignedCharacters.count) / Double(numCols))), id: \.self) { rowIndex in
       HStack{
-        ForEach(0 ..< 3, id: \.self) { colIndex in
-          let index = rowIndex * 3 + colIndex
+        ForEach(0 ..< numCols, id: \.self) { colIndex in
+          let index = rowIndex * numCols + colIndex
           if (index < playersAssignedCharacters.count &&
               index < playersStates.count &&
               index < playersIsAlive.count) {

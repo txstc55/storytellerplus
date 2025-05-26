@@ -18,12 +18,13 @@ struct TagView: View{
   @Binding var characters: [Character]
   @Binding var gameState: Int
   @Binding var allLogs: [GameLogEntry]
+  @Binding var selectedFabledCharacters: [Character]
   @State private var showTagEditor: Bool = false
   @State private var newTagName: String = ""
   
-  var selectedCharacterNames: [String] {
-    playersAssignedCharacters.map { $0.name }
-  }
+//  var selectedCharacterNames: [String] {
+//    playersAssignedCharacters.map { $0.name }
+//  }
   var body: some View{
     ZStack{
       Color.mainbg.opacity(0.3)
@@ -99,9 +100,11 @@ struct TagView: View{
           .padding(.top, 25)
           .frame(maxWidth: .infinity)
           HFlow(itemSpacing: 15){
+            let selectedCharacterNames = playersAssignedCharacters.map { $0.name } // compute once
+            let selectedFabledCharacterNames = selectedFabledCharacters.map { $0.name }
             ForEach(allReminders.indices, id: \.self){index in
               let reminder = allReminders[index]
-              if (selectedCharacterNames.contains(reminder.from) || reminder.isGlobal){
+              if (selectedCharacterNames.contains(reminder.from) || reminder.isGlobal || selectedFabledCharacterNames.contains(reminder.from)){
                 HStack(spacing: 0){
                   let imageURL = getImageURL(name: reminder.from, characters: characters)
                   if (imageURL != ""){
@@ -147,7 +150,7 @@ struct TagView: View{
             .contentShape(Circle())
             
           }
-          .animation(.easeInOut(duration: 0.3), value: selectedCharacterNames)
+//          .animation(.easeInOut(duration: 0.3), value: selectedCharacterNames)
           .frame(maxWidth: .infinity, alignment: .leading)
           .padding(.horizontal, 20)
           //      .frame(maxWidth: .infinity)

@@ -175,9 +175,9 @@ let travelerRemindersGlobal = [
 //  Reminder(from: "邪恶", effect: "邪恶", isGlobal: true)
 ]
 
-let 善良 = Character(id: "善良", name: "善良", ability: "你是善良的。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/web/icons/good.png")
+let 善良 = Character(id: "善良", name: "善良", ability: "你是善良的。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "misc", imageURL: "https://oss.gstonegames.com/data_file/clocktower/web/icons/good.png")
 
-let 邪恶 = Character(id: "邪恶", name: "邪恶", ability: "你是邪恶的。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/web/icons/evil.png")
+let 邪恶 = Character(id: "邪恶", name: "邪恶", ability: "你是邪恶的。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "misc", imageURL: "https://oss.gstonegames.com/data_file/clocktower/web/icons/evil.png")
 
 let 善良标记 = Reminder(from: "善良", effect: "善良", isGlobal: true)
 let 邪恶标记 = Reminder(from: "邪恶", effect: "邪恶", isGlobal: true)
@@ -188,7 +188,81 @@ let teamCounts: [Int: [Int]] = [5: [3, 0, 1, 1, 0], 6: [3, 1, 1, 1, 0], 7: [5, 0
 
 let defaultCharacter = Character(id: " ", name: "", ability: "", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "", imageURL: "")
 
-let 爪牙 = Character(id: "爪牙", name: "爪牙", ability: "你是邪恶的。", firstNightOrder: 20, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "minion", imageURL: "https://clocktower-wiki.gstonegames.com/images/thumb/8/85/Mi.png/180px-Mi.png")
-let 恶魔 = Character(id: "恶魔", name: "恶魔", ability: "你是邪恶的。", firstNightOrder: 30, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "demon", imageURL: "https://clocktower-wiki.gstonegames.com/images/thumb/1/18/Di.png/180px-Di.png")
+let 爪牙 = Character(id: "爪牙", name: "爪牙", ability: "你是邪恶的。", firstNightOrder: 20, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "misc", imageURL: "https://clocktower-wiki.gstonegames.com/images/thumb/8/85/Mi.png/180px-Mi.png")
+let 恶魔 = Character(id: "恶魔", name: "恶魔", ability: "你是邪恶的。", firstNightOrder: 30, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "misc", imageURL: "https://clocktower-wiki.gstonegames.com/images/thumb/1/18/Di.png/180px-Di.png")
 
 
+let 天使 = Character(id: "天使", name: "天使", ability: "对新玩家的死亡负最大责任的人，可能会遭遇一些不好的事情。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/role_icon/angel.png")
+
+let 佛教徒 = Character(id: "佛教徒", name: "佛教徒", ability: "每个白天的前两分钟老玩家不能发言。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/role_icon/buddhist.png")
+
+let 灯神 = Character(id: "灯神", name: "灯神", ability: "使用灯神的相克规则。所有玩家都会知道其内容。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/role_icon/djinn.png")
+
+let 末日预言者 = Character(id: "末日预言者", name: "末日预言者", ability: "如果大于等于四名玩家存活，每名当前存活的玩家可以公开要求你杀死一名与他阵营相同的玩家（每名玩家限一次）。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/role_icon/doomsayer.png")
+
+let 公爵夫人 = Character(id: "公爵夫人", name: "公爵夫人", ability: "每个白天，三名玩家可以一起拜访你。当晚*，他们会得知他们之中有几个是邪恶的，但其中一人的信息是错的。", firstNightOrder: 0, otherNightOrder: 1.5, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/role_icon/duchess.png")
+
+
+let 骗人精 = Character(id: "骗人精", name: "骗人精", ability: "每局游戏限一次，一名善良玩家可能会得知“有问题”的信息。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/role_icon/fibbin.png")
+
+
+let 小提琴手 = Character(id: "小提琴手", name: "小提琴手", ability: "每局游戏限一次，恶魔可以秘密选择一名对立阵营的玩家，所有玩家要表决：这两名玩家中谁的阵营获胜。（平局邪恶阵营获胜）", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/role_icon/fiddler.png")
+
+let 地狱藏书员 = Character(id: "地狱藏书员", name: "地狱藏书员", ability: "当说书人宣布安静时，仍在说话的玩家可能会遭遇一些不好的事情。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/role_icon/hells_librarian.png")
+
+let 革命者 = Character(id: "革命者", name: "革命者", ability: "公开声明一对邻座玩家本局游戏一直保持同一阵营。每局游戏限一次，他们中的一人可能被当作其他的角色/阵营。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/role_icon/revolutionary.png")
+
+let 哨兵 = Character(id: "哨兵", name: "哨兵", ability: "在初始设置时，可能会额外增加或减少一个外来者。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/role_icon/sentinel.png")
+
+let 圣洁之魂 = Character(id: "圣洁之魂", name: "圣洁之魂", ability: "游戏过程中邪恶玩家的总数最多能比初始设置多一名。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/role_icon/spirit_of_ivory.png")
+
+let 暴风捕手 = Character(id: "暴风捕手", name: "暴风捕手", ability: "游戏开始时，你要宣布一个善良角色。如果该角色在场，他只能死于处决，但所有邪恶玩家会在首个夜晚得知他是哪一名玩家。", firstNightOrder: 2.05, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/role_icon/stormcatcher.png")
+
+let 玩具匠 = Character(id: "玩具匠", name: "玩具匠", ability: "恶魔可以在夜晚选择放弃攻击（每局游戏至少一次）。邪恶玩家照常获取初始信息。", firstNightOrder: 1.9, otherNightOrder: 45, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/role_icon/toymaker.png")
+
+//let 园丁 = Character(id: "园丁", name: "园丁", ability: "由说书人来为一名或更多玩家派发角色。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/upload/202304/c_4546410162861_275f00e6.jpg")
+let 私货商人 = Character(id: "私货商人", name: "私货商人", ability: "这个剧本包含有自制角色或自制规则。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/upload/1689518692_197011_1078.png")
+
+let 麒麟 = Character(id: "麒麟", name: "麒麟", ability: "在游戏的最后一天，最幸运的玩家身上会发生一些好的事情。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/web/icons/qilin.png")
+
+let 摆渡人 = Character(id: "摆渡人", name: "摆渡人", ability: "在游戏的最后一天，所有已死亡玩家会重新获得投票标记。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/upload/202310/c_5466274308961_88a6d609.jpg")
+
+let 赦令承旨 = Character(id: "赦令承旨", name: "赦令承旨", ability: "解除所有角色能力在进行选择时的限制条件。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/upload/202403/c_4414831380171_0a601ac6.jpg")
+
+let fabledCharactersGlobal: [Character] = [
+  天使,
+  佛教徒,
+  灯神,
+  地狱藏书员,
+  公爵夫人,
+  骗人精,
+  小提琴手,
+  末日预言者,
+  革命者,
+  哨兵,
+  圣洁之魂,
+  暴风捕手,
+  玩具匠,
+  私货商人,
+  麒麟,
+  摆渡人,
+  赦令承旨
+]
+
+let fabledRemindersGlobal = [
+  Reminder(from: "天使", effect: "庇护", isGlobal: false),
+  Reminder(from: "天使", effect: "不好的事", isGlobal: false),
+  Reminder(from: "地狱藏书员", effect: "不好的事", isGlobal: false),
+  Reminder(from: "公爵夫人", effect: "访客", isGlobal: false),
+  Reminder(from: "公爵夫人", effect: "错误信息", isGlobal: false),
+  Reminder(from: "骗人精", effect: "失去能力", isGlobal: false),
+  Reminder(from: "革命者", effect: "被当作其他"),
+  Reminder(from: "圣洁之魂", effect: "禁止邪恶", isGlobal: false),
+  Reminder(from: "暴风捕手", effect: "仅死于处决", isGlobal: false),
+]
+//let 庇护 = Reminder(from: "天使", effect: "庇护", isGlobal: false)
+//let 不好的事 = Reminder(from: "天使", effect: "不好的事", isGlobal: false)
+//let 不好的事 = Reminder(from: "地狱藏书员", effect: "不好的事", isGlobal: false)
+//let 访客 = Reminder(from: "公爵夫人", effect: "访客", isGlobal: false)
+//let 错误信息 = Reminder(from: "公爵夫人", effect: "错误信息", isGlobal: false)
+//let 失去能力 = Reminder(from: "骗人精", effect: "失去能力", isGlobal: false)
