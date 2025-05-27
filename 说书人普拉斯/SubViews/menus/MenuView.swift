@@ -17,6 +17,8 @@ struct MenuView: View {
   @Binding var currentView: Int
   @Binding var gameState: Int
   @Binding var allLogs: [GameLogEntry]
+  @Binding var votingPhase: Int
+  @Binding var nominationPhase: Int
   var body: some View {
     VStack{
       Button(action: {
@@ -40,6 +42,8 @@ struct MenuView: View {
           gameState = 2
           firstNightOrder = false
           allLogs.append(GameLogEntry(message: "白天", messager: 0, source: "说书人", type: 10, characterName: ""))
+          votingPhase = 0
+          nominationPhase = 0
         }
       }){
         Image(systemName: (gameState == 2) ? "sun.min.fill" : "sun.min")

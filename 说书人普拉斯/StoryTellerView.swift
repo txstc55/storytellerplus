@@ -76,6 +76,8 @@ struct StoryTellerView: View {
   
   // FOR VOTING
   @State private var playersHasDeathVote: [Bool] = []
+  @State private var votingPhase: Int = 2
+  @State private var nominationPhase: Int = 0
   
   // FOR FABLED CHARACTERS
   @State private var showFabledCharactersSelection: Bool = false
@@ -122,7 +124,7 @@ struct StoryTellerView: View {
       
       HStack{
         // we do a menu bar here
-        MenuView(firstNightOrder: $firstNightOrder, showMenu: $showMenu, showNotepad: $showNotepad, showConversation: $showConversation, showAllCharacterInfos: $showAllCharacterInfos, showExitConfirmation: $showExitConfirmation, currentView: $currentView, gameState: $gameState, allLogs: $allLogs)
+        MenuView(firstNightOrder: $firstNightOrder, showMenu: $showMenu, showNotepad: $showNotepad, showConversation: $showConversation, showAllCharacterInfos: $showAllCharacterInfos, showExitConfirmation: $showExitConfirmation, currentView: $currentView, gameState: $gameState, allLogs: $allLogs, votingPhase: $votingPhase, nominationPhase: $nominationPhase)
           .alert("确定离开当前城镇吗？", isPresented: $showExitConfirmation) {
             Button("取消", role: .cancel) { }
             Button("确定", role: .destructive) {
@@ -211,10 +213,23 @@ struct StoryTellerView: View {
             RoundedRectangle(cornerRadius: 10)
               .stroke(Color.black.opacity(1), lineWidth: 3)
           )
-          JinxView(jinxList: $jinxList)
+//          JinxView(jinxList: $jinxList)
+//            .frame(maxHeight: .infinity)
+//            .frame(maxWidth: .infinity)
+//            .background(Color.mainbg)
+//            .clipShape(RoundedRectangle(cornerRadius: 10))
+//            .overlay(
+//              RoundedRectangle(cornerRadius: 10)
+//                .stroke(Color.black.opacity(1), lineWidth: 3)
+//            )
+//            .padding(.top, 10)
+//          NominationEnabledCharacters(
+//            playersAssignedCharacters: $playersAssignedCharacters,
+//            playersIsAlive: $playersIsAlive,
+//          )
+          ExtraCareView(jinxList: $jinxList, playersAssignedCharacters: $playersAssignedCharacters, playersIsAlive: $playersIsAlive, votingPhase: $votingPhase, nominationPhase: $nominationPhase, gameState: $gameState)
             .frame(maxHeight: .infinity)
             .frame(maxWidth: .infinity)
-            .background(Color.mainbg)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .overlay(
               RoundedRectangle(cornerRadius: 10)
@@ -227,7 +242,7 @@ struct StoryTellerView: View {
             }else if (gameState == 1 || gameState == 3){
               OrderView(playersAssignedCharacters: $playersAssignedCharacters, playableCharacters: $playableCharacters, firstNightOrder: $firstNightOrder, currentlyAwakePlayerIndex: $currentlyAwakePlayerIndex, allLogs: $allLogs)
             }else if (gameState == 2){
-              VotingView(playersAssignedCharacters: $playersAssignedCharacters, playerCount: $playerCount, aliveCount: $aliveCount, playersIsAlive: $playersIsAlive, playersHasDeathVote: $playersHasDeathVote, allLogs: $allLogs)
+              VotingView(playersAssignedCharacters: $playersAssignedCharacters, playerCount: $playerCount, aliveCount: $aliveCount, playersIsAlive: $playersIsAlive, playersHasDeathVote: $playersHasDeathVote, allLogs: $allLogs, votingPhase: $votingPhase, nominationPhase: $nominationPhase)
             }
           } // end of group
           .frame(maxWidth: .infinity, maxHeight: .infinity)

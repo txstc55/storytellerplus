@@ -100,9 +100,9 @@ struct OrderView: View {
           let nightReminder = sortedNight[index]
           let characterIDText: String = {
             if nightReminder.playerID >= 0 {
-              return "\(nightReminder.playerID + 1)号"
+              return "\(nightReminder.playerID + 1)号   "
             } else if nightReminder.playerID <= -4 {
-              return "不在场"
+              return "不在场   "
             } else {
               return ""
             }
@@ -112,7 +112,7 @@ struct OrderView: View {
               CachedImageView(urlString: nightReminder.imageURL)
                 .frame(width: 40, height: 40)
               VStack(alignment: .leading){
-                Text("\(nightReminder.characterName)   \(characterIDText)")
+                Text("\(characterIDText)\(nightReminder.characterName)")
                   .font(.system(size: 20, design: .rounded))
                   .fontWeight(.bold)
                 Text(nightReminder.reminder)
@@ -147,7 +147,7 @@ struct OrderView: View {
             CachedImageView(urlString: nightReminder.imageURL)
               .frame(width: 40, height: 40)
             VStack(alignment: .leading){
-              Text("\(nightReminder.characterName)   \(nightReminder.playerID >= 0 ? "\(nightReminder.playerID + 1)号": "不在场")")
+              Text("\(nightReminder.playerID >= 0 ? "\(nightReminder.playerID + 1)号": "不在场")   \(nightReminder.characterName)")
                 .font(.system(size: 20, design: .rounded))
                 .fontWeight(.bold)
               Text(nightReminder.reminder)
