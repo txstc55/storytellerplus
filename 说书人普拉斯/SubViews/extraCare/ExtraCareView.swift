@@ -109,7 +109,7 @@ struct ExtraCareView: View {
         selectedView = 2
       }
     }
-    .onChange(of: votingPhase) {_,d newValue in
+    .onChange(of: votingPhase) {_, newValue in
       if newValue == 1{
         selectedView = 3
       }else if (newValue == 2){
