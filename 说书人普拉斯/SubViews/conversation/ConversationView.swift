@@ -6,8 +6,17 @@ struct ConversationView: View {
   @Binding var recorder: AudioRecorder
   @Binding var allLogs: [GameLogEntry]
   
-  @State private var currentSelection: Int = 0
+  @State private var currentSelection: Int
   @State private var inputText: String = ""
+  init(playersAssignedCharacters: Binding<[Character]>, showConversation: Binding<Bool>, recorder: Binding<AudioRecorder>, allLogs: Binding<[GameLogEntry]>) {
+    self._playersAssignedCharacters = playersAssignedCharacters
+    self._showConversation = showConversation
+    self._recorder = recorder
+    self._allLogs = allLogs
+    
+    // default to last in list, which is "说书人"
+    self._currentSelection = State(initialValue: playersAssignedCharacters.wrappedValue.count)
+  }
   
   var allUserIDs: [Int] {
     (0..<(playersAssignedCharacters.count + 1)).map { $0 }
@@ -285,8 +294,9 @@ struct ConversationView: View {
                 .padding(.vertical, 10)
               }
             }
-            .onChange(of: allLogs.count) { _ in
-              // Scroll to bottom (last ID), anchor to bottom
+            
+            .onChange(of: allLogs.count) {_, _ in
+              //               Scroll to bottom (last ID), anchor to bottom
               withAnimation {
                 value.scrollTo(allLogs.count - 1, anchor: .bottom)
               }
@@ -298,12 +308,11 @@ struct ConversationView: View {
             }
           }
         }
-        
+        .scrollDismissesKeyboard(.interactively)
         .frame(maxWidth: .infinity)
-        .frame(maxHeight: .infinity)
+        //        .frame(maxHeight: .infinity)
         .padding(.horizontal, 10)
         .padding(.vertical, 20)
-        Spacer()
         HStack {
           Picker(selection: $currentSelection, label: Text(currentSpeaker).font(.system(size: 20, design: .rounded))
             .fontWeight(.bold)
@@ -328,7 +337,7 @@ struct ConversationView: View {
           .frame(width: 150)
           .padding(.vertical, 5)
           .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.black, lineWidth: 2))
-          TextField("    输入聊天内容", text: $inputText)
+          TextField("输入聊天内容", text: $inputText)
             .font(.system(size: 20, design: .rounded))
             .fontWeight(.semibold)
             .foregroundColor(.black)
@@ -365,20 +374,8 @@ struct ConversationView: View {
         RoundedRectangle(cornerRadius: 20)
           .stroke(.black, lineWidth: 3)
       )
-//      Image(systemName: "xmark")
-//        .font(.system(size: 14, weight: .bold))
-//        .foregroundColor(.black)
-//        .frame(width: 30, height: 30)
-//        .background(Color.mainbg)
-//        .clipShape(Circle())
-//        .overlay(Circle().stroke(Color.black, lineWidth: 2))
-//        .padding(10)
-//        .offset(x: 395, y: -295)
-//        .onTapGesture {
-//          withAnimation(.easeInOut(duration: 0.3)) {
-//            showConversation = false
-//          }
-//        }
+      .padding(.vertical, 50)
+      //      .ignoresSafeArea(.keyboard)
     }
   }
 }

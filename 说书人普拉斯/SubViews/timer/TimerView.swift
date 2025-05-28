@@ -16,19 +16,20 @@ struct TimerView: View{
   @State private var timerTimeStart = Date() // for the timer
   @State private var previousTimerElapsed: TimeInterval = 0 // for the timer
   @State private var timerStopped = true // if we are using the timer
+  let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
   private var timeElapsed: TimeInterval {
     currentDate.timeIntervalSince(gameStartTime)
   }
   private var timeElapsedDay: TimeInterval {
-    currentDate.timeIntervalSince(dayTimeStart)
+    ceil(currentDate.timeIntervalSince(dayTimeStart))
   }
   private var timeElapsedNight: TimeInterval {
-     currentDate.timeIntervalSince(nightTimeStart)
+     ceil(currentDate.timeIntervalSince(nightTimeStart))
   }
   
   private var timerElapsed: TimeInterval {
     previousTimerElapsed +
-    currentDate.timeIntervalSince(timerTimeStart)
+    ceil(currentDate.timeIntervalSince(timerTimeStart))
   }
   
   @State private var formatter = DateComponentsFormatter()
@@ -102,21 +103,8 @@ struct TimerView: View{
       }
       .frame(maxHeight: .infinity)
     }
-    .onAppear{
-      formatter.allowedUnits = [.hour, .minute, .second]
-      formatter.zeroFormattingBehavior = .pad
-      if gameState != 0{
-        gameStartTime = Date()
-        if gameState == 1 || gameState == 3{
-          nightTimeStart = Date()
-        }else{
-          dayTimeStart = Date()
-        }
-      }
-      Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-        currentDate = Date()
-      }
-      timerStopped = true
+    .onReceive(timer) { date in
+      currentDate = date
     }
     .onChange(of: gameState) {_, newValue in
       if newValue == 1{
@@ -142,6 +130,19 @@ struct TimerView: View{
     .onTapGesture(count: 2) {
       previousTimerElapsed = 0
       timerTimeStart = Date()
+    }
+    .onAppear{
+      formatter.allowedUnits = [.hour, .minute, .second]
+      formatter.zeroFormattingBehavior = .pad
+      if gameState != 0{
+        gameStartTime = Date()
+        if gameState == 1 || gameState == 3{
+          nightTimeStart = gameStartTime
+        }else{
+          dayTimeStart = gameStartTime
+        }
+      }
+      timerStopped = true
     }
     .animation(.easeInOut(duration: 0.3), value: gameState)
   }

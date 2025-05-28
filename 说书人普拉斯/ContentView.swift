@@ -39,32 +39,33 @@ struct ContentView: View {
               loadLast = false
             }){
               Text("上传JSON")
-                .font(.system(size: 18,  design: .rounded))
+                .font(.system(size: 20,  design: .rounded))
+                .fontWeight(.bold)
                 .padding()
-                .fontWeight(.semibold)
                 .foregroundColor(.black)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 3)
+                .frame(width: 150)
                 .background(.white.opacity(0.5))
                 .cornerRadius(30)
                 .overlay(RoundedRectangle(cornerRadius: 30).stroke(Color.black, lineWidth: 3))
-              
             }
             Button(action: {
               loadLast = true
               viewNumber = 1
             }){
               Text("返回小镇")
-                .font(.system(size: 18,  design: .rounded))
+                .font(.system(size: 20,  design: .rounded))
+                .fontWeight(.bold)
                 .padding()
-                .fontWeight(.semibold)
                 .foregroundColor(.black)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 3)
+                .frame(width: 150)
                 .background(.white.opacity(0.5))
                 .cornerRadius(30)
                 .overlay(RoundedRectangle(cornerRadius: 30).stroke(Color.black, lineWidth: 3))
-              
+                
             }
             .padding(.top, 20)
             Spacer()
