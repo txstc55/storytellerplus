@@ -69,7 +69,7 @@ struct StoryTellerView: View {
   
   // FOR CONVERSATIONS
   @State private var showConversation: Bool = false
-  @State private var recorder: AudioRecorder = AudioRecorder()
+//  @State private var recorder: AudioRecorder = AudioRecorder()
   
   // FOR SHOWING ALL CHARACTER INFOS
   @State private var showAllCharacterInfos: Bool = false
@@ -110,7 +110,7 @@ struct StoryTellerView: View {
           .zIndex(13)
       }
       if showConversation{
-        ConversationView(playersAssignedCharacters: $playersAssignedCharacters, showConversation: $showConversation, recorder: $recorder, allLogs: $allLogs)
+        ConversationView(playersAssignedCharacters: $playersAssignedCharacters, showConversation: $showConversation, allLogs: $allLogs)
           .zIndex(14)
       }
       if showAllCharacterInfos{
