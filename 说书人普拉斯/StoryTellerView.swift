@@ -83,6 +83,8 @@ struct StoryTellerView: View {
   @State private var showFabledCharactersSelection: Bool = false
   @State private var selectedFabledCharacters: [Character] = []
   
+  // FOR TIMER
+  
   
   var body: some View {
     ZStack{
@@ -170,11 +172,19 @@ struct StoryTellerView: View {
               RoundedRectangle(cornerRadius: 10)
                 .stroke(Color.black.opacity(1), lineWidth: 3)
             )
-          Spacer()
+          TimerView(gameState: $gameState)
+            .animation(.easeInOut(duration: 0.3), value: gameState)
+            .frame(width: 110)
+            .background(Color.mainbg)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .overlay(
+              RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.black.opacity(1), lineWidth: 3)
+            )
 ////            .frame(maxHeight: .infinity)
           FakeCover(playersAssignedCharacters: $playersAssignedCharacters, notPresentedGoodCharacters: $notPresentedGoodCharacters, selectNewCharacter: $selectNewCharacter, currentSelectedPlayerID: $currentSelectedPlayerID)
             .animation(.easeInOut(duration: 0.3), value: notPresentedGoodCharacters)
-            .padding()
+            .padding(.vertical, 20)
             .frame(width: 110)
             .background(Color.mainbg)
             .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -257,7 +267,7 @@ struct StoryTellerView: View {
         } // end of v stack for meta information
         .frame(width: 260)
         .padding(.trailing, 10)
-        .animation(.easeInOut(duration: 0.5), value: gameState)
+        .animation(.easeInOut(duration: 0.3), value: gameState)
         //        .background(.gray)
       }
       
