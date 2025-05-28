@@ -21,10 +21,10 @@ struct TimerView: View{
     currentDate.timeIntervalSince(gameStartTime)
   }
   private var timeElapsedDay: TimeInterval {
-    ceil(currentDate.timeIntervalSince(dayTimeStart))
+    currentDate.timeIntervalSince(dayTimeStart)
   }
   private var timeElapsedNight: TimeInterval {
-     ceil(currentDate.timeIntervalSince(nightTimeStart))
+     currentDate.timeIntervalSince(nightTimeStart)
   }
   
   private var timerElapsed: TimeInterval {
@@ -89,16 +89,23 @@ struct TimerView: View{
           .font(.system(size: 20, design: .rounded))
           .fontWeight(.bold)
           .foregroundColor(.black)
-        if timerStopped {
-          Text(formattedTimeElapsed(timeElapsed: previousTimerElapsed))
+        if (gameState == 0){
+          Text("00:00:00")
             .font(.system(size: 18, design: .monospaced))
             .fontWeight(.semibold)
             .foregroundColor(.black)
         }else{
-          Text(formattedTimeElapsed(timeElapsed: timerElapsed))
-            .font(.system(size: 18, design: .monospaced))
-            .fontWeight(.semibold)
-            .foregroundColor(.black)
+          if timerStopped {
+            Text(formattedTimeElapsed(timeElapsed: previousTimerElapsed))
+              .font(.system(size: 18, design: .monospaced))
+              .fontWeight(.semibold)
+              .foregroundColor(.black)
+          }else{
+            Text(formattedTimeElapsed(timeElapsed: timerElapsed))
+              .font(.system(size: 18, design: .monospaced))
+              .fontWeight(.semibold)
+              .foregroundColor(.black)
+          }
         }
       }
       .frame(maxHeight: .infinity)
@@ -109,7 +116,7 @@ struct TimerView: View{
     .onChange(of: gameState) {_, newValue in
       if newValue == 1{
         gameStartTime = Date()
-        nightTimeStart = Date()
+        nightTimeStart = gameStartTime
       }else if newValue == 2{
         dayTimeStart = Date()
       }else if newValue == 3 {
