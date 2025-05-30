@@ -64,6 +64,8 @@ struct ExtraCareView: View {
           VotingEnabledCharacters(playersAssignedCharacters: $playersAssignedCharacters, playersIsAlive: $playersIsAlive)
         }else if (selectedView == 4){
           ExecutionEnabledCharacters(playersAssignedCharacters: $playersAssignedCharacters, playersIsAlive: $playersIsAlive)
+        }else if (selectedView == 5){
+          CircularView(playersAssignedCharacters: $playersAssignedCharacters, playersIsAlive: $playersIsAlive)
         }
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -88,9 +90,20 @@ struct ExtraCareView: View {
           .padding(.vertical, 10)
           .opacity(selectedView == 4 ? 1 : 0.5)
           .border(width: 3, edges: [.top], color: .black)
-          .border(width: 1.5, edges: [.leading], color: .black)
+          .border(width: 1.5, edges: [.leading, .trailing], color: .black)
           .onTapGesture {
             selectedView = 4
+          }
+        Text("圆桌")
+          .font(.system(size: 20, design: .monospaced))
+          .fontWeight(.bold)
+          .frame(maxWidth: .infinity)
+          .padding(.vertical, 10)
+          .opacity(selectedView == 5 ? 1 : 0.5)
+          .border(width: 3, edges: [.top], color: .black)
+          .border(width: 1.5, edges: [.leading], color: .black)
+          .onTapGesture {
+            selectedView = 5
           }
       }
     }
