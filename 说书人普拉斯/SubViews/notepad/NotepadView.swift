@@ -144,10 +144,12 @@ struct NotepadView: View {
         }
         .frame(maxWidth: .infinity)
       }
-      .frame(width: 800, height: 800)
+      .frame(width: 800)
+      .frame(maxHeight: 800)
       .clipShape(RoundedRectangle(cornerRadius: 20))
       .overlay(RoundedRectangle(cornerRadius: 20)
         .stroke(Color.black, lineWidth: 3))
+      .padding(.vertical, 50)
       
       Image(systemName: "xmark")
         .font(.system(size: 14, weight: .bold))
