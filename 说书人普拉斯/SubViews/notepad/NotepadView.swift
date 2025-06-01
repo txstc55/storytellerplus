@@ -39,6 +39,11 @@ struct NotepadView: View {
     ZStack{
       Color.mainbg
         .edgesIgnoringSafeArea(.all)
+        .onTapGesture(count: 2) {
+          withAnimation(.easeInOut(duration: 0.3)) {
+            showNotepad = false
+          }
+        }
       HStack(spacing: 0){
         if showPredefinedTags{
           VStack{
@@ -151,55 +156,8 @@ struct NotepadView: View {
         .stroke(Color.black, lineWidth: 3))
       .padding(.vertical, 50)
       
-      Image(systemName: "xmark")
-        .font(.system(size: 14, weight: .bold))
-        .foregroundColor(.black)
-        .frame(width: 30, height: 30)
-        .background(Color.mainbg)
-        .clipShape(Circle())
-        .overlay(Circle().stroke(Color.black, lineWidth: 2))
-        .padding(10)
-        .offset(x: 395, y: -395)
-        .onTapGesture {
-          withAnimation(.easeInOut(duration: 0.3)) {
-            showNotepad.toggle()
-          }
-        }
       
     }
     .animation(.easeInOut(duration: 0.5), value: showPredefinedTags)
-    .onAppear {
-//      predefinedTags = []
-//      for i in 0..<playersAssignedCharacters.count {
-//        predefinedTagsWithPlayerInfo.append("\(i + 1)号")
-//        predefinedTagsWithPlayerInfo.append(playableCharacters[i].name)
-//      }
-//      let assignedCharacterNames = playersAssignedCharacters.map { $0.name }
-//      for character in playableCharacters {
-//        if !assignedCharacterNames.contains(character.name) {
-//          predefinedTagsWithCharacterInfo.append(character.name)
-//        }
-//      }
-//      predefinedTags.append("你是")
-//      predefinedTags.append("他是")
-//      predefinedTags.append("活着")
-//      predefinedTags.append("死亡")
-//      predefinedTags.append("邪恶")
-//      predefinedTags.append("善良")
-//      predefinedTags.append("镇民")
-//      predefinedTags.append("外来者")
-//      predefinedTags.append("爪牙")
-//      predefinedTags.append("恶魔")
-//      predefinedTags.append("中毒")
-//      predefinedTags.append("醉酒")
-//      predefinedTags.append("旅行者")
-//      predefinedTags.append("不能说")
-//      predefinedTags.append("不可以")
-//      predefinedTags.append("不建议")
-//      predefinedTags.append("请选择")
-//      predefinedTags.append("要使用能力吗")
-//      predefinedTags.append("选择")
-//      predefinedTags.append("?")
-    }
   }
 }

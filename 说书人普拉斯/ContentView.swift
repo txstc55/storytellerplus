@@ -19,7 +19,7 @@ struct ContentView: View {
   var body: some View {
     
     ZStack{
-      TimelineView(.periodic(from: .now, by: 1.0 / 60.0)) { context in
+      TimelineView(.periodic(from: .now, by: 1.0 / 15.0)) { context in
         let time = Float(context.date.timeIntervalSince(startDate))
         ZStack{
           Color.white
@@ -30,6 +30,9 @@ struct ContentView: View {
             .edgesIgnoringSafeArea(.all)
         }
       }
+//      Color.mainbg
+//        .edgesIgnoringSafeArea(.all)
+        
       ZStack{
         if viewNumber == 0 {
           VStack{

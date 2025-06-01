@@ -9,12 +9,12 @@
 import SwiftUI
 import Flow
 struct VotingView: View{
-  
-  @State private var executionPlayerIndex: [Int] = []
-  @State private var executionVoteCount: [[Int]] = []
-  @State private var nominatorIndex: Int = -1
-  @State private var nominatedIndex: Int = -1
-  @State private var nominationVotes: [Int] = []
+  @State private var nominationPlayerIndex: [Int] = [] // who nominated
+  @State private var executionPlayerIndex: [Int] = [] // who is being nominated
+  @State private var executionVoteCount: [[Int]] = [] // all the votes
+  @State private var nominatorIndex: Int = -1 // currently who is nominating
+  @State private var nominatedIndex: Int = -1 // currently who is being nominated
+  @State private var nominationVotes: [Int] = [] // currently who is voting for the nomination
   @State private var aliveCountAtVote: [Int] = []
   @State private var playerCountAtVote: [Int] = []
   
@@ -71,22 +71,91 @@ struct VotingView: View{
             .fontWeight(.bold)
             .padding(.top, 10)
           let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 5)
+          HStack{
+            Rectangle()
+              .fill(Color.black)
+              .frame(height: 2)
+            Text(nominationPhase == 0 ? "未提名": "未被提")
+              .font(.system(size: 20, design: .monospaced))
+              .fontWeight(.bold)
+            Rectangle()
+              .fill(Color.black)
+              .frame(height: 2)
+          }
+          .padding(.vertical, 10)
           LazyVGrid(columns: columns, spacing: 20){
             ForEach(0...playerCount, id: \.self) { index in
               Group{
+                if (nominationPhase == 0 && !nominationPlayerIndex.contains(index)) || (nominationPhase == 1 && !executionPlayerIndex.contains(index)){
+                  if index < playerCount{
+                    let playerBg = getBgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
+                    let playerFg = getFgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
+                    Text("\(index + 1)")
+                      .frame(width: 40, height: 40)
+                      .background(playerBg)
+                      .foregroundColor(playerFg)
+                      .clipShape(Circle())
+                      .opacity(playersIsAlive[index] ? 1 : 0.5)
+                  }else{
+                    Text("说")
+                      .frame(width: 40, height: 40)
+                      .overlay(Circle().stroke(Color.black, lineWidth: 2))
+                  }
+                }
+              }
+              .font(.system(size: 20, design: .monospaced))
+              .fontWeight(.bold)
+              .scaleEffect(index < playerCount ? (index == (nominationPhase == 0 ? nominatorIndex : nominatedIndex) ? 1.2 : 1) : ((nominationPhase == 0 ? nominatorIndex : nominatedIndex) == 21 ? 1.2 : 1))
+              .frame(maxWidth: .infinity)
+              .onTapGesture{
                 if index < playerCount{
-                  let playerBg = getBgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
-                  let playerFg = getFgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
-                  Text("\(index + 1)")
-                    .frame(width: 40, height: 40)
-                    .background(playerBg)
-                    .foregroundColor(playerFg)
-                    .clipShape(Circle())
-                    .opacity(playersIsAlive[index] ? 1 : 0.5)
+                  if nominationPhase == 0{
+                    nominatorIndex = index
+                  }else{
+                    nominatedIndex = index
+                  }
                 }else{
-                  Text("说")
-                    .frame(width: 40, height: 40)
-                    .overlay(Circle().stroke(Color.black, lineWidth: 2))
+                  if nominationPhase == 0{
+                    nominatorIndex = 21 // lets do 21 for storyteller
+                  }else{
+                    nominatedIndex = 21
+                  }
+                }
+              }
+            }
+          }
+          .padding(.horizontal, 5)
+          .padding(.vertical, 10)
+          HStack{
+            Rectangle()
+              .fill(Color.black)
+              .frame(height: 2)
+            Text(nominationPhase == 0 ? "已提名": "已被提")
+              .font(.system(size: 20, design: .monospaced))
+              .fontWeight(.bold)
+            Rectangle()
+              .fill(Color.black)
+              .frame(height: 2)
+          }
+          .padding(.vertical, 10)
+          LazyVGrid(columns: columns, spacing: 20){
+            ForEach(0...playerCount, id: \.self) { index in
+              Group{
+                if (nominationPhase == 0 && nominationPlayerIndex.contains(index)) || (nominationPhase == 1 && executionPlayerIndex.contains(index)){
+                  if index < playerCount{
+                    let playerBg = getBgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
+                    let playerFg = getFgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
+                    Text("\(index + 1)")
+                      .frame(width: 40, height: 40)
+                      .background(playerBg)
+                      .foregroundColor(playerFg)
+                      .clipShape(Circle())
+                      .opacity(playersIsAlive[index] ? 1 : 0.5)
+                  }else{
+                    Text("说")
+                      .frame(width: 40, height: 40)
+                      .overlay(Circle().stroke(Color.black, lineWidth: 2))
+                  }
                 }
               }
               .font(.system(size: 20, design: .monospaced))
@@ -336,6 +405,7 @@ struct VotingView: View{
           Button(action: {
             let nominationVotesNames = nominationVotes.map { $0 < playerCount ? "\($0 + 1) 号玩家" : ($0 == 21 ? "说书人" : ($0 < 25 ? "额外票": "负票")) }
             let logMessage = "提名了\(nominatedIndex < playerCount ? " \(nominatedIndex + 1)号玩家 \(playersAssignedCharacters[nominatedIndex].name)" : "说书人")，投票玩家为：\(nominationVotesNames.joined(separator: " "))"
+            nominationPlayerIndex.append(nominatorIndex)
             executionPlayerIndex.append(nominatedIndex)
             executionVoteCount.append(nominationVotes)
             aliveCountAtVote.append(aliveCount)
@@ -363,7 +433,8 @@ struct VotingView: View{
       }else{
         ScrollView{
           ForEach(executionPlayerIndex.indices, id: \.self) { index in
-            let playerIndex = executionPlayerIndex[index]
+//            let nominationIndex = nominationPlayerIndex[index]
+//            let playerIndex = executionPlayerIndex[index]
             let voteCount = executionVoteCount[index]
             let aliveCount = aliveCountAtVote[index]
             let playerCount = playerCountAtVote[index]
@@ -371,7 +442,9 @@ struct VotingView: View{
             VStack(alignment: .leading){
               HStack{
                 let totalVotes = voteCount.filter({$0 < 25}).count - voteCount.filter({$0 >= 25}).count
-                Text(playerIndex < 20 ? "\(playerIndex + 1)号玩家" : "说书人")
+                let nominationText = nominationPlayerIndex[index] < 20 ? "\(nominationPlayerIndex[index] + 1)" : "说书人"
+                let nominatedText = executionPlayerIndex[index] < 20 ? "\(executionPlayerIndex[index] + 1)" : "说书人"
+                Text("\(nominationText) 提 \(nominatedText)")
                   .font(.system(size: 20, design: .monospaced))
                   .fontWeight(.bold)
                 Spacer()

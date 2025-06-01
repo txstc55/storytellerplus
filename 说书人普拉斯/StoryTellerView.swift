@@ -335,7 +335,7 @@ struct StoryTellerView: View {
         }
       }
     }
-    .onReceive(Timer.publish(every: 30, on: .main, in: .common).autoconnect()) { _ in
+    .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { _ in
       let saveData = GameSaveData(
         playName: playName,
         playAuthor: playAuthor,

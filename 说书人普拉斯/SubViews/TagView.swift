@@ -30,6 +30,11 @@ struct TagView: View{
       Color.mainbg.opacity(0.3)
         .edgesIgnoringSafeArea(.all)
         .zIndex(1)
+        .onTapGesture(count: 2){
+          withAnimation(.easeInOut(duration: 0.3)) {
+            selectNewReminder = false
+          }
+        }
       if showTagEditor{
         ZStack{
           Color.mainbg.opacity(0.5)
@@ -197,11 +202,12 @@ struct TagView: View{
       .zIndex(2)
       .background(Color.mainbg)
       .cornerRadius(20)
-      .frame(width: 600, height: 800)
+      .frame(width: 600)
       .overlay(
         RoundedRectangle(cornerRadius: 20)
           .stroke(Color.black, lineWidth: 3)
       )
+      .padding(.vertical, 50)
     } // end of zstack
     .animation(.easeInOut(duration: 0.3), value: showTagEditor)
   }
