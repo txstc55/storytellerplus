@@ -10,6 +10,7 @@ import SwiftUI
 struct OrderView: View {
   @Binding var playersAssignedCharacters: [Character]
   @Binding var playableCharacters: [Character]
+  @Binding var playersIsAlive: [Bool]
   @Binding var firstNightOrder: Bool
   @Binding var currentlyAwakePlayerIndex: Int
   @Binding var allLogs: [GameLogEntry]
@@ -100,19 +101,20 @@ struct OrderView: View {
           let nightReminder = sortedNight[index]
           let characterIDText: String = {
             if nightReminder.playerID >= 0 {
-              return "\(nightReminder.playerID + 1)号   "
+              return "\(nightReminder.playerID + 1)号"
             } else if nightReminder.playerID <= -4 {
-              return "不在场   "
+              return "不在场"
             } else {
               return ""
             }
           }()
           VStack{
             HStack{
+              let isAlive = nightReminder.playerID >= 0 ? (nightReminder.playerID < playersIsAlive.count ? playersIsAlive[nightReminder.playerID] : false) : true
               CachedImageView(urlString: nightReminder.imageURL)
                 .frame(width: 40, height: 40)
               VStack(alignment: .leading){
-                Text("\(characterIDText)\(nightReminder.characterName)")
+                Text("\(characterIDText)\(isAlive ? "" : "  已死亡")  \(nightReminder.characterName)")
                   .font(.system(size: 20, design: .rounded))
                   .fontWeight(.bold)
                 Text(nightReminder.reminder)
@@ -147,7 +149,8 @@ struct OrderView: View {
             CachedImageView(urlString: nightReminder.imageURL)
               .frame(width: 40, height: 40)
             VStack(alignment: .leading){
-              Text("\(nightReminder.playerID >= 0 ? "\(nightReminder.playerID + 1)号": "不在场")   \(nightReminder.characterName)")
+              let isAlive = nightReminder.playerID >= 0 ? (nightReminder.playerID < playersIsAlive.count ? playersIsAlive[nightReminder.playerID] : false) : true
+              Text("\(nightReminder.playerID >= 0 ? "\(nightReminder.playerID + 1)号\(isAlive ? "" : "  已死亡")": "不在场")  \(nightReminder.characterName)")
                 .font(.system(size: 20, design: .rounded))
                 .fontWeight(.bold)
               Text(nightReminder.reminder)
@@ -171,5 +174,6 @@ struct OrderView: View {
     .animation(.easeInOut(duration: 0.3), value: firstNightOrder)
     .animation(.easeInOut(duration: 0.3), value: playersAssignedCharacters)
     .animation(.easeInOut(duration: 0.3), value: currentlyAwakePlayerIndex)
+    .animation(.easeInOut(duration: 0.3), value: playersIsAlive)
   }
 }

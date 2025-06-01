@@ -49,7 +49,7 @@ struct ContentView: View {
                 .padding(.horizontal, 10)
                 .padding(.vertical, 3)
                 .frame(width: 150)
-                .background(.white.opacity(0.5))
+                .background(.goodTextBg)
                 .cornerRadius(30)
                 .overlay(RoundedRectangle(cornerRadius: 30).stroke(Color.black, lineWidth: 3))
             }
@@ -65,7 +65,7 @@ struct ContentView: View {
                 .padding(.horizontal, 10)
                 .padding(.vertical, 3)
                 .frame(width: 150)
-                .background(.white.opacity(0.5))
+                .background(.goodTextBg)
                 .cornerRadius(30)
                 .overlay(RoundedRectangle(cornerRadius: 30).stroke(Color.black, lineWidth: 3))
                 

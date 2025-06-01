@@ -50,16 +50,18 @@ struct NotepadView: View {
             ScrollView(showsIndicators: false){
               HFlow{
                 ForEach(predefinedTagsWithPlayerInfo.indices, id: \.self) { index in
-                  Text(predefinedTagsWithPlayerInfo[index])
-                    .font(.system(size: 20, design: .monospaced))
-                    .fontWeight(.semibold)
-                    .padding(.vertical, 3)
-                    .padding(.horizontal, 4)
-                    .overlay(RoundedRectangle(cornerRadius: 10)
-                      .stroke(Color.black, lineWidth: 2))
-                    .onTapGesture {
-                      noteText += "\(predefinedTagsWithPlayerInfo[index]) "
-                    }
+                  Button(action: {
+                    noteText += "\(predefinedTagsWithPlayerInfo[index]) "
+                  }) {
+                    Text(predefinedTagsWithPlayerInfo[index])
+                      .font(.system(size: 25, design: .monospaced))
+                      .fontWeight(.semibold)
+                      .foregroundStyle(.black)
+                      .padding(.vertical, 4)
+                      .padding(.horizontal, 8)
+                      .overlay(RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.black, lineWidth: 2))
+                  }
                 }
               }
               .padding(.horizontal, 10)
@@ -68,16 +70,18 @@ struct NotepadView: View {
                 .frame(height: 3)
               HFlow{
                 ForEach(predefinedTagsWithCharacterInfo.indices, id: \.self) { index in
-                  Text(predefinedTagsWithCharacterInfo[index])
-                    .font(.system(size: 20, design: .monospaced))
-                    .fontWeight(.semibold)
-                    .padding(.vertical, 3)
-                    .padding(.horizontal, 4)
-                    .overlay(RoundedRectangle(cornerRadius: 10)
-                      .stroke(Color.black, lineWidth: 2))
-                    .onTapGesture {
-                      noteText += "\(predefinedTagsWithCharacterInfo[index]) "
-                    }
+                  Button(action: {
+                    noteText += "\(predefinedTagsWithCharacterInfo[index]) "
+                  }) {
+                    Text(predefinedTagsWithCharacterInfo[index])
+                      .font(.system(size: 25, design: .monospaced))
+                      .fontWeight(.semibold)
+                      .foregroundStyle(.black)
+                      .padding(.vertical, 4)
+                      .padding(.horizontal, 8)
+                      .overlay(RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.black, lineWidth: 2))
+                  }
                 }
               }
               .padding(.horizontal, 10)
@@ -88,16 +92,18 @@ struct NotepadView: View {
               
               HFlow{
                 ForEach(predefinedTags.indices, id: \.self) { index in
-                  Text(predefinedTags[index])
-                    .font(.system(size: 20, design: .monospaced))
-                    .fontWeight(.semibold)
-                    .padding(.vertical, 3)
-                    .padding(.horizontal, 4)
-                    .overlay(RoundedRectangle(cornerRadius: 10)
-                      .stroke(Color.black, lineWidth: 2))
-                    .onTapGesture {
-                      noteText += "\(predefinedTags[index]) "
-                    }
+                  Button(action: {
+                    noteText += "\(predefinedTags[index]) "
+                  }) {
+                    Text(predefinedTags[index])
+                      .font(.system(size: 25, design: .monospaced))
+                      .fontWeight(.semibold)
+                      .foregroundStyle(.black)
+                      .padding(.vertical, 4)
+                      .padding(.horizontal, 8)
+                      .overlay(RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.black, lineWidth: 2))
+                  }
                 }
               }
               .padding(.horizontal, 10)
@@ -120,31 +126,36 @@ struct NotepadView: View {
           }
           .padding(.horizontal, 10)
           
-          HStack(spacing: 0){
-            Text(showPredefinedTags ? "收起" : "预设")
-              .font(.system(size: 20, design: .rounded))
-              .fontWeight(.semibold)
-              .padding()
-              .frame(maxWidth: .infinity)
-              .border(width: 3, edges: [.top], color: .black)
-              .border(width: 1.5, edges: [.trailing], color: .black)
-              .onTapGesture {
-                withAnimation(.easeInOut(duration: 0.3)) {
-                  showPredefinedTags.toggle()
-                }
+          HStack(spacing: 0) {
+            Button(action: {
+              withAnimation(.easeInOut(duration: 0.3)) {
+                showPredefinedTags.toggle()
               }
-            Text("清空")
-              .font(.system(size: 20, design: .rounded))
-              .fontWeight(.semibold)
-              .frame(maxWidth: .infinity)
-              .padding()
-              .border(width: 3, edges: [.top], color: .black)
-              .border(width: 1.5, edges: [.leading], color: .black)
-              .onTapGesture {
-                withAnimation(.easeInOut(duration: 0.3)) {
-                  noteText = ""
-                }
+            }) {
+              Text(showPredefinedTags ? "收起" : "预设")
+                .font(.system(size: 20, design: .rounded))
+                .fontWeight(.semibold)
+                .foregroundStyle(.black)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .border(width: 3, edges: [.top], color: .black)
+                .border(width: 1.5, edges: [.trailing], color: .black)
+            }
+            
+            Button(action: {
+              withAnimation(.easeInOut(duration: 0.3)) {
+                noteText = ""
               }
+            }) {
+              Text("清空")
+                .font(.system(size: 20, design: .rounded))
+                .fontWeight(.semibold)
+                .foregroundStyle(.black)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .border(width: 3, edges: [.top], color: .black)
+                .border(width: 1.5, edges: [.leading], color: .black)
+            }
           }
         }
         .frame(maxWidth: .infinity)

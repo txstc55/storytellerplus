@@ -146,24 +146,21 @@ struct PlayerCard: View {
               let imageURL = getImageURL(name: reminder.from, characters: characters)
               if !imageURL.isEmpty {
                 CachedImageView(urlString: imageURL)
-                  .frame(width: 35, height: 35)
+                  .frame(width: 40, height: 40)
                   .padding(.leading, 5)
                   .padding(.trailing, 3)
               }else{
                 Color.clear
-                  .frame(width: 1, height: 35)
+                  .frame(width: 1, height: 40)
                   .padding(.leading, 9)
               }
               Text(reminder.effect)
-                .font(.system(size: 20, design: .rounded))
+                .font(.system(size: 22, design: .rounded))
                 .fontWeight(.bold)
                 .foregroundColor(.black)
                 .padding(.trailing, 10)
-              //              .padding(.leading, imageURL.isEmpty ? 9 : 0)
-              //              .padding(.vertical, 5)
-              //              .frame(minHeight: 35)
             }
-            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.black, lineWidth: 2))
+            .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.black, lineWidth: 3))
             .onTapGesture(count: 2){
               // remove this reminder
               reminders.remove(at: reminderIndex)

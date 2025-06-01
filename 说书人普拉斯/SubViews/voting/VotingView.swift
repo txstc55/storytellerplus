@@ -238,25 +238,32 @@ struct VotingView: View{
           let trueNominatorText = nominatorIndex < playerCount ? "\(nominatorIndex + 1)" : "说"
           let trueNominatedText = nominatedIndex < playerCount ? "\(nominatedIndex + 1)" : "说"
           let neededVotes: Int = Int(ceil(Double(aliveCount) / 2.0))
-          Text("\(trueNominatorText)提\(trueNominatedText)，\(neededVotes)票过半")
-            .font(.system(size: 25, design: .monospaced))
-            .fontWeight(.bold)
-            .padding(.top, 10)
-          let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 5)
-          HStack{
-            Rectangle()
-              .fill(Color.black)
-              .frame(height: 2)
-            Text("存活")
-              .font(.system(size: 20, design: .monospaced))
-              .fontWeight(.bold)
-            Rectangle()
-              .fill(Color.black)
-              .frame(height: 2)
+          Group{
+            if (nominatedIndex < playerCount && playersAssignedCharacters[nominatedIndex].team == "traveler"){
+              Text("\(trueNominatorText)流放\(trueNominatedText)，\(Int(ceil(Double(playersAssignedCharacters.count) / 2.0)))票过半")
+            }else{
+              Text("\(trueNominatorText)提\(trueNominatedText)，\(neededVotes)票过半")
+            }
           }
-          LazyVGrid(columns: columns, spacing: 20){
-            ForEach(0..<playerCount, id: \.self) { index in
-              if (playersIsAlive[index]){
+          .font(.system(size: 25, design: .monospaced))
+          .fontWeight(.bold)
+          .padding(.top, 10)
+          let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 5)
+          if nominatedIndex < playerCount && playersAssignedCharacters[nominatedIndex].team == "traveler"{
+            // for traverler nomination
+            HStack{
+              Rectangle()
+                .fill(Color.black)
+                .frame(height: 2)
+              Text("玩家")
+                .font(.system(size: 20, design: .monospaced))
+                .fontWeight(.bold)
+              Rectangle()
+                .fill(Color.black)
+                .frame(height: 2)
+            }
+            LazyVGrid(columns: columns, spacing: 20){
+              ForEach(0..<playerCount, id: \.self) { index in
                 let trueIndex = index < playerCount ? index : (21 + index - playerCount)
                 let name = "\(index + 1)"
                 let playerBg = getBgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
@@ -270,9 +277,7 @@ struct VotingView: View{
                   .clipShape(Circle())
                   .scaleEffect(nominationVotes.contains(trueIndex) ? 1.2 : 1)
                   .frame(maxWidth: .infinity)
-                  .opacity(nominationVotes.contains(trueIndex) ? 1 : 0.5)
                   .onTapGesture{
-                    //                  let trueIndex = index < playerCount ? index : 21
                     if nominationVotes.contains(trueIndex){
                       nominationVotes.removeAll(where: {$0 == trueIndex})
                     }else{
@@ -281,124 +286,165 @@ struct VotingView: View{
                   }
               }
             }
-          }
-          .padding(.horizontal, 5)
-          
-          HStack{
-            Rectangle()
-              .fill(Color.black)
-              .frame(height: 2)
-            Text("死亡")
-              .font(.system(size: 20, design: .monospaced))
-              .fontWeight(.bold)
-            Rectangle()
-              .fill(Color.black)
-              .frame(height: 2)
-          }
-          LazyVGrid(columns: columns, spacing: 20){
-            ForEach(0..<playerCount, id: \.self) { index in
-              if (!playersIsAlive[index] && playersHasDeathVote[index]){
-                let trueIndex = index
-                let name = "\(index + 1)"
-                let playerBg = getBgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
-                let playerFg = getFgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
-                Text(name)
-                  .font(.system(size: 20, design: .monospaced))
-                  .fontWeight(.bold)
-                  .foregroundColor(playerFg)
-                  .frame(width: 40, height: 40)
-                  .background(playerBg)
-                  .clipShape(Circle())
-                  .scaleEffect(nominationVotes.contains(trueIndex) ? 1.2 : 1)
-                  .frame(maxWidth: .infinity)
-                  .opacity(nominationVotes.contains(trueIndex) ? 1 : 0.5)
-                  .onTapGesture{
-                    //                  let trueIndex = index < playerCount ? index : 21
-                    if nominationVotes.contains(trueIndex){
-                      nominationVotes.removeAll(where: {$0 == trueIndex})
-                    }else{
-                      nominationVotes.append(trueIndex)
-                    }
-                  }
-              }
-            }
-          }
-          .padding(.horizontal, 5)
-          HStack{
-            Rectangle()
-              .fill(Color.black)
-              .frame(height: 2)
-            Text("无票")
-              .font(.system(size: 20, design: .monospaced))
-              .fontWeight(.bold)
-            Rectangle()
-              .fill(Color.black)
-              .frame(height: 2)
-          }
-          LazyVGrid(columns: columns, spacing: 20){
-            ForEach(0..<playerCount, id: \.self) { index in
-              if (!playersIsAlive[index] && !playersHasDeathVote[index]){
-                let trueIndex = index
-                let name = "\(index + 1)"
-                let playerBg = getBgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
-                let playerFg = getFgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
-                Text(name)
-                  .font(.system(size: 20, design: .monospaced))
-                  .fontWeight(.bold)
-                  .foregroundColor(playerFg)
-                  .frame(width: 40, height: 40)
-                  .background(playerBg)
-                  .clipShape(Circle())
-                  .scaleEffect(nominationVotes.contains(trueIndex) ? 1.2 : 1)
-                  .frame(maxWidth: .infinity)
-                  .opacity(nominationVotes.contains(trueIndex) ? 1 : 0.5)
-                  .onTapGesture{
-                    //                  let trueIndex = index < playerCount ? index : 21
-                    if nominationVotes.contains(trueIndex){
-                      nominationVotes.removeAll(where: {$0 == trueIndex})
-                    }else{
-                      nominationVotes.append(trueIndex)
-                    }
-                  }
-              }
-            }
-          }
-          .padding(.horizontal, 5)
-          HStack{
-            Rectangle()
-              .fill(Color.black)
-              .frame(height: 2)
-            Text("特殊")
-              .font(.system(size: 20, design: .monospaced))
-              .fontWeight(.bold)
-            Rectangle()
-              .fill(Color.black)
-              .frame(height: 2)
-          }
-          LazyVGrid(columns: columns, spacing: 20){
-            ForEach(0..<7, id: \.self) { index in
-              let trueIndex = 21 + index
-              let name = trueIndex == 21 ? "说" : (trueIndex < 25 ? "票" : "负")
-              Text(name)
+            .padding(.horizontal, 5)
+          }else{
+            HStack{
+              Rectangle()
+                .fill(Color.black)
+                .frame(height: 2)
+              Text("存活")
                 .font(.system(size: 20, design: .monospaced))
                 .fontWeight(.bold)
-                .frame(width: 40, height: 40)
-                .overlay(Circle().stroke(Color.black, lineWidth: 2))
-                .scaleEffect(nominationVotes.contains(trueIndex) ? 1.2 : 1)
-                .frame(maxWidth: .infinity)
-                .opacity(nominationVotes.contains(trueIndex) ? 1 : 0.5)
-                .onTapGesture{
-                  //                  let trueIndex = index < playerCount ? index : 21
-                  if nominationVotes.contains(trueIndex){
-                    nominationVotes.removeAll(where: {$0 == trueIndex})
-                  }else{
-                    nominationVotes.append(trueIndex)
-                  }
-                }
+              Rectangle()
+                .fill(Color.black)
+                .frame(height: 2)
             }
+            LazyVGrid(columns: columns, spacing: 20){
+              ForEach(0..<playerCount, id: \.self) { index in
+                if (playersIsAlive[index]){
+                  let trueIndex = index < playerCount ? index : (21 + index - playerCount)
+                  let name = "\(index + 1)"
+                  let playerBg = getBgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
+                  let playerFg = getFgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
+                  Text(name)
+                    .font(.system(size: 20, design: .monospaced))
+                    .fontWeight(.bold)
+                    .foregroundColor(playerFg)
+                    .frame(width: 40, height: 40)
+                    .background(playerBg)
+                    .clipShape(Circle())
+                    .scaleEffect(nominationVotes.contains(trueIndex) ? 1.2 : 1)
+                    .frame(maxWidth: .infinity)
+                    .opacity(nominationVotes.contains(trueIndex) ? 1 : 0.5)
+                    .onTapGesture{
+                      //                  let trueIndex = index < playerCount ? index : 21
+                      if nominationVotes.contains(trueIndex){
+                        nominationVotes.removeAll(where: {$0 == trueIndex})
+                      }else{
+                        nominationVotes.append(trueIndex)
+                      }
+                    }
+                }
+              }
+            }
+            .padding(.horizontal, 5)
+            
+            HStack{
+              Rectangle()
+                .fill(Color.black)
+                .frame(height: 2)
+              Text("死亡")
+                .font(.system(size: 20, design: .monospaced))
+                .fontWeight(.bold)
+              Rectangle()
+                .fill(Color.black)
+                .frame(height: 2)
+            }
+            LazyVGrid(columns: columns, spacing: 20){
+              ForEach(0..<playerCount, id: \.self) { index in
+                if (!playersIsAlive[index] && playersHasDeathVote[index]){
+                  let trueIndex = index
+                  let name = "\(index + 1)"
+                  let playerBg = getBgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
+                  let playerFg = getFgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
+                  Text(name)
+                    .font(.system(size: 20, design: .monospaced))
+                    .fontWeight(.bold)
+                    .foregroundColor(playerFg)
+                    .frame(width: 40, height: 40)
+                    .background(playerBg)
+                    .clipShape(Circle())
+                    .scaleEffect(nominationVotes.contains(trueIndex) ? 1.2 : 1)
+                    .frame(maxWidth: .infinity)
+                    .opacity(nominationVotes.contains(trueIndex) ? 1 : 0.5)
+                    .onTapGesture{
+                      //                  let trueIndex = index < playerCount ? index : 21
+                      if nominationVotes.contains(trueIndex){
+                        nominationVotes.removeAll(where: {$0 == trueIndex})
+                      }else{
+                        nominationVotes.append(trueIndex)
+                      }
+                    }
+                }
+              }
+            }
+            .padding(.horizontal, 5)
+            HStack{
+              Rectangle()
+                .fill(Color.black)
+                .frame(height: 2)
+              Text("无票")
+                .font(.system(size: 20, design: .monospaced))
+                .fontWeight(.bold)
+              Rectangle()
+                .fill(Color.black)
+                .frame(height: 2)
+            }
+            LazyVGrid(columns: columns, spacing: 20){
+              ForEach(0..<playerCount, id: \.self) { index in
+                if (!playersIsAlive[index] && !playersHasDeathVote[index]){
+                  let trueIndex = index
+                  let name = "\(index + 1)"
+                  let playerBg = getBgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
+                  let playerFg = getFgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
+                  Text(name)
+                    .font(.system(size: 20, design: .monospaced))
+                    .fontWeight(.bold)
+                    .foregroundColor(playerFg)
+                    .frame(width: 40, height: 40)
+                    .background(playerBg)
+                    .clipShape(Circle())
+                    .scaleEffect(nominationVotes.contains(trueIndex) ? 1.2 : 1)
+                    .frame(maxWidth: .infinity)
+                    .opacity(nominationVotes.contains(trueIndex) ? 1 : 0.5)
+                    .onTapGesture{
+                      //                  let trueIndex = index < playerCount ? index : 21
+                      if nominationVotes.contains(trueIndex){
+                        nominationVotes.removeAll(where: {$0 == trueIndex})
+                      }else{
+                        nominationVotes.append(trueIndex)
+                      }
+                    }
+                }
+              }
+            }
+            .padding(.horizontal, 5)
+            HStack{
+              Rectangle()
+                .fill(Color.black)
+                .frame(height: 2)
+              Text("特殊")
+                .font(.system(size: 20, design: .monospaced))
+                .fontWeight(.bold)
+              Rectangle()
+                .fill(Color.black)
+                .frame(height: 2)
+            }
+            LazyVGrid(columns: columns, spacing: 20){
+              ForEach(0..<7, id: \.self) { index in
+                let trueIndex = 21 + index
+                let name = trueIndex == 21 ? "说" : (trueIndex < 25 ? "票" : "负")
+                Text(name)
+                  .font(.system(size: 20, design: .monospaced))
+                  .fontWeight(.bold)
+                  .frame(width: 40, height: 40)
+                  .overlay(Circle().stroke(Color.black, lineWidth: 2))
+                  .scaleEffect(nominationVotes.contains(trueIndex) ? 1.2 : 1)
+                  .frame(maxWidth: .infinity)
+                  .opacity(nominationVotes.contains(trueIndex) ? 1 : 0.5)
+                  .onTapGesture{
+                    //                  let trueIndex = index < playerCount ? index : 21
+                    if nominationVotes.contains(trueIndex){
+                      nominationVotes.removeAll(where: {$0 == trueIndex})
+                    }else{
+                      nominationVotes.append(trueIndex)
+                    }
+                  }
+              }
+            }
+            .padding(.horizontal, 5)
+            .padding(.bottom, 20)
           }
-          .padding(.horizontal, 5)
-          .padding(.bottom, 20)
         }
         Spacer()
         HStack{
@@ -411,9 +457,13 @@ struct VotingView: View{
             aliveCountAtVote.append(aliveCount)
             playerCountAtVote.append(playerCount)
             allLogs.append(GameLogEntry(message: logMessage, messager: nominatorIndex < playerCount ? (nominatorIndex + 1): 0, source: nominatorIndex < playerCount ? playersAssignedCharacters[nominatorIndex].name : "说书人", type: 4, characterName: nominatorIndex < playerCount ? playersAssignedCharacters[nominatorIndex].name : "说书人"))
-            for vote in nominationVotes {
-              if vote < playersIsAlive.count && !playersIsAlive[vote] {
-                playersHasDeathVote[vote] = false
+            if nominatedIndex < playersAssignedCharacters.count && playersAssignedCharacters[nominatedIndex].team == "traveler"{
+              // do nothing
+            }else{
+              for vote in nominationVotes {
+                if vote < playersIsAlive.count && !playersIsAlive[vote] {
+                  playersHasDeathVote[vote] = false
+                }
               }
             }
             nominatedIndex = -1
@@ -433,8 +483,8 @@ struct VotingView: View{
       }else{
         ScrollView{
           ForEach(executionPlayerIndex.indices, id: \.self) { index in
-//            let nominationIndex = nominationPlayerIndex[index]
-//            let playerIndex = executionPlayerIndex[index]
+            //            let nominationIndex = nominationPlayerIndex[index]
+            //            let playerIndex = executionPlayerIndex[index]
             let voteCount = executionVoteCount[index]
             let aliveCount = aliveCountAtVote[index]
             let playerCount = playerCountAtVote[index]
@@ -444,7 +494,8 @@ struct VotingView: View{
                 let totalVotes = voteCount.filter({$0 < 25}).count - voteCount.filter({$0 >= 25}).count
                 let nominationText = nominationPlayerIndex[index] < 20 ? "\(nominationPlayerIndex[index] + 1)" : "说书人"
                 let nominatedText = executionPlayerIndex[index] < 20 ? "\(executionPlayerIndex[index] + 1)" : "说书人"
-                Text("\(nominationText) 提 \(nominatedText)")
+                let isTraveler = executionPlayerIndex[index] > 20 ? false : (executionPlayerIndex[index] < playersAssignedCharacters.count && playersAssignedCharacters[executionPlayerIndex[index]].team == "traveler")
+                Text("\(nominationText)\(isTraveler ? "提名" : "流放")\(nominatedText)")
                   .font(.system(size: 20, design: .monospaced))
                   .fontWeight(.bold)
                 Spacer()

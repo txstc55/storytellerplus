@@ -223,20 +223,6 @@ struct StoryTellerView: View {
             RoundedRectangle(cornerRadius: 10)
               .stroke(Color.black.opacity(1), lineWidth: 3)
           )
-//          JinxView(jinxList: $jinxList)
-//            .frame(maxHeight: .infinity)
-//            .frame(maxWidth: .infinity)
-//            .background(Color.mainbg)
-//            .clipShape(RoundedRectangle(cornerRadius: 10))
-//            .overlay(
-//              RoundedRectangle(cornerRadius: 10)
-//                .stroke(Color.black.opacity(1), lineWidth: 3)
-//            )
-//            .padding(.top, 10)
-//          NominationEnabledCharacters(
-//            playersAssignedCharacters: $playersAssignedCharacters,
-//            playersIsAlive: $playersIsAlive,
-//          )
           ExtraCareView(jinxList: $jinxList, playersAssignedCharacters: $playersAssignedCharacters, playersIsAlive: $playersIsAlive, votingPhase: $votingPhase, nominationPhase: $nominationPhase, gameState: $gameState)
             .frame(maxHeight: .infinity)
             .frame(maxWidth: .infinity)
@@ -250,7 +236,7 @@ struct StoryTellerView: View {
             if (gameState == 0){
               ExtraSetup(playableCharacters: $playableCharacters, playersAssignedCharacters: $playersAssignedCharacters)
             }else if (gameState == 1 || gameState == 3){
-              OrderView(playersAssignedCharacters: $playersAssignedCharacters, playableCharacters: $playableCharacters, firstNightOrder: $firstNightOrder, currentlyAwakePlayerIndex: $currentlyAwakePlayerIndex, allLogs: $allLogs)
+              OrderView(playersAssignedCharacters: $playersAssignedCharacters, playableCharacters: $playableCharacters, playersIsAlive: $playersIsAlive, firstNightOrder: $firstNightOrder, currentlyAwakePlayerIndex: $currentlyAwakePlayerIndex, allLogs: $allLogs)
             }else if (gameState == 2){
               VotingView(playersAssignedCharacters: $playersAssignedCharacters, playerCount: $playerCount, aliveCount: $aliveCount, playersIsAlive: $playersIsAlive, playersHasDeathVote: $playersHasDeathVote, allLogs: $allLogs, votingPhase: $votingPhase, nominationPhase: $nominationPhase)
             }
