@@ -495,7 +495,7 @@ struct VotingView: View{
                 let nominationText = nominationPlayerIndex[index] < 20 ? "\(nominationPlayerIndex[index] + 1)" : "说书人"
                 let nominatedText = executionPlayerIndex[index] < 20 ? "\(executionPlayerIndex[index] + 1)" : "说书人"
                 let isTraveler = executionPlayerIndex[index] > 20 ? false : (executionPlayerIndex[index] < playersAssignedCharacters.count && playersAssignedCharacters[executionPlayerIndex[index]].team == "traveler")
-                Text("\(nominationText)\(isTraveler ? "提名" : "流放")\(nominatedText)")
+                Text("\(nominationText)\(isTraveler ? "流放" : "提名")\(nominatedText)")
                   .font(.system(size: 20, design: .monospaced))
                   .fontWeight(.bold)
                 Spacer()
