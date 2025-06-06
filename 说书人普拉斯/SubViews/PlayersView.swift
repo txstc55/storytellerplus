@@ -161,10 +161,16 @@ struct PlayerCard: View {
                 .padding(.trailing, 10)
             }
             .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.black, lineWidth: 3))
+            .rotationEffect(reminder.isReversed ? .degrees(180) : .degrees(0))
             .onTapGesture(count: 2){
               // remove this reminder
               reminders.remove(at: reminderIndex)
               allLogs.append(GameLogEntry(message: "失去标记：\(reminder.effect)", messager: index + 1, source: reminder.from, type: 14, characterName: character.name))
+            }
+            .onLongPressGesture(minimumDuration: 1){
+              withAnimation(.easeInOut(duration: 0.3)) {
+                reminders[reminderIndex].isReversed.toggle()
+              }
             }
           }
           Button(action: {
@@ -178,6 +184,7 @@ struct PlayerCard: View {
               .frame(width: 35, height: 35)
               .overlay(Circle().stroke(Color.black, lineWidth: 3))
           }
+          .contentShape(Circle())
         }
         .padding(.top, 10)
         .padding(.horizontal, 5)
