@@ -49,6 +49,9 @@ struct StoryTellerView: View {
   @State private var currentSelectedPlayerIDForReminder: Int = 0
   @State private var selectedReminderIndex: Int = 0
   
+  // FOR THE SETUP PART
+  @State private var showSetup: Bool = false
+  
   // FOR CONVENIENCE
   var selectedCharacterNames: [String] {
     playersAssignedCharacters.map { $0.name }
@@ -122,6 +125,11 @@ struct StoryTellerView: View {
         FabledSelectionView(fabledInPlay: $fabled, characters: $characters, selectedFabledCharacters: $selectedFabledCharacters, showFabledCharactersSelection: $showFabledCharactersSelection)
           .zIndex(16)
       }
+      
+      if showSetup{
+        SetupView(playableCharacters: $playableCharacters, playersAssignedCharacters: $playersAssignedCharacters, playerCount: $playerCount, showSetup: $showSetup)
+          .zIndex(17)
+      }
         
       
       HStack{
@@ -135,7 +143,7 @@ struct StoryTellerView: View {
           } message: {
             Text("城镇内容将会被清空")
           }
-          .background(Color.mainbg)
+          .background(RoundedRectangle(cornerRadius: 10).fill(Color.mainbg))
           .overlay(RoundedRectangle(cornerRadius: 10)
             .stroke(Color.black.opacity(1), lineWidth: 3))
         ScrollView(showsIndicators: false) {
@@ -154,6 +162,26 @@ struct StoryTellerView: View {
                       allLogs: $allLogs,
                       numCols: 3
           )
+          if (gameState == 0){
+            HStack{
+              Button(action: {showSetup = true}){
+                Text("说书人配版")
+                  .font(.system(size: 20,  design: .rounded))
+                  .fontWeight(.bold)
+                  .padding()
+                  .foregroundColor(.black)
+                  .padding(.horizontal, 10)
+                  .padding(.vertical, 3)
+                  .frame(width: 150)
+                  .background(.mainbg)
+                  .cornerRadius(30)
+                  .overlay(RoundedRectangle(cornerRadius: 30).stroke(Color.black, lineWidth: 3))
+                  .contentShape(RoundedRectangle(cornerRadius: 30))
+              }
+              .padding(.top, 30)
+            }
+            .frame(maxWidth: .infinity)
+          }
         }
         .frame(maxWidth: .infinity)
 //        .padding(.horizontal, 10)
