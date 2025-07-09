@@ -8,7 +8,7 @@
 import SwiftUI
 import Flow
 struct SetupBlindPick: View {
-  @Binding var playableCharacters: [Character]
+  @Binding var playableCharactersShuffled: [Character]
   @Binding var selectedTeamCounts: [Int]
   @Binding var cardSelected: [Bool]
   @Binding var selectionState: Int
@@ -20,7 +20,7 @@ struct SetupBlindPick: View {
     let teamIndex = Int(selectionState / 3)
     let teamName: String = teamNames[teamIndex]
     let teamNameEnglish: String = teamNameEnglish[teamIndex]
-    //      let teamCharacters: [Character] = playableCharacters.filter { $0.team == teamNameEnglish }
+    //      let teamCharacters: [Character] = playableCharactersShuffled.filter { $0.team == teamNameEnglish }
     let teamColor: Color = teamColors[teamIndex]
     ScrollView{
       Text("请选择 \(selectedTeamCounts[teamIndex]) 张\(teamName)卡片\n（不需要点击确认）")
@@ -32,8 +32,8 @@ struct SetupBlindPick: View {
         .fontWeight(.bold)
         .padding(.bottom, 20)
       HFlow(horizontalAlignment: .center, verticalAlignment: .top){
-        ForEach(playableCharacters.indices, id: \.self) { index in
-          if playableCharacters[index].team == teamNameEnglish {
+        ForEach(playableCharactersShuffled.indices, id: \.self) { index in
+          if playableCharactersShuffled[index].team == teamNameEnglish {
             CardBack(cardColor: teamColor)
               .scaleEffect(cardSelected[index] ? 1.1 : 1.0)
               .opacity(cardSelected[index] ? 1.0 : 0.7)
@@ -84,8 +84,8 @@ struct SetupBlindPick: View {
       .padding(.top, 40)
     }
     .onAppear{
-      for index in 0..<playableCharacters.count {
-        if playableCharacters[index].team == teamNameEnglish && cardSelected[index]{
+      for index in 0..<playableCharactersShuffled.count {
+        if playableCharactersShuffled[index].team == teamNameEnglish && cardSelected[index]{
           selectedCount += 1
         }
       }

@@ -20,6 +20,8 @@ struct SetupView: View {
   @State private var selectedTeamCounts: [Int] = [0, 0, 0, 0] // [demon, minion, outsider, townsfolk]
   @State private var cardSelected: [Bool] = [] // just placeholders
   @State private var playableCharactersShuffled: [Character] = []
+  @State private var extraRepeatedCharacters: [Character] = [] // for repeated characters
+  @State private var extraRepeatedCardSelected: [Bool] = []
   @State private var playerChoices: [Int] = []
   let teamNames = ["恶魔", "爪牙", "外来者", "镇民"]
   let teamNameEnglish = ["demon", "minion", "outsider", "townsfolk"]
@@ -52,14 +54,14 @@ struct SetupView: View {
       }// end of group 1
       Group{
         if selectionState == 1 || selectionState == 4 || selectionState == 7 || selectionState == 10{
-          SetupBlindPick(playableCharacters: $playableCharactersShuffled, selectedTeamCounts: $selectedTeamCounts, cardSelected: $cardSelected, selectionState: $selectionState)
+          SetupBlindPick(playableCharactersShuffled: $playableCharactersShuffled, selectedTeamCounts: $selectedTeamCounts, cardSelected: $cardSelected, selectionState: $selectionState)
             .frame(maxHeight: .infinity)
         }
       }
       Group{
         if selectionState == 2 || selectionState == 5 || selectionState == 8 || selectionState == 11{
           HStack{
-            SetupCheck(playableCharacters: $playableCharactersShuffled, cardSelected: $cardSelected, playerCount: $playerCount)
+            SetupCheck(playableCharacters: $playableCharacters, playableCharactersShuffled: $playableCharactersShuffled, cardSelected: $cardSelected, extraRepeatedCharacters: $extraRepeatedCharacters, extraRepeatedCardSelected: $extraRepeatedCardSelected, playerCount: $playerCount, selectionState: $selectionState)
               .frame(maxWidth: .infinity, alignment: .center)
             ExtraSetupForSetup(playableCharacters: $playableCharacters, selectedCharacters: $selectedCharacters, selectionState: $selectionState, showSetup: $showSetup)
           }
@@ -67,7 +69,7 @@ struct SetupView: View {
       }
       Group{
         if selectionState == 12{
-          SetupPlayerPick(playableCharacters: $playableCharactersShuffled, playersAssignedCharacters: $playersAssignedCharacters, cardSelected: $cardSelected, playerChoices: $playerChoices, selectionState: $selectionState, showSetup: $showSetup)
+          SetupPlayerPick(playableCharactersShuffled: $playableCharactersShuffled, playersAssignedCharacters: $playersAssignedCharacters, extraRepeatedCharacters: $extraRepeatedCharacters,cardSelected: $cardSelected, extraRepeatedCardSelected: $extraRepeatedCardSelected, playerChoices: $playerChoices, selectionState: $selectionState, showSetup: $showSetup)
         }
       }
       

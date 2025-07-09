@@ -8,68 +8,81 @@
 import SwiftUI
 import Flow
 struct SetupPlayerPick: View {
-  @Binding var playableCharacters: [Character]
+  @Binding var playableCharactersShuffled: [Character]
   @Binding var playersAssignedCharacters: [Character]
+  @Binding var extraRepeatedCharacters: [Character]
   @Binding var cardSelected: [Bool]
+  @Binding var extraRepeatedCardSelected: [Bool]
   @Binding var playerChoices: [Int] // which card did player choose
   @Binding var selectionState: Int
   @Binding var showSetup: Bool
+  @State private var mergedSelectedCharactersShuffled: [Character] = []
   @State private var currentSelectingPlayerIndex: Int = -1
   @State private var cardRotation: [Double] = []
   @State private var selectedCardIndex: Int = -1
   @State private var selectedCardIndices: Set<Int> = []
   init(
-    playableCharacters: Binding<[Character]>,
+    playableCharactersShuffled: Binding<[Character]>,
     playersAssignedCharacters: Binding<[Character]>,
+    extraRepeatedCharacters: Binding<[Character]>,
     cardSelected: Binding<[Bool]>,
+    extraRepeatedCardSelected: Binding<[Bool]>,
     playerChoices: Binding<[Int]>,
     selectionState: Binding<Int>,
     showSetup: Binding<Bool>
   ) {
-    self._playableCharacters = playableCharacters
+    self._playableCharactersShuffled = playableCharactersShuffled
     self._playersAssignedCharacters = playersAssignedCharacters
+    self._extraRepeatedCharacters = extraRepeatedCharacters
     self._cardSelected = cardSelected
+    self._extraRepeatedCardSelected = extraRepeatedCardSelected
     self._playerChoices = playerChoices
     self._selectionState = selectionState
     self._showSetup = showSetup
     // Initialize cardRotation here
-    self._cardRotation = State(initialValue: Array(repeating: 0.0, count: playableCharacters.wrappedValue.count))
+    let selectedPlayableCharacters = playableCharactersShuffled.wrappedValue.enumerated().compactMap { index, character in
+      cardSelected.wrappedValue[index] ? character : nil
+    }
+    let allCharacters = selectedPlayableCharacters + extraRepeatedCharacters.wrappedValue
+    self._mergedSelectedCharactersShuffled = State(initialValue: allCharacters.shuffled())
+    self._cardRotation = State(initialValue: Array(repeating: 0.0, count: allCharacters.count))
+    self._currentSelectingPlayerIndex = State(initialValue: -1)
+    self._selectedCardIndices = State(initialValue: Set<Int>())
+    self._selectedCardIndex = State(initialValue: -1)
   }
   var body: some View {
     HStack{
       ScrollView{
         HFlow(horizontalAlignment: .center, verticalAlignment: .top){
-          ForEach(playableCharacters.indices, id: \.self) { index in
-            if cardSelected[index] {
-              let team = playableCharacters[index].team
-              let cardColor = team == "demon" ? Color.demon : (team == "minion" ? Color.minion : (team == "outsider" ? Color.outsider : Color.townsfolk))
-              ZStack{
-                CardFront(character: playableCharacters[index], cardColor: cardColor)
-                  .opacity(cardRotation[index] <= 90 || cardRotation[index] >= 270 ? 0 : 1)
-                  .rotation3DEffect(
-                    Angle.degrees(cardRotation[index] + 180.0),
-                    axis: (x: 0, y: 1, z: 0) // rotate around Y axis
-                  )
-                CardBack(cardColor: .black)
-                  .opacity(cardRotation[index] > 90 && cardRotation[index] < 270 ? 0 : 1)
-                  .rotation3DEffect(
-                    Angle.degrees(cardRotation[index]),
-                    axis: (x: 0, y: 1, z: 0)
-                  )
-              }
-              .opacity((cardRotation[index] == 0 && selectedCardIndices.contains(index)) ? 0.7 : 1.0)
-              .padding(.vertical, 30)
-              .padding(.horizontal, 10)
-              .onLongPressGesture(minimumDuration: 1) {
-                if (currentSelectingPlayerIndex != -1 && playerChoices[currentSelectingPlayerIndex] == -1 && !selectedCardIndices.contains(index)) {
-                  playerChoices[currentSelectingPlayerIndex] = index
-                  cardRotation[index] = 180 // flip the card
-                  selectedCardIndices.insert(index)
-                  playersAssignedCharacters[currentSelectingPlayerIndex] = playableCharacters[index]
-                }
-              }
-              .animation(.easeInOut(duration: 0.3), value: cardRotation[index])
+          ForEach(mergedSelectedCharactersShuffled.indices, id: \.self) { index in
+            let team = mergedSelectedCharactersShuffled[index].team
+            let cardColor = team == "demon" ? Color.demon : (team == "minion" ? Color.minion : (team == "outsider" ? Color.outsider : Color.townsfolk))
+            ZStack{
+              CardFront(character: mergedSelectedCharactersShuffled[index], cardColor: cardColor)
+                .opacity(cardRotation[index] <= 90 || cardRotation[index] >= 270 ? 0 : 1)
+                .rotation3DEffect(
+                  Angle.degrees(cardRotation[index] + 180.0),
+                  axis: (x: 0, y: 1, z: 0) // rotate around Y axis
+                )
+              CardBack(cardColor: .black)
+                .opacity(cardRotation[index] > 90 && cardRotation[index] < 270 ? 0 : 1)
+                .rotation3DEffect(
+                  Angle.degrees(cardRotation[index]),
+                  axis: (x: 0, y: 1, z: 0)
+                )
             }
+            .opacity((cardRotation[index] == 0 && selectedCardIndices.contains(index)) ? 0.7 : 1.0)
+            .padding(.vertical, 30)
+            .padding(.horizontal, 10)
+            .onLongPressGesture(minimumDuration: 0.3) {
+              if (currentSelectingPlayerIndex != -1 && playerChoices[currentSelectingPlayerIndex] == -1 && !selectedCardIndices.contains(index)) {
+                playerChoices[currentSelectingPlayerIndex] = index
+                cardRotation[index] = 180 // flip the card
+                selectedCardIndices.insert(index)
+                playersAssignedCharacters[currentSelectingPlayerIndex] = mergedSelectedCharactersShuffled[index]
+              }
+            }
+            .animation(.easeInOut(duration: 0.3), value: cardRotation[index])
           }
         }
         .padding(.horizontal, 10)
@@ -173,6 +186,11 @@ struct SetupPlayerPick: View {
         .frame(maxWidth: .infinity)
       }
       .frame(width: 260)
+    }
+    .onAppear(){
+      for i in 0..<playerChoices.count {
+        playerChoices[i] = -1
+      }
     }
   }
 }
