@@ -134,7 +134,7 @@ struct StoryTellerView: View {
       
       HStack{
         // we do a menu bar here
-        MenuView(firstNightOrder: $firstNightOrder, showMenu: $showMenu, showNotepad: $showNotepad, showConversation: $showConversation, showAllCharacterInfos: $showAllCharacterInfos, showExitConfirmation: $showExitConfirmation, currentView: $currentView, gameState: $gameState, allLogs: $allLogs, votingPhase: $votingPhase, nominationPhase: $nominationPhase)
+        MenuView(firstNightOrder: $firstNightOrder, showMenu: $showMenu, showNotepad: $showNotepad, showConversation: $showConversation, showAllCharacterInfos: $showAllCharacterInfos, showExitConfirmation: $showExitConfirmation, currentView: $currentView, gameState: $gameState, allLogs: $allLogs, votingPhase: $votingPhase, nominationPhase: $nominationPhase, playersAssignedCharacters: $playersAssignedCharacters)
           .alert("确定离开当前城镇吗？", isPresented: $showExitConfirmation) {
             Button("取消", role: .cancel) { }
             Button("确定", role: .destructive) {

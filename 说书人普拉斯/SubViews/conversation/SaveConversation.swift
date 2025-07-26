@@ -1,12 +1,15 @@
+//
+//  SaveConversation.swift
+//  说书人普拉斯
+//
+//  Created by Xuan Tang on 7/17/25.
+//
 import SwiftUI
 
-struct ConversationLogView: View{
-  @Binding var playersAssignedCharacters: [Character]
-  @Binding var showConversation: Bool
-  //  @Binding var recorder: AudioRecorder
-  @Binding var allLogs: [GameLogEntry]
-  @State private var nightCount: Int = 0
-  @State private var dayCount: Int = 0
+
+struct ConversationLogViewFixed: View{
+  let playersAssignedCharacters: [Character]
+  let allLogs: [GameLogEntry]
   var body: some View {
     VStack(alignment: .leading, spacing: 5) {
       ForEach(allLogs.indices, id: \.self){index in
@@ -263,139 +266,22 @@ struct ConversationLogView: View{
         }
       }
     }
+    .background(Color.mainbg)
   }
 }
 
 
-
-struct ConversationView: View {
-  @Binding var playersAssignedCharacters: [Character]
-  @Binding var showConversation: Bool
-//  @Binding var recorder: AudioRecorder
-  @Binding var allLogs: [GameLogEntry]
+@MainActor func exportGameLog(width: CGFloat, playersAssignedCharacters: [Character], allLogs: [GameLogEntry]){
+  let captureView = ConversationLogViewFixed(playersAssignedCharacters: playersAssignedCharacters, allLogs: allLogs)
+    .frame(width: width)
   
-  @State private var currentSelection: Int
-  @State private var inputText: String = ""
-  init(playersAssignedCharacters: Binding<[Character]>, showConversation: Binding<Bool>, allLogs: Binding<[GameLogEntry]>) {
-    self._playersAssignedCharacters = playersAssignedCharacters
-    self._showConversation = showConversation
-//    self._recorder = recorder
-    self._allLogs = allLogs
-    
-    // default to last in list, which is "说书人"
-    self._currentSelection = State(initialValue: playersAssignedCharacters.wrappedValue.count)
-  }
+  let renderer = ImageRenderer(content: captureView)
+  renderer.scale = UIScreen.main.scale
   
-  var allUserIDs: [Int] {
-    (0..<(playersAssignedCharacters.count + 1)).map { $0 }
-  }
-  
-  var currentSpeaker: String {
-    if currentSelection < playersAssignedCharacters.count {
-      return "\(currentSelection + 1)号 \(playersAssignedCharacters[currentSelection].name)"
-    } else {
-      return "说书人"
-    }
-  }
-  
-
-  
-  var body: some View {
-    ZStack {
-      Color.mainbg
-        .edgesIgnoringSafeArea(.all)
-        .onTapGesture(count: 2) {
-          withAnimation(.easeInOut(duration: 0.3)) {
-            showConversation = false
-          }
-        }
-      
-      VStack {
-        ScrollView {
-          ScrollViewReader{ value in
-            ConversationLogView(playersAssignedCharacters: $playersAssignedCharacters, showConversation: $showConversation, allLogs: $allLogs)
-            .onChange(of: allLogs.count) {_, _ in
-              //               Scroll to bottom (last ID), anchor to bottom
-              withAnimation {
-                value.scrollTo(allLogs.count - 1, anchor: .bottom)
-              }
-            }
-            .onAppear(){
-              withAnimation {
-                value.scrollTo(allLogs.count - 1, anchor: .bottom)
-              }
-            }
-          }
-        }
-        .scrollDismissesKeyboard(.interactively)
-        .frame(maxWidth: .infinity)
-        //        .frame(maxHeight: .infinity)
-        .padding(.horizontal, 10)
-        .padding(.vertical, 20)
-        HStack {
-          Picker(selection: $currentSelection, label: Text(currentSpeaker).font(.system(size: 20, design: .rounded))
-            .fontWeight(.bold)
-            .foregroundColor(.black)
-            .lineLimit(1)               // <-- Restrict to 1 line
-            .truncationMode(.tail)     // <-- Show "..." if needed
-          ) {
-            ForEach(allUserIDs, id: \.self) { item in
-              Text(item < playersAssignedCharacters.count
-                   ? "\(item + 1)号 \(playersAssignedCharacters[item].name)"
-                   : "说书人")
-              .font(.system(size: 20, design: .rounded))
-              .fontWeight(.bold)
-              .foregroundColor(.black) // <-- this makes each option black
-              .tag(item)
-              
-            }
-          }
-          .pickerStyle(.menu)
-          .padding(.horizontal, 5)
-          .accentColor(.black)
-          .frame(width: 150)
-          .padding(.vertical, 5)
-          .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.black, lineWidth: 2))
-          TextField("输入聊天内容", text: $inputText)
-            .font(.system(size: 20, design: .rounded))
-            .fontWeight(.semibold)
-            .foregroundColor(.black)
-            .frame(width: 500)
-            .padding(.vertical, 10)
-            .padding(.horizontal, 10)
-            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.black, lineWidth: 2))
-          Button(action: {
-            // send message
-            if inputText != "" {
-              allLogs.append(GameLogEntry(message: inputText, messager: currentSelection < playersAssignedCharacters.count ? (currentSelection + 1) : 21, source: "", type: 0, characterName: currentSelection < playersAssignedCharacters.count ? playersAssignedCharacters[currentSelection].name : "说书人"))
-              inputText = ""
-            }
-          }){
-            Text("发送")
-              .font(.system(size: 20, design: .rounded))
-              .fontWeight(.semibold)
-              .foregroundColor(.black)
-              .padding(.horizontal, 10)
-              .padding(.vertical, 10)
-            
-          }
-          .padding(.horizontal, 5)
-          .frame(maxWidth: .infinity)
-          .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.black, lineWidth: 2))
-          
-        }
-        .padding(.vertical, 10)
-        .padding(.horizontal, 5)
-      }
-      .frame(width: 800)
-      .clipShape(RoundedRectangle(cornerRadius: 20))
-      .overlay(
-        RoundedRectangle(cornerRadius: 20)
-          .stroke(.black, lineWidth: 3)
-      )
-      .padding(.vertical, 50)
-      //      .ignoresSafeArea(.keyboard)
-    }
+  if let image = renderer.uiImage {
+    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+    print("✅ Image saved to photo album.")
+  } else {
+    print("❌ Failed to render image.")
   }
 }
-

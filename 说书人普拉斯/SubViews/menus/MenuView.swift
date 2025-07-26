@@ -19,6 +19,7 @@ struct MenuView: View {
   @Binding var allLogs: [GameLogEntry]
   @Binding var votingPhase: Int
   @Binding var nominationPhase: Int
+  @Binding var playersAssignedCharacters: [Character]
   var body: some View {
     VStack{
       Button(action: {
@@ -55,6 +56,17 @@ struct MenuView: View {
       .padding(.horizontal, 20)
       
       Spacer()
+      Button(action: {
+        exportGameLog(width: 1000, playersAssignedCharacters: playersAssignedCharacters, allLogs: allLogs)
+      }){
+        Image(systemName: "square.and.arrow.down")
+          .resizable()
+          .scaledToFit()
+          .frame(width: 30, height: 30)
+          .foregroundColor(.black)
+      }
+      .padding(.bottom, 35)
+      .padding(.horizontal, 20)
       Button(action: {
         showAllCharacterInfos = true
       }){

@@ -45,6 +45,7 @@ struct ExtraSetupForSetup: View {
         }
         .padding(.bottom, 20)
       }
+      .frame(maxWidth: .infinity)
       .background(Color.mainbg)
       .clipShape(RoundedRectangle(cornerRadius: 10))
       .overlay(

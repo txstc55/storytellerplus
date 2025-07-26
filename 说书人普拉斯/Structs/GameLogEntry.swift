@@ -18,7 +18,7 @@ struct GameLogEntry: Identifiable, Hashable, Codable {
     self.message = message
     self.messager = messager
     self.source = source
-    self.type = type // let's say 0 is for assign character, 1 for adding a new tag, 2 for waken up, 3 for any reglar text exchange, 4 for start voting, 5 for voting, 6 for death, 7 for adding new player, 8 for start game announcement, 9 for going to first night, 10 for day, 11 for night, 12 for revival, 13 for assigning cover character, 14 for losing tag
+    self.type = type // let's say 0 is for assign character, 1 for adding a new tag, 2 for waken up, 3 for any reglar text exchange, 4 for start voting, 5 for voting, 6 for death, 7 for adding new player, 8 for start game announcement, 9 for going to first night, 10 for day, 11 for night, 12 for revival, 13 for assigning cover character, 14 for losing tag, 15 for inversing tag
     self.characterName = characterName
     self.audioURL = audioURL
     self.logText = GameLogEntry.toString(
@@ -66,6 +66,8 @@ struct GameLogEntry: Identifiable, Hashable, Codable {
       return "恶魔得知伪装: \(message)"
     case 14:
       return "\(messager)号玩家 \(characterName) \(message)，来源为：\(source)"
+    case 15:
+      return "\(messager)号玩家 \(characterName) \(message)"
     default:
       return ""
     }

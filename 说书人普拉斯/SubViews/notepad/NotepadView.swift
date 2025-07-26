@@ -162,6 +162,7 @@ struct NotepadView: View {
       }
       .frame(width: 800)
       .frame(maxHeight: 800)
+      .background(.mainbg)
       .clipShape(RoundedRectangle(cornerRadius: 20))
       .overlay(RoundedRectangle(cornerRadius: 20)
         .stroke(Color.black, lineWidth: 3))

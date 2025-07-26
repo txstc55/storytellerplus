@@ -170,6 +170,7 @@ struct PlayerCard: View {
             .onLongPressGesture(minimumDuration: 1){
               withAnimation(.easeInOut(duration: 0.3)) {
                 reminders[reminderIndex].isReversed.toggle()
+                allLogs.append(GameLogEntry(message: "标记倒置：\(reminder.effect)", messager: index + 1, source: reminder.from, type: 14, characterName: character.name))
               }
             }
           }
