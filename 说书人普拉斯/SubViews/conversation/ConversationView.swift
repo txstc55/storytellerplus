@@ -29,6 +29,7 @@ struct playerCharacterBox: View{
       .frame(height: 40)
       .background(RoundedRectangle(cornerRadius: 10).fill(teamid2Color(playerTeam)))
       .padding(.horizontal, 2)
+      .layoutPriority(1)
   }
 }
 
@@ -61,8 +62,8 @@ struct ConversationLogView: View{
             .padding(.horizontal, 10)
             .frame(minHeight: 50)
             .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.black, lineWidth: 2))
-            Spacer()
           }
+          .frame(maxWidth: .infinity, alignment: .leading)
           .padding(.vertical, 3)
         }else if type == 1 {
           // MARK: 1 for tag assignment
@@ -89,8 +90,8 @@ struct ConversationLogView: View{
             .padding(.horizontal, 10)
             .frame(minHeight: 50)
             .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.black, lineWidth: 2))
-            Spacer()
           }
+          .frame(maxWidth: .infinity, alignment: .leading)
           .padding(.vertical, 3)
         }else if type == 2{
           // MARK: 2 for character wake up
@@ -127,8 +128,8 @@ struct ConversationLogView: View{
         }else if type == 3{
           // MARK: 3 for player message
           let isPlayer = (entry.messager) < playersAssignedCharacters.count
-          HStack{
-            if isPlayer{
+          if isPlayer{
+            HStack{
               playerNumberCircle(playerNumber: entry.messager, playerTeam: entry.playerTeams[0])
               playerCharacterBox(playerCharacter: entry.playerCharacters[0], playerTeam: entry.playerTeams[0])
               Text(entry.message)
@@ -138,9 +139,11 @@ struct ConversationLogView: View{
                 .padding(.horizontal, 10)
                 .frame(minHeight: 50)
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.black, lineWidth: 2))
-              Spacer()
-            }else{
-              Spacer()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.vertical, 3)
+          }else{
+            HStack{
               Text(entry.message)
                 .font(.system(size: 20, design: .rounded))
                 .fontWeight(.semibold)
@@ -150,8 +153,10 @@ struct ConversationLogView: View{
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.black, lineWidth: 2))
               playerNumberCircle(playerNumber: 21, playerTeam: 5) // 说书人
             }
+            .frame(maxWidth: .infinity, alignment: .trailing)
+            .padding(.vertical, 3)
           }
-          .padding(.vertical, 3)
+            
         }else if type == 4{
           // MARK: 4 for nomination
           HFlow(itemSpacing: 2){
@@ -254,9 +259,9 @@ struct ConversationLogView: View{
                 .padding(.horizontal, 10)
                 .frame(minHeight: 40)
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.black, lineWidth: 2))
-              Spacer()
             }
           }
+          .frame(maxWidth: .infinity, alignment: .leading)
           .padding(.vertical, 5)
         }else if type == 8{
           HStack{
@@ -363,8 +368,8 @@ struct ConversationLogView: View{
             .padding(.horizontal, 10)
             .frame(minHeight: 50)
             .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.black, lineWidth: 2))
-            Spacer()
           }
+          .frame(maxWidth: .infinity, alignment: .leading)
           .padding(.vertical, 3)
         }else if type == 15{
           // MARK: 15 for inversing tags
@@ -391,8 +396,8 @@ struct ConversationLogView: View{
             .padding(.horizontal, 10)
             .frame(minHeight: 50)
             .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.black, lineWidth: 2))
-            Spacer()
           }
+          .frame(maxWidth: .infinity, alignment: .leading)
           .padding(.vertical, 3)
         }
       }
