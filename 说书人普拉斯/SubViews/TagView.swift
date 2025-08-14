@@ -54,7 +54,7 @@ struct TagView: View{
             HStack{
               Button(action: {
                 if newTagName != ""{
-                  allReminders.append(Reminder(from: "说书人", effect: newTagName, isGlobal: true))
+                  allReminders.append(Reminder(from: "说书人", effect: newTagName, team: 5, isGlobal: true))
                   showTagEditor = false
                   newTagName = ""
                   selectedReminderIndex = allReminders.count - 1
@@ -114,22 +114,25 @@ struct TagView: View{
                   let imageURL = getImageURL(name: reminder.from, characters: characters)
                   if (imageURL != ""){
                     CachedImageView(urlString: getImageURL(name: reminder.from, characters: characters))
-                      .frame(width: 50, height: 50)
+                      .frame(width: 45, height: 45)
+                      .background(Circle().fill(Color.goodTextBg))
                       .padding(.horizontal, 5)
+                      .padding(.vertical, 5)
                   }else{
                     Color.clear
-                      .frame(width: 10, height: 50)
+                      .frame(width: 10, height: 45)
+                      .padding(.vertical, 5)
                   }
                   //                .padding(.vertical, 5)
                   Text(reminder.effect)
                     .font(.system(size: 18, design: .rounded))
                     .fontWeight(.bold)
-                    .foregroundColor(.black)
+                    .foregroundColor(.goodTextBg)
                     .padding(.trailing, 10)
                     .padding(.vertical, 5)
                 }
-                .overlay(RoundedRectangle(cornerRadius: 10)
-                  .stroke(Color.black, lineWidth: 2))
+                .background(RoundedRectangle(cornerRadius: 10)
+                  .fill(teamid2Color(reminder.team)))
                 .onTapGesture {
                   selectedReminderIndex = index
                 }
@@ -169,7 +172,8 @@ struct TagView: View{
               let selectedReminder = allReminders[selectedReminderIndex]
               playersStates[currentSelectedPlayerIDForReminder].append(selectedReminder)
               if gameState != 0 {
-                allLogs.append(GameLogEntry(message: "获得标记：\(selectedReminder.effect)", messager: currentSelectedPlayerIDForReminder + 1, source: selectedReminder.from, type: 1, characterName: playersAssignedCharacters[currentSelectedPlayerIDForReminder].name))
+                let selectedCharacter = playersAssignedCharacters[currentSelectedPlayerIDForReminder]
+                allLogs.append(GameLogEntry(message: "\(selectedReminder.effect)", messager: currentSelectedPlayerIDForReminder + 1, source: selectedReminder.from, type: 1, characterName: selectedCharacter.name, playerNumbers: [currentSelectedPlayerIDForReminder + 1], playerCharacters: [selectedCharacter.name, selectedReminder.from], playerTeams: [team2Int(selectedCharacter.team), selectedReminder.team]))
               }
             }
           }) {

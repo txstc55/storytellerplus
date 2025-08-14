@@ -67,10 +67,10 @@ struct CharacterSelectionView: View {
                 // we assigned a new character not in start phase
                 // add a log
                 if currentSelectedPlayerID <= 20{
-                  allLogs.append(GameLogEntry(message: "获得角色：\(character.name)", messager: currentSelectedPlayerID + 1, source: "说书人", type: 0))
+                  allLogs.append(GameLogEntry(message: "获得角色：\(character.name)", messager: currentSelectedPlayerID + 1, source: "说书人", type: 0, playerCharacters: [character.name], playerTeams: [team2Int(character.team)]))
                 }else{
                   // give the demon a cover
-                  allLogs.append(GameLogEntry(message: "\(character.name)", messager: 0, source: "说书人", type: 13))
+                  allLogs.append(GameLogEntry(message: "", messager: 0, source: "说书人", type: 13, playerCharacters: [character.name], playerTeams: [team2Int(character.team)]))
                 }
               }
             }
@@ -109,10 +109,10 @@ struct CharacterSelectionView: View {
                 // we assigned a new character not in start phase
                 // add a log
                 if currentSelectedPlayerID <= 20{
-                  allLogs.append(GameLogEntry(message: "获得角色：\(character.name)", messager: currentSelectedPlayerID + 1, source: "说书人", type: 0))
+                  allLogs.append(GameLogEntry(message: "获得角色：\(character.name)", messager: currentSelectedPlayerID + 1, source: "说书人", type: 0, playerCharacters: [character.name], playerTeams: [team2Int(character.team)]))
                 }else{
                   // give the demon a cover
-                  allLogs.append(GameLogEntry(message: "\(character.name)", messager: 0, source: "说书人", type: 13))
+                  allLogs.append(GameLogEntry(message: "", messager: 0, source: "说书人", type: 13, playerCharacters: [character.name], playerTeams: [team2Int(character.team)]))
                 }
               }
             }
@@ -151,10 +151,10 @@ struct CharacterSelectionView: View {
                 // we assigned a new character not in start phase
                 // add a log
                 if currentSelectedPlayerID <= 20{
-                  allLogs.append(GameLogEntry(message: "获得角色：\(character.name)", messager: currentSelectedPlayerID + 1, source: "说书人", type: 0))
+                  allLogs.append(GameLogEntry(message: "获得角色：\(character.name)", messager: currentSelectedPlayerID + 1, source: "说书人", type: 0, playerCharacters: [character.name], playerTeams: [team2Int(character.team)]))
                 }else{
                   // give the demon a cover
-                  allLogs.append(GameLogEntry(message: "\(character.name)", messager: 0, source: "说书人", type: 13))
+                  allLogs.append(GameLogEntry(message: "", messager: 0, source: "说书人", type: 13, playerCharacters: [character.name], playerTeams: [team2Int(character.team)]))
                 }
               }
             }
@@ -193,10 +193,10 @@ struct CharacterSelectionView: View {
                 // we assigned a new character not in start phase
                 // add a log
                 if currentSelectedPlayerID <= 20{
-                  allLogs.append(GameLogEntry(message: "获得角色：\(character.name)", messager: currentSelectedPlayerID + 1, source: "说书人", type: 0))
+                  allLogs.append(GameLogEntry(message: "获得角色：\(character.name)", messager: currentSelectedPlayerID + 1, source: "说书人", type: 0, playerCharacters: [character.name], playerTeams: [team2Int(character.team)]))
                 }else{
                   // give the demon a cover
-                  allLogs.append(GameLogEntry(message: "\(character.name)", messager: 0, source: "说书人", type: 13))
+                  allLogs.append(GameLogEntry(message: "", messager: 0, source: "说书人", type: 13, playerCharacters: [character.name], playerTeams: [team2Int(character.team)]))
                 }
               }
             }
@@ -235,10 +235,10 @@ struct CharacterSelectionView: View {
                 // we assigned a new character not in start phase
                 // add a log
                 if currentSelectedPlayerID <= 20{
-                  allLogs.append(GameLogEntry(message: "获得角色：\(character.name)", messager: currentSelectedPlayerID + 1, source: "说书人", type: 0))
+                  allLogs.append(GameLogEntry(message: "获得角色：\(character.name)", messager: currentSelectedPlayerID + 1, source: "说书人", type: 0, playerCharacters: [character.name], playerTeams: [team2Int(character.team)]))
                 }else{
                   // give the demon a cover
-                  allLogs.append(GameLogEntry(message: "\(character.name)", messager: 0, source: "说书人", type: 13))
+                  allLogs.append(GameLogEntry(message: "", messager: 0, source: "说书人", type: 13, playerCharacters: [character.name], playerTeams: [team2Int(character.team)]))
                 }
               }
             }
@@ -277,10 +277,10 @@ struct CharacterSelectionView: View {
                 // we assigned a new character not in start phase
                 // add a log
                 if currentSelectedPlayerID <= 20{
-                  allLogs.append(GameLogEntry(message: "获得角色：\(character.name)", messager: currentSelectedPlayerID + 1, source: "说书人", type: 0))
+                  allLogs.append(GameLogEntry(message: "获得角色：\(character.name)", messager: currentSelectedPlayerID + 1, source: "说书人", type: 0, playerCharacters: [character.name], playerTeams: [team2Int(character.team)]))
                 }else{
                   // give the demon a cover
-                  allLogs.append(GameLogEntry(message: "\(character.name)", messager: 0, source: "说书人", type: 13))
+                  allLogs.append(GameLogEntry(message: "", messager: 0, source: "说书人", type: 13, playerCharacters: [character.name], playerTeams: [team2Int(character.team)]))
                 }
               }
             }

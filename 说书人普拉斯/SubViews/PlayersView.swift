@@ -94,10 +94,10 @@ struct PlayerCard: View {
                   
                   aliveCount += playersIsAlive[index] ? 1 : -1
                   if playersIsAlive[index]{
-                    allLogs.append(GameLogEntry(message: "", messager: index + 1, source: "说书人", type: 12, characterName: character.name))
+                    allLogs.append(GameLogEntry(message: "", messager: index + 1, source: "说书人", type: 12, characterName: character.name, playerNumbers: [index + 1], playerCharacters: [character.name], playerTeams: [team2Int(character.team)]))
                     playersHasDeathVote[index] = true
                   }else{
-                    allLogs.append(GameLogEntry(message: "", messager: index + 1, source: "说书人", type: 6, characterName: character.name))
+                    allLogs.append(GameLogEntry(message: "", messager: index + 1, source: "说书人", type: 6, characterName: character.name, playerNumbers: [index + 1], playerCharacters: [character.name], playerTeams: [team2Int(character.team)]))
                   }
                 }
               }
@@ -146,31 +146,36 @@ struct PlayerCard: View {
               let imageURL = getImageURL(name: reminder.from, characters: characters)
               if !imageURL.isEmpty {
                 CachedImageView(urlString: imageURL)
-                  .frame(width: 40, height: 40)
+                  .frame(width: 37, height: 37)
+                  .background(Circle().fill(Color.goodTextBg))
                   .padding(.leading, 5)
                   .padding(.trailing, 3)
+                  .padding(.vertical, 3)
+                  
               }else{
                 Color.clear
-                  .frame(width: 1, height: 40)
+                  .frame(width: 1, height: 37)
                   .padding(.leading, 9)
+                  .padding(.vertical, 3)
               }
               Text(reminder.effect)
                 .font(.system(size: 22, design: .rounded))
                 .fontWeight(.bold)
-                .foregroundColor(.black)
+                .foregroundColor(.goodTextBg)
                 .padding(.trailing, 10)
             }
-            .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.black, lineWidth: 3))
+            .background(RoundedRectangle(cornerRadius: 20)
+              .fill(teamid2Color(reminder.team)))
             .rotationEffect(reminder.isReversed ? .degrees(180) : .degrees(0))
             .onTapGesture(count: 2){
               // remove this reminder
               reminders.remove(at: reminderIndex)
-              allLogs.append(GameLogEntry(message: "失去标记：\(reminder.effect)", messager: index + 1, source: reminder.from, type: 14, characterName: character.name))
+              allLogs.append(GameLogEntry(message: "\(reminder.effect)", messager: index + 1, source: reminder.from, type: 14, characterName: character.name, playerNumbers: [index + 1], playerCharacters: [character.name, reminder.from], playerTeams: [team2Int(character.team), reminder.team]))
             }
             .onLongPressGesture(minimumDuration: 1){
               withAnimation(.easeInOut(duration: 0.3)) {
                 reminders[reminderIndex].isReversed.toggle()
-                allLogs.append(GameLogEntry(message: "标记倒置：\(reminder.effect)", messager: index + 1, source: reminder.from, type: 14, characterName: character.name))
+                allLogs.append(GameLogEntry(message: "\(reminder.effect)", messager: index + 1, source: reminder.from, type: 15, characterName: character.name, playerNumbers: [index + 1], playerCharacters: [character.name, reminder.from], playerTeams: [team2Int(character.team), reminder.team]))
               }
             }
           }

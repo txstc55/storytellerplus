@@ -8,13 +8,15 @@
 struct Reminder: Codable, Hashable, Identifiable {
   var from: String // who has this reminder
   var effect: String // what is the effect
+  var team: Int = 5
   var isGlobal: Bool = false // is this reminder global
   var id: String { "\(from)-\(effect)-\(isGlobal)" }
   var isReversed: Bool = false // is this reminder reversed
   
-  init(from: String, effect: String, isGlobal: Bool = false) {
+  init(from: String, effect: String, team: Int = 5, isGlobal: Bool = false) {
     self.from = from
     self.effect = effect
+    self.team = team
     self.isGlobal = isGlobal
   }
 }

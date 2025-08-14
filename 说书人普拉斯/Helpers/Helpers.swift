@@ -4,7 +4,7 @@
 //
 //  Created by Xuan Tang on 5/22/25.
 //
-
+import SwiftUI
 func assignCharacter(to index: Int, character: Character, playersAssignedCharacters: inout [Character], notPresentedGoodCharacters: inout [Character]) {
   if index < playersAssignedCharacters.count {
     playersAssignedCharacters[index] = character
@@ -154,10 +154,10 @@ func loadGameData(
       characters.append(character)
       
       let reminders = (jsonItem["reminders"] as? [String] ?? []).map {
-        Reminder(from: name, effect: $0, isGlobal: false)
+        Reminder(from: name, effect: $0, team: team2Int(team),isGlobal: false)
       }
       let remindersGlobal = (jsonItem["remindersGlobal"] as? [String] ?? []).map {
-        Reminder(from: name, effect: $0, isGlobal: true)
+        Reminder(from: name, effect: $0, team: team2Int(team), isGlobal: true)
       }
       
       allReminders.append(contentsOf: reminders)
@@ -177,4 +177,40 @@ func loadGameData(
   allReminders.append(contentsOf: [善良标记, 邪恶标记])
   allReminders.append(contentsOf: travelerRemindersGlobal)
   allReminders.append(contentsOf: fabledRemindersGlobal)
+}
+
+
+func team2Int(_ team: String) -> Int {
+  switch team {
+  case "townsfolk":
+    return 0
+  case "outsider":
+    return 1
+  case "minion":
+    return 2
+  case "demon":
+    return 3
+  case "traveler":
+    return 4
+  default:
+    return 5 // Unknown team, probably story teller or fabled
+  }
+}
+
+
+func teamid2Color(_ team: Int) -> Color {
+  switch team{
+  case 0:
+    return Color.townsfolk
+  case 1:
+    return Color.outsider
+  case 2:
+    return Color.minion
+  case 3:
+    return Color.demon
+  case 4:
+    return Color.traveler
+  default:
+    return Color.fabled
+  }
 }

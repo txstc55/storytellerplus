@@ -158,19 +158,19 @@ let travlerCharactersGlobal: [Character] = [
 ]
 
 let travelerRemindersGlobal = [
-  Reminder(from: "窃贼", effect: "负票", isGlobal: false),
-  Reminder(from: "官员", effect: "3票", isGlobal: false),
-  Reminder(from: "主教", effect: "提名善良方", isGlobal: false),
-  Reminder(from: "主教", effect: "提名邪恶方", isGlobal: false),
-  Reminder(from: "法官", effect: "失去能力", isGlobal: false),
-  Reminder(from: "学徒", effect: "是学徒", isGlobal: false),
-  Reminder(from: "拾骨人", effect: "重获能力", isGlobal: false),
-  Reminder(from: "拾骨人", effect: "失去能力", isGlobal: false),
-  Reminder(from: "流莺", effect: "死亡", isGlobal: false),
-  Reminder(from: "咖啡师", effect: "清醒且健康", isGlobal: false),
-  Reminder(from: "咖啡师", effect: "行动两次", isGlobal: false),
-  Reminder(from: "地精", effect: "同伴", isGlobal: false),
-  Reminder(from: "刁民", effect: "醉酒", isGlobal: false),
+  Reminder(from: "窃贼", effect: "负票", team: 4, isGlobal: false),
+  Reminder(from: "官员", effect: "3票", team: 4, isGlobal: false),
+  Reminder(from: "主教", effect: "提名善良方", team: 4, isGlobal: false),
+  Reminder(from: "主教", effect: "提名邪恶方", team: 4, isGlobal: false),
+  Reminder(from: "法官", effect: "失去能力", team: 4, isGlobal: false),
+  Reminder(from: "学徒", effect: "是学徒", team: 4, isGlobal: false),
+  Reminder(from: "拾骨人", effect: "重获能力", team: 4, isGlobal: false),
+  Reminder(from: "拾骨人", effect: "失去能力", team: 4, isGlobal: false),
+  Reminder(from: "流莺", effect: "死亡", team: 4, isGlobal: false),
+  Reminder(from: "咖啡师", effect: "清醒且健康", team: 4, isGlobal: false),
+  Reminder(from: "咖啡师", effect: "行动两次", team: 4, isGlobal: false),
+  Reminder(from: "地精", effect: "同伴", team: 4, isGlobal: false),
+  Reminder(from: "刁民", effect: "醉酒", team: 4, isGlobal: false),
 //  Reminder(from: "善良", effect: "善良", isGlobal: true),
 //  Reminder(from: "邪恶", effect: "邪恶", isGlobal: true)
 ]
@@ -179,8 +179,8 @@ let 善良 = Character(id: "善良", name: "善良", ability: "你是善良的�
 
 let 邪恶 = Character(id: "邪恶", name: "邪恶", ability: "你是邪恶的。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "misc", imageURL: "https://oss.gstonegames.com/data_file/clocktower/web/icons/evil.png")
 
-let 善良标记 = Reminder(from: "善良", effect: "善良", isGlobal: true)
-let 邪恶标记 = Reminder(from: "邪恶", effect: "邪恶", isGlobal: true)
+let 善良标记 = Reminder(from: "善良", effect: "善良", team: 0, isGlobal: true)
+let 邪恶标记 = Reminder(from: "邪恶", effect: "邪恶", team: 3, isGlobal: true)
 
 
 let teamCounts: [Int: [Int]] = [5: [3, 0, 1, 1, 0], 6: [3, 1, 1, 1, 0], 7: [5, 0, 1, 1, 0], 8: [5, 1, 1, 1, 0], 9: [5, 2, 1, 1, 0], 10: [7, 0, 2, 1, 0], 11: [7, 1, 2, 1, 0], 12: [7, 2, 2, 1, 0], 13: [9, 0, 3, 1, 0], 14: [9, 1, 3, 1, 0], 15: [9, 2, 3, 1, 0], 16: [9, 2, 3, 1, 1], 17: [9, 2, 3, 1, 2], 18: [9, 2, 3, 1, 3], 19: [9, 2, 3, 1, 4], 20: [9, 2, 3, 1, 5]]
@@ -250,15 +250,15 @@ let fabledCharactersGlobal: [Character] = [
 ]
 
 let fabledRemindersGlobal = [
-  Reminder(from: "天使", effect: "庇护", isGlobal: false),
-  Reminder(from: "天使", effect: "不好的事", isGlobal: false),
-  Reminder(from: "地狱藏书员", effect: "不好的事", isGlobal: false),
-  Reminder(from: "公爵夫人", effect: "访客", isGlobal: false),
-  Reminder(from: "公爵夫人", effect: "错误信息", isGlobal: false),
-  Reminder(from: "骗人精", effect: "失去能力", isGlobal: false),
-  Reminder(from: "革命者", effect: "被当作其他"),
-  Reminder(from: "圣洁之魂", effect: "禁止邪恶", isGlobal: false),
-  Reminder(from: "暴风捕手", effect: "仅死于处决", isGlobal: false),
+  Reminder(from: "天使", effect: "庇护", team: 5, isGlobal: false),
+  Reminder(from: "天使", effect: "不好的事", team: 5, isGlobal: false),
+  Reminder(from: "地狱藏书员", effect: "不好的事", team: 5, isGlobal: false),
+  Reminder(from: "公爵夫人", effect: "访客", team: 5, isGlobal: false),
+  Reminder(from: "公爵夫人", effect: "错误信息", team: 5, isGlobal: false),
+  Reminder(from: "骗人精", effect: "失去能力", team: 5, isGlobal: false),
+  Reminder(from: "革命者", effect: "被当作其他", team: 5),
+  Reminder(from: "圣洁之魂", effect: "禁止邪恶", team: 5, isGlobal: false),
+  Reminder(from: "暴风捕手", effect: "仅死于处决", team: 5, isGlobal: false),
 ]
 //let 庇护 = Reminder(from: "天使", effect: "庇护", isGlobal: false)
 //let 不好的事 = Reminder(from: "天使", effect: "不好的事", isGlobal: false)

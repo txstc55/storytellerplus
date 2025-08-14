@@ -449,14 +449,23 @@ struct VotingView: View{
         Spacer()
         HStack{
           Button(action: {
-            let nominationVotesNames = nominationVotes.map { $0 < playerCount ? "\($0 + 1) 号玩家" : ($0 == 21 ? "说书人" : ($0 < 25 ? "额外票": "负票")) }
-            let logMessage = "提名了\(nominatedIndex < playerCount ? " \(nominatedIndex + 1)号玩家 \(playersAssignedCharacters[nominatedIndex].name)" : "说书人")，投票玩家为：\(nominationVotesNames.joined(separator: " "))"
+            let nominationVotesPlayerNumbers: [Int] = nominationVotes.map{$0 < playerCount ?  ($0 + 1) : 21}
+            let nominationVotesPlayerCharacters: [String] = nominationVotes.map { $0 < playerCount ? playersAssignedCharacters[$0].name : ($0 == 21 ? "说" : ($0 < 25 ? "正": "负")) }
+            let nominationVotesPlayerTeams: [Int] = nominationVotes.map { $0 < playerCount ? team2Int(playersAssignedCharacters[$0].team) : 5 }
             nominationPlayerIndex.append(nominatorIndex)
             executionPlayerIndex.append(nominatedIndex)
             executionVoteCount.append(nominationVotes)
             aliveCountAtVote.append(aliveCount)
             playerCountAtVote.append(playerCount)
-            allLogs.append(GameLogEntry(message: logMessage, messager: nominatorIndex < playerCount ? (nominatorIndex + 1): 0, source: nominatorIndex < playerCount ? playersAssignedCharacters[nominatorIndex].name : "说书人", type: 4, characterName: nominatorIndex < playerCount ? playersAssignedCharacters[nominatorIndex].name : "说书人"))
+            let nominatorIndexNum: Int = nominatorIndex < playerCount ? (nominatorIndex + 1) : 21
+            let nominatedIndexNum: Int = nominatedIndex < playerCount ? (nominatedIndex + 1) : 21
+            let nominatorTeamId: Int = nominatorIndex < playerCount ? team2Int(playersAssignedCharacters[nominatorIndex].team) : 5
+            let nominatedTeamId: Int = nominatedIndex < playerCount ? team2Int(playersAssignedCharacters[nominatedIndex].team) : 5
+            let nominatorCharacter: String = nominatorIndex < playerCount ? playersAssignedCharacters[nominatorIndex].name : "说书人"
+            let nominatedCharacter: String = nominatedIndex < playerCount ? playersAssignedCharacters[nominatedIndex].name : "说书人"
+            allLogs.append(GameLogEntry(message: "", messager: nominatorIndexNum, source: "", type: 4, characterName: nominatorCharacter, playerNumbers: [nominatorIndexNum, nominatedIndexNum], playerCharacters: [nominatorCharacter, nominatedCharacter], playerTeams: [nominatorTeamId, nominatedTeamId]))
+            
+            allLogs.append(GameLogEntry(message: "", messager: nominatorIndexNum, source: "", type: 5, characterName: nominatorCharacter, playerNumbers: nominationVotesPlayerNumbers, playerCharacters: nominationVotesPlayerCharacters, playerTeams: nominationVotesPlayerTeams))
             if nominatedIndex < playersAssignedCharacters.count && playersAssignedCharacters[nominatedIndex].team == "traveler"{
               // do nothing
             }else{

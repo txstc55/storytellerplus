@@ -80,7 +80,7 @@ struct SubMenuView: View {
               playersIsAlive.append(true)
               playersHasDeathVote.append(true)
               if (gameState != 0){
-                allLogs.append(GameLogEntry(message: "\(playerCount + 1)号玩家加入游戏", messager: playerCount + 1, source: "说书人", type: 7))
+                allLogs.append(GameLogEntry(message: "", messager: playerCount + 1, source: "说书人", type: 7, playerNumbers: [playerCount + 1]))
               }
             }
             playerCount = min(playerCount + 1, 20)
@@ -145,13 +145,17 @@ struct SubMenuView: View {
               return
             }
             for (index, character) in playersAssignedCharacters.enumerated() {
-              allLogs.append(GameLogEntry(message: "获得角色：\(character.name)", messager: index + 1, source: "说书人", type: 0))
+              allLogs.append(GameLogEntry(message: "获得角色：\(character.name)", messager: index + 1, source: "说书人", type: 0, playerCharacters: [character.name], playerTeams: [team2Int(character.team)]))
               for reminder in playersStates[index] {
-                allLogs.append(GameLogEntry(message: "获得状态：\(reminder.effect)", messager: index + 1, source: reminder.from, type: 1, characterName: character.name))
+                allLogs.append(GameLogEntry(message: "\(reminder.effect)", messager: index + 1, source: reminder.from, type: 1, characterName: character.name, playerNumbers: [index + 1], playerCharacters: [character.name, reminder.from], playerTeams: [team2Int(character.team), reminder.team]))
               }
             }
             for index in 0..<notPresentedGoodCharacters.count{
-              allLogs.append(GameLogEntry(message: "\(notPresentedGoodCharacters[index].name)", messager: 0, source: "说书人", type: 13))
+              if notPresentedGoodCharacters[index].name != "" {
+                let character = notPresentedGoodCharacters[index]
+                allLogs.append(GameLogEntry(message: "", messager: 0, source: "说书人", type: 13, playerCharacters: [character.name], playerTeams: [team2Int(character.team)]))
+              }
+              
             }
             allLogs.append(GameLogEntry(message: "游戏开始", messager: 0, source: "说书人", type: 8, characterName: ""))
             allLogs.append(GameLogEntry(message: "第一夜", messager: 0, source: "说书人", type: 9, characterName: ""))

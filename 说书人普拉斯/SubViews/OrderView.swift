@@ -58,6 +58,7 @@ struct OrderView: View {
             playerID: $0.offset,
             imageURL: $0.element.imageURL,
             characterName: $0.element.name,
+            team: $0.element.team
           )
         } + (firstNightOrder ? ([爪牙信息, 恶魔信息]) : []) + unassignedCharacters
         .enumerated()
@@ -69,6 +70,7 @@ struct OrderView: View {
             playerID: -4 - $0.offset,
             imageURL: $0.element.imageURL,
             characterName: $0.element.name,
+            team: $0.element.team
           )
         }
       
@@ -83,6 +85,7 @@ struct OrderView: View {
             playerID: $0.offset,
             imageURL: $0.element.imageURL,
             characterName: $0.element.name,
+            team: $0.element.team
           )
         } + unassignedCharacters
         .enumerated()
@@ -94,6 +97,7 @@ struct OrderView: View {
             playerID: -4 - $0.offset,
             imageURL: $0.element.imageURL,
             characterName: $0.element.name,
+            team: $0.element.team
           )
         }
       ScrollView{
@@ -128,7 +132,7 @@ struct OrderView: View {
           .opacity(nightReminder.playerID == currentlyAwakePlayerIndex ? 1 : (unassignedCharacterNames.contains(nightReminder.characterName) ? 0.3 : 0.65))
           .scaleEffect(nightReminder.playerID == currentlyAwakePlayerIndex ? 1 : 0.95)
           .onTapGesture(count: 2) {
-            allLogs.append(GameLogEntry(message: nightReminder.reminder, messager: nightReminder.playerID + 1, source: "", type: 2, characterName: nightReminder.characterName))
+            allLogs.append(GameLogEntry(message: nightReminder.reminder, messager: nightReminder.playerID + 1, source: "", type: 2, characterName: nightReminder.characterName, playerTeams: [team2Int(nightReminder.team)]))
             currentlyAwakePlayerIndex = nightReminder.playerID
           }
         }
@@ -160,7 +164,7 @@ struct OrderView: View {
             .opacity(nightReminder.playerID == currentlyAwakePlayerIndex ? 1 : 0.5)
             .scaleEffect(nightReminder.playerID == currentlyAwakePlayerIndex ? 1 : 0.95)
             .onTapGesture(count: 2) {
-              allLogs.append(GameLogEntry(message: nightReminder.reminder, messager: nightReminder.playerID + 1, source: "", type: 2, characterName: nightReminder.characterName))
+              allLogs.append(GameLogEntry(message: nightReminder.reminder, messager: nightReminder.playerID + 1, source: "", type: 2, characterName: nightReminder.characterName, playerTeams: [team2Int(nightReminder.team)]))
               currentlyAwakePlayerIndex = nightReminder.playerID
             }
           }

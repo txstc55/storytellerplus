@@ -10,6 +10,8 @@ struct NotepadView: View {
   @Binding var playersAssignedCharacters: [Character]
   @Binding var playableCharacters: [Character]
   @Binding var showNotepad: Bool
+  @Binding var notPresentedGoodCharacters: [Character]
+  @Binding var predefinedTags: [String]
   private var predefinedTagsWithPlayerInfo: [String] {
     var tags: [String] = []
     for i in 0..<playersAssignedCharacters.count {
@@ -24,13 +26,6 @@ struct NotepadView: View {
     return playableCharacters
       .map { $0.name }
       .filter { !assignedNames.contains($0) }
-  }
-  private var predefinedTags: [String] {
-    [
-      "你是", "他是", "活着", "死亡", "邪恶", "善良",
-      "镇民", "外来者", "爪牙", "旅行者", "恶魔", "中毒", "醉酒", "你被", "洗脑",
-      "使用能力吗", "共边", "不共边", "左边", "右边", "不能说", "不可以", "不建议", "请选择", "选择", "?"
-    ]
   }
   
   @State private var showPredefinedTags = true
@@ -68,6 +63,31 @@ struct NotepadView: View {
               .padding(.vertical, 20)
               Rectangle()
                 .frame(height: 3)
+              HFlow{
+                ForEach(notPresentedGoodCharacters.indices, id: \.self) { index in
+                  let character = notPresentedGoodCharacters[index]
+                  if character.name != "" {
+                    Button(action: {
+                      noteText += "\(character.name) "
+                    }){
+                      Text(character.name)
+                        .font(.system(size: 25, design: .monospaced))
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.black)
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 8)
+                        .overlay(RoundedRectangle(cornerRadius: 10)
+                          .stroke(Color.black, lineWidth: 2))
+                    }
+                  }
+                }
+              }
+              .padding(.horizontal, 10)
+              .padding(.vertical, 20)
+              
+              Rectangle()
+                .frame(height: 3)
+              
               HFlow{
                 ForEach(predefinedTagsWithCharacterInfo.indices, id: \.self) { index in
                   Button(action: {
@@ -148,6 +168,20 @@ struct NotepadView: View {
               }
             }) {
               Text("清空")
+                .font(.system(size: 20, design: .rounded))
+                .fontWeight(.semibold)
+                .foregroundStyle(.black)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .border(width: 3, edges: [.top], color: .black)
+                .border(width: 1.5, edges: [.leading, .trailing], color: .black)
+            }
+            Button(action: {
+              withAnimation(.easeInOut(duration: 0.3)) {
+                predefinedTags.append(noteText)
+              }
+            }) {
+              Text("保存")
                 .font(.system(size: 20, design: .rounded))
                 .fontWeight(.semibold)
                 .foregroundStyle(.black)

@@ -66,6 +66,11 @@ struct StoryTellerView: View {
   
   // FOR THE NOTEPAD
   @State private var showNotepad: Bool = false
+  @State private var predefinedTags: [String] = [
+    "你是", "他是", "活着", "死亡", "邪恶", "善良",
+    "镇民", "外来者", "爪牙", "旅行者", "恶魔", "中毒", "醉酒", "你被", "洗脑",
+    "使用能力吗", "共边", "不共边", "左边", "右边", "不能说", "不可以", "不建议", "请选择", "选择", "?"
+  ]
   
   // FOR LISTING THE CHARACTER AND THEIR ABILITIES
   @State private var showCharacterAndAbilities: Bool = false
@@ -109,7 +114,7 @@ struct StoryTellerView: View {
       }
       
       if showNotepad{
-        NotepadView(playersAssignedCharacters: $playersAssignedCharacters, playableCharacters: $playableCharacters, showNotepad: $showNotepad)
+        NotepadView(playersAssignedCharacters: $playersAssignedCharacters, playableCharacters: $playableCharacters, showNotepad: $showNotepad, notPresentedGoodCharacters: $notPresentedGoodCharacters, predefinedTags: $predefinedTags)
           .zIndex(13)
       }
       if showConversation{
