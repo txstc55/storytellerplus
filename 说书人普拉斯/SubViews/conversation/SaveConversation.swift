@@ -10,9 +10,11 @@ import Flow
 struct ConversationLogViewFixed: View{
   let playersAssignedCharacters: [Character]
   let allLogs: [GameLogEntry]
+  let start: Int
+  let end: Int
   var body: some View {
     VStack(alignment: .leading, spacing: 5) {
-      ForEach(allLogs.indices, id: \.self){index in
+      ForEach(start...end, id: \.self) { index in
         let entry = allLogs[index]
         let type = entry.type
         if type == 0 {
@@ -371,21 +373,32 @@ struct ConversationLogViewFixed: View{
       }
     }
     .background(Color.mainbg)
+    .padding(.vertical, 20)
   }
 }
 
 
 @MainActor func exportGameLog(width: CGFloat, playersAssignedCharacters: [Character], allLogs: [GameLogEntry]){
-  let captureView = ConversationLogViewFixed(playersAssignedCharacters: playersAssignedCharacters, allLogs: allLogs)
-    .frame(width: width)
-  
-  let renderer = ImageRenderer(content: captureView)
-  renderer.scale = UIScreen.main.scale
-  
-  if let image = renderer.uiImage {
-    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-    print("✅ Image saved to photo album.")
-  } else {
-    print("❌ Failed to render image.")
+  for start in stride(from: 0, to: allLogs.count, by: 40) {
+    let end = min(start + 40, allLogs.count) - 1
+    
+    // Now you can pass start & end into your view
+    let captureView = ConversationLogViewFixed(
+      playersAssignedCharacters: playersAssignedCharacters,
+      allLogs: allLogs,
+      start: start,
+      end: end
+    )
+      .frame(width: width)
+    
+    let renderer = ImageRenderer(content: captureView)
+    renderer.scale = UIScreen.main.scale
+    
+    if let image = renderer.uiImage {
+      UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+      print("✅ Saved logs \(start)...\(end)")
+    } else {
+      print("❌ Failed to render logs \(start)...\(end)")
+    }
   }
 }
