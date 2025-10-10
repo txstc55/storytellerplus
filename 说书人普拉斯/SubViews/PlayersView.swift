@@ -103,7 +103,7 @@ struct PlayerCard: View {
               }
               .padding(.leading, 5)
             Text(character.name)
-              .font(.system(size: 24, design: .rounded))
+              .font(.system(size: 22, design: .rounded))
               .fontWeight(.bold)
               .foregroundColor(teamColorSecondary)
               .padding(.horizontal, 5)
@@ -122,7 +122,7 @@ struct PlayerCard: View {
           }
           .padding(.top, 20)
           Text(character.ability)
-            .font(.system(size: 20, design: .rounded))
+            .font(.system(size: 18, design: .rounded))
             .fontWeight(.semibold)
             .foregroundColor(teamColorSecondary.opacity(1))
             .padding(.horizontal, 5)
@@ -144,26 +144,38 @@ struct PlayerCard: View {
             let reminder = reminders[reminderIndex]
             HStack(spacing: 0) {
               let imageURL = getImageURL(name: reminder.from, characters: characters)
-              if !imageURL.isEmpty {
-                CachedImageView(urlString: imageURL)
-                  .frame(width: 37, height: 37)
-                  .background(Circle().fill(Color.goodTextBg))
-                  .padding(.leading, 5)
-                  .padding(.trailing, 3)
-                  .padding(.vertical, 3)
+              HStack(spacing: 0){
+                if reminder.playerId >= 0 {
+                  Text("\(reminder.playerId + 1)")
+                    .font(.system(size: 18, design: .rounded))
+                    .fontWeight(.black)
+                    .foregroundColor(teamid2Color(reminder.team))
+                    .frame(minWidth: 24)
+                    .frame(height: 36)
+//                      .background(Circle().fill(Color.goodTextBg).frame(width: 45, height: 45))
+                }
+                if !imageURL.isEmpty {
+                  CachedImageView(urlString: imageURL)
+                    .frame(width: 35, height: 35)
+                    .background(Circle().fill(Color.goodTextBg))
                   
-              }else{
-                Color.clear
-                  .frame(width: 1, height: 37)
-                  .padding(.leading, 9)
-                  .padding(.vertical, 3)
+                }else{
+                  Color.clear
+                    .frame(width: 0, height: 36)
+                }
               }
+              .padding(.leading, (reminder.playerId >= 0) ? 3: 0)
+              .background(RoundedRectangle(cornerRadius: 20).fill(Color.goodTextBg))
+              .padding(.trailing, (reminder.playerId >= 0 || imageURL != "") ? 2: 0)
               Text(reminder.effect)
-                .font(.system(size: 22, design: .rounded))
+                .font(.system(size: 18, design: .rounded))
                 .fontWeight(.bold)
                 .foregroundColor(.goodTextBg)
-                .padding(.trailing, 10)
+                .padding(.horizontal, 5)
             }
+            .frame(minWidth: 50)
+            .frame(height: 42)
+            .padding(.horizontal, 3)
             .background(RoundedRectangle(cornerRadius: 20)
               .fill(teamid2Color(reminder.team)))
             .rotationEffect(reminder.isReversed ? .degrees(180) : .degrees(0))

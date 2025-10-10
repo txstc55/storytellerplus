@@ -44,7 +44,7 @@ struct GameLogEntry: Identifiable, Hashable, Codable {
     case 0:
       return "\(messager)号玩家 获得角色 \(playerCharacters[0])"
     case 1:
-      return "\(messager)号玩家 \(playerCharacters[0]) 获得标签 \(message)，来源为：\(playerCharacters[1])"
+      return "\(messager)号玩家 \(playerCharacters[0]) 获得标签 \(message)，来源为：\(playerNumbers[0] >= 0 ? "\(playerNumbers[0] + 1) " : "")\(playerCharacters[1])"
     case 2:
       if messager < 0 {
         return "============\n\(characterName) 被唤醒了\n============\n\(message)"

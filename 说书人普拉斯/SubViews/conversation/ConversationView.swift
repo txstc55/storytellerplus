@@ -85,6 +85,9 @@ struct ConversationLogView: View{
                 .font(.system(size: 20, design: .rounded))
                 .fontWeight(.semibold)
                 .foregroundColor(.black)
+              if (entry.playerNumbers.count > 0 && entry.playerNumbers[0] >= 0){
+                playerNumberCircle(playerNumber: entry.playerNumbers[0] + 1, playerTeam: entry.playerTeams[1])
+              }
               playerCharacterBox(playerCharacter: entry.playerCharacters[1], playerTeam: entry.playerTeams[1])
             }
             .padding(.horizontal, 10)

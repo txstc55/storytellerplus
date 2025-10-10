@@ -147,7 +147,7 @@ struct SubMenuView: View {
             for (index, character) in playersAssignedCharacters.enumerated() {
               allLogs.append(GameLogEntry(message: "获得角色：\(character.name)", messager: index + 1, source: "说书人", type: 0, playerCharacters: [character.name], playerTeams: [team2Int(character.team)]))
               for reminder in playersStates[index] {
-                allLogs.append(GameLogEntry(message: "\(reminder.effect)", messager: index + 1, source: reminder.from, type: 1, characterName: character.name, playerNumbers: [index + 1], playerCharacters: [character.name, reminder.from], playerTeams: [team2Int(character.team), reminder.team]))
+                allLogs.append(GameLogEntry(message: "\(reminder.effect)", messager: index + 1, source: reminder.from, type: 1, characterName: character.name, playerNumbers: [reminder.playerId], playerCharacters: [character.name, reminder.from], playerTeams: [team2Int(character.team), reminder.team]))
               }
             }
             for index in 0..<notPresentedGoodCharacters.count{

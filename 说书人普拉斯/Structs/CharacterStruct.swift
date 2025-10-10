@@ -250,15 +250,15 @@ let fabledCharactersGlobal: [Character] = [
 ]
 
 let fabledRemindersGlobal = [
-  Reminder(from: "天使", effect: "庇护", team: 5, isGlobal: false),
-  Reminder(from: "天使", effect: "不好的事", team: 5, isGlobal: false),
-  Reminder(from: "地狱藏书员", effect: "不好的事", team: 5, isGlobal: false),
-  Reminder(from: "公爵夫人", effect: "访客", team: 5, isGlobal: false),
-  Reminder(from: "公爵夫人", effect: "错误信息", team: 5, isGlobal: false),
-  Reminder(from: "骗人精", effect: "失去能力", team: 5, isGlobal: false),
-  Reminder(from: "革命者", effect: "被当作其他", team: 5),
-  Reminder(from: "圣洁之魂", effect: "禁止邪恶", team: 5, isGlobal: false),
-  Reminder(from: "暴风捕手", effect: "仅死于处决", team: 5, isGlobal: false),
+  Reminder(from: "天使", effect: "庇护", team: 5, isGlobal: false, playerId: -2),
+  Reminder(from: "天使", effect: "不好的事", team: 5, isGlobal: false, playerId: -2),
+  Reminder(from: "地狱藏书员", effect: "不好的事", team: 5, isGlobal: false, playerId: -2),
+  Reminder(from: "公爵夫人", effect: "访客", team: 5, isGlobal: false, playerId: -2),
+  Reminder(from: "公爵夫人", effect: "错误信息", team: 5, isGlobal: false, playerId: -2),
+  Reminder(from: "骗人精", effect: "失去能力", team: 5, isGlobal: false, playerId: -2),
+  Reminder(from: "革命者", effect: "被当作其他", team: 5, playerId: -2),
+  Reminder(from: "圣洁之魂", effect: "禁止邪恶", team: 5, isGlobal: false, playerId: -2),
+  Reminder(from: "暴风捕手", effect: "仅死于处决", team: 5, isGlobal: false, playerId: -2),
 ]
 //let 庇护 = Reminder(from: "天使", effect: "庇护", isGlobal: false)
 //let 不好的事 = Reminder(from: "天使", effect: "不好的事", isGlobal: false)
