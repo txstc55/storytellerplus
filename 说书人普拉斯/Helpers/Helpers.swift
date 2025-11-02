@@ -214,3 +214,20 @@ func teamid2Color(_ team: Int) -> Color {
     return Color.fabled
   }
 }
+
+func team2Color(_ team: String) -> Color {
+  switch team {
+  case "townsfolk":
+    return Color.townsfolk
+  case "outsider":
+    return Color.outsider
+  case "minion":
+    return Color.minion
+  case "demon":
+    return Color.demon
+  case "traveler":
+    return Color.traveler
+  default:
+    return Color.fabled
+  }
+}
