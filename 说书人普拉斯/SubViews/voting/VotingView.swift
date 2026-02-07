@@ -90,12 +90,33 @@ struct VotingView: View{
                   if index < playerCount{
                     let playerBg = getBgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
                     let playerFg = getFgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
+                    let character = playersAssignedCharacters[index]
+                    let needsCareForNomination = character.ability.contains("提名") && !character.ability.contains("被提名") && !character.ability.contains("提名你")
+                    let needsCareForBeingNorminated = character.ability.contains("被提名") || character.ability.contains("提名你")
                     Text("\(index + 1)")
                       .frame(width: 40, height: 40)
                       .background(playerBg)
                       .foregroundColor(playerFg)
                       .clipShape(Circle())
                       .opacity(playersIsAlive[index] ? 1 : 0.5)
+                      .overlay {
+                        if (nominationPhase == 1 && needsCareForBeingNorminated) || (nominationPhase == 0 && needsCareForNomination) {
+                          ZStack {
+                            ForEach(0..<3, id: \.self) { ring in
+                              Circle()
+                                .stroke(playerBg.opacity(1.0), lineWidth: 4.0)
+                                .phaseAnimator([0.0, 1.0]) { view, t in
+                                  view
+                                    .scaleEffect(0.8 + 0.6 * t)      // 1.0 → 2.4
+                                    .opacity(0.75 * (1.0 - t))       // 0.45 → 0
+                                } animation: { _ in
+                                    .easeOut(duration: 2.0).repeatForever(autoreverses: false).delay(Double(ring) * 0.5)
+                                }
+                            }
+                          }
+                          .allowsHitTesting(false)
+                        }
+                      }
                   }else{
                     Text("说")
                       .frame(width: 40, height: 40)
@@ -145,12 +166,33 @@ struct VotingView: View{
                   if index < playerCount{
                     let playerBg = getBgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
                     let playerFg = getFgColorBasedOnTeam(team: playersAssignedCharacters[index].team)
+                    let character = playersAssignedCharacters[index]
+                    let needsCareForNomination = character.ability.contains("提名") && !character.ability.contains("被提名") && !character.ability.contains("提名你")
+                    let needsCareForBeingNorminated = character.ability.contains("被提名") || character.ability.contains("提名你")
                     Text("\(index + 1)")
                       .frame(width: 40, height: 40)
                       .background(playerBg)
                       .foregroundColor(playerFg)
                       .clipShape(Circle())
                       .opacity(playersIsAlive[index] ? 1 : 0.5)
+                      .overlay {
+                        if (nominationPhase == 1 && needsCareForBeingNorminated) || (nominationPhase == 0 && needsCareForNomination) {
+                          ZStack {
+                            ForEach(0..<3, id: \.self) { ring in
+                              Circle()
+                                .stroke(playerBg.opacity(1.0), lineWidth: 4.0)
+                                .phaseAnimator([0.0, 1.0]) { view, t in
+                                  view
+                                    .scaleEffect(0.8 + 0.6 * t)      // 1.0 → 2.4
+                                    .opacity(0.75 * (1.0 - t))       // 0.45 → 0
+                                } animation: { _ in
+                                    .easeOut(duration: 2.0).repeatForever(autoreverses: false).delay(Double(ring) * 0.5)
+                                }
+                            }
+                          }
+                          .allowsHitTesting(false)
+                        }
+                      }
                   }else{
                     Text("说")
                       .frame(width: 40, height: 40)

@@ -13,7 +13,7 @@ struct NominationEnabledCharacters: View {
     ScrollView(showsIndicators: false) {
       ForEach(playersAssignedCharacters.indices, id: \.self) { index in
         let character = playersAssignedCharacters[index]
-        let needsCare = character.ability.contains("提名") && !character.ability.contains("被提名")
+        let needsCare = character.ability.contains("提名") && !character.ability.contains("被提名") && !character.ability.contains("提名你")
         if needsCare{
           HStack{
             CachedImageView(urlString: character.imageURL)
