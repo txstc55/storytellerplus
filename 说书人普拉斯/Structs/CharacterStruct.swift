@@ -122,6 +122,8 @@ let 黑帮 = Character(id: "黑帮", name: "黑帮", ability: "每个白天限�
 
 let 叫花子 = Character(id: "叫花子", name: "叫花子", ability: "每个白天限一次，你可以公开选择一名其他玩家，让他选择一个非恶魔角色：你可能会获得这个角色的能力，直到下个黎明。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "traveler", imageURL: "https://oss.gstonegames.com/data_file/clocktower/upload/202310/c_4509255308961_63a95d5b.jpg")
 
+let 笑匠 = Character(id: "笑匠", name: "笑匠", ability: "每个白天，你要选择一名玩家：一名其他玩家会在当晚改变角色。", firstNightOrder: 0, otherNightOrder: 1.5, firstNightReminder: "", otherNightReminder: "用一个不同的角色标记替换任意一个玩家的角色标记。唤醒那名玩家，依次向他展示“你是”提示标记和新的角色标记，然后让他们重新入睡。", setup: false, team: "traveler", imageURL: "https://www.bloodstar.xyz/p/SerraEvelyn/yueyeyueyouji/4_yueyeyueyouji.png")
+
 let 刁民 = Character(
   id: "刁民",
   name: "刁民",
@@ -154,7 +156,8 @@ let travlerCharactersGlobal: [Character] = [
   侏儒,
   黑帮,
   叫花子,
-  刁民
+  刁民,
+  笑匠
 ]
 
 let travelerRemindersGlobal = [
@@ -171,6 +174,7 @@ let travelerRemindersGlobal = [
   Reminder(from: "咖啡师", effect: "行动两次", team: 4, isGlobal: false),
   Reminder(from: "地精", effect: "同伴", team: 4, isGlobal: false),
   Reminder(from: "刁民", effect: "醉酒", team: 4, isGlobal: false),
+  Reminder(from: "笑匠", effect: "不是我", team: 4, isGlobal: false),
 //  Reminder(from: "善良", effect: "善良", isGlobal: true),
 //  Reminder(from: "邪恶", effect: "邪恶", isGlobal: true)
 ]
@@ -229,6 +233,16 @@ let 摆渡人 = Character(id: "摆渡人", name: "摆渡人", ability: "在游�
 
 let 赦令承旨 = Character(id: "赦令承旨", name: "赦令承旨", ability: "解除所有角色能力在进行选择时的限制条件。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://oss.gstonegames.com/data_file/clocktower/upload/202403/c_4414831380171_0a601ac6.jpg")
 
+let 印度教教徒 = Character(id: "印度教教徒", name: "印度教教徒", ability: "最先死亡的四名玩家会立即以相同阵营的旅行者转世重生。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://patchwiki.biligame.com/images/jbzlbwgwjcygf/e/ef/kqlms0w8wp372gvh76lov0c08e6z8m3.png")
+
+let 遗忘之门 = Character(id: "遗忘之门", name: "遗忘之门", ability: "玩家不知道自己的角色和阵营。当他们死亡时才会得知这些信息。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://www.bloodstar.xyz/p/SerraEvelyn/jubushiyi/30_jubushiyi.png")
+
+let 异术士 = Character(id: "异术士", name: "异术士", ability: "一名或多名玩家各自拥有一个目标。当达成目标后，他会获得一条正确信息。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://www.bloodstar.xyz/p/SerraEvelyn/zhixianrenwu/_zhixianrenwu.png")
+
+let 教皇 = Character(id: "教皇", name: "教皇", ability: "会有重复的善良角色在场。他们也可能是恶魔的伪装。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://patchwiki.biligame.com/images/jbzlbwgwjcygf/b/bc/irnsk5kjolajz8gldu0kbdgmf95z9zp.png")
+
+let 首席律师 = Character(id: "首席律师", name: "首席律师", ability: "每个被提名者要选择一名玩家：在投票前，只有他可以发言，并且他要“疯狂”地证明被提名者是善良的，否则他可能死亡。", firstNightOrder: 0, otherNightOrder: 0, firstNightReminder: "", otherNightReminder: "", setup: false, team: "fabled", imageURL: "https://clocktower-wiki.gstonegames.com/images/thumb/9/97/Bootlegger.png/200px-Bootlegger.png")
+
 let fabledCharactersGlobal: [Character] = [
   天使,
   佛教徒,
@@ -246,7 +260,12 @@ let fabledCharactersGlobal: [Character] = [
   私货商人,
   麒麟,
   摆渡人,
-  赦令承旨
+  赦令承旨,
+  印度教教徒,
+  遗忘之门,
+  异术士,
+  教皇,
+  首席律师
 ]
 
 let fabledRemindersGlobal = [
@@ -259,6 +278,8 @@ let fabledRemindersGlobal = [
   Reminder(from: "革命者", effect: "被当作其他", team: 5, playerId: -2),
   Reminder(from: "圣洁之魂", effect: "禁止邪恶", team: 5, isGlobal: false, playerId: -2),
   Reminder(from: "暴风捕手", effect: "仅死于处决", team: 5, isGlobal: false, playerId: -2),
+  Reminder(from: "印度教教徒", effect: "转世重生", team: 5, isGlobal: false, playerId: -2),
+  Reminder(from: "异术士", effect: "目标", team: 5, isGlobal: false, playerId: -2),
 ]
 //let 庇护 = Reminder(from: "天使", effect: "庇护", isGlobal: false)
 //let 不好的事 = Reminder(from: "天使", effect: "不好的事", isGlobal: false)
