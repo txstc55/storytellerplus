@@ -275,16 +275,31 @@ struct TagView: View{
   //    let selectedCharacterNames = playersAssignedCharacters.map { $0.name } // compute once
       for i in 0..<allReminders.count {
         let reminder = allReminders[i]
-        if (reminder.isGlobal || selectedFabledCharacterNames.contains(reminder.from)){
+        if (reminder.isGlobal){
+          remindersWithSource.append(reminder)
+        }else if (reminder.playerId == -2 && selectedFabledCharacterNames.contains(reminder.from)){
           remindersWithSource.append(reminder)
         }else{
           // search the players assigned characters
           // if there are multiple same characters, add the tag with different source
-          for j in 0..<playersAssignedCharacters.count {
-            if reminder.from == playersAssignedCharacters[j].name{
-              // create a new copy of reminder with source
-              let newReminder = Reminder(from: reminder.from, effect: reminder.effect, team: reminder.team, isGlobal: reminder.isGlobal, playerId: j)
-              remindersWithSource.append(newReminder)
+          if (reminder.playerId == -1){
+            // we gotta check who's the correct one
+            for j in 0..<playersAssignedCharacters.count {
+              if reminder.from == playersAssignedCharacters[j].name{
+                // create a new copy of reminder with source
+                let newReminder = Reminder(from: reminder.from, effect: reminder.effect, team: reminder.team, isGlobal: reminder.isGlobal, playerId: j)
+                remindersWithSource.append(newReminder)
+              }
+            }
+          }else if (reminder.playerId >= 0){
+            // else we just add the reminder with the correct source
+            remindersWithSource.append(reminder)
+            for j in 0..<playersAssignedCharacters.count {
+              if (reminder.from == playersAssignedCharacters[j].name && j != reminder.playerId) {
+                // create a new copy of reminder with source
+                let newReminder = Reminder(from: reminder.from, effect: reminder.effect, team: reminder.team, isGlobal: reminder.isGlobal, playerId: j)
+                remindersWithSource.append(newReminder)
+              }
             }
           }
         }
@@ -295,5 +310,6 @@ struct TagView: View{
 
 //#Preview{
 //  TagView(allReminders: .constant([]), playersAssignedCharacters: .constant([]), playersStates: .constant([[]]), currentSelectedPlayerIDForReminder: .constant(0), selectNewReminder: .constant(true), selectedReminderIndex: .constant(0), characters: .constant([]))
-//    
+//
 //}
+
