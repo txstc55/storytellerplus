@@ -98,7 +98,6 @@ struct VotingView: View{
                       .background(playerBg)
                       .foregroundColor(playerFg)
                       .clipShape(Circle())
-                      .opacity(playersIsAlive[index] ? 1 : 0.5)
                       .overlay {
                         if (nominationPhase == 1 && needsCareForBeingNorminated) || (nominationPhase == 0 && needsCareForNomination) {
                           ZStack {
@@ -107,7 +106,7 @@ struct VotingView: View{
                                 .stroke(playerBg.opacity(1.0), lineWidth: 4.0)
                                 .phaseAnimator([0.0, 1.0]) { view, t in
                                   view
-                                    .scaleEffect(0.8 + 0.6 * t)      // 1.0 → 2.4
+                                    .scaleEffect(1 + 0.4 * t)      // 1.0 → 2.4
                                     .opacity(0.75 * (1.0 - t))       // 0.45 → 0
                                 } animation: { _ in
                                     .easeOut(duration: 2.0).repeatForever(autoreverses: false).delay(Double(ring) * 0.5)
@@ -117,6 +116,7 @@ struct VotingView: View{
                           .allowsHitTesting(false)
                         }
                       }
+                      .opacity(playersIsAlive[index] ? 1 : 0.5)
                   }else{
                     Text("说")
                       .frame(width: 40, height: 40)
@@ -174,7 +174,7 @@ struct VotingView: View{
                       .background(playerBg)
                       .foregroundColor(playerFg)
                       .clipShape(Circle())
-                      .opacity(playersIsAlive[index] ? 1 : 0.5)
+                      
                       .overlay {
                         if (nominationPhase == 1 && needsCareForBeingNorminated) || (nominationPhase == 0 && needsCareForNomination) {
                           ZStack {
@@ -183,7 +183,7 @@ struct VotingView: View{
                                 .stroke(playerBg.opacity(1.0), lineWidth: 4.0)
                                 .phaseAnimator([0.0, 1.0]) { view, t in
                                   view
-                                    .scaleEffect(0.8 + 0.6 * t)      // 1.0 → 2.4
+                                    .scaleEffect(1 + 0.4 * t)      // 1.0 → 2.4
                                     .opacity(0.75 * (1.0 - t))       // 0.45 → 0
                                 } animation: { _ in
                                     .easeOut(duration: 2.0).repeatForever(autoreverses: false).delay(Double(ring) * 0.5)
@@ -193,6 +193,7 @@ struct VotingView: View{
                           .allowsHitTesting(false)
                         }
                       }
+                      .opacity(playersIsAlive[index] ? 1 : 0.5)
                   }else{
                     Text("说")
                       .frame(width: 40, height: 40)
@@ -494,7 +495,13 @@ struct VotingView: View{
             let nominationVotesPlayerNumbers: [Int] = nominationVotes.map{$0 < playerCount ?  ($0 + 1) : 21}
             let nominationVotesPlayerCharacters: [String] = nominationVotes.map { $0 < playerCount ? playersAssignedCharacters[$0].name : ($0 == 21 ? "说" : ($0 < 25 ? "正": "负")) }
             let nominationVotesPlayerTeams: [Int] = nominationVotes.map { $0 < playerCount ? team2Int(playersAssignedCharacters[$0].team) : 5 }
-            nominationPlayerIndex.append(nominatorIndex)
+            //            if (nominatedIndex < playersAssignedCharacters.count && playersAssignedCharacters[nominatedIndex].team == "traveler"){
+            //              // pass
+            //              print("Traveler nomination, no penalty")
+            //            }else{
+            //
+            //            }
+            nominationPlayerIndex.append(nominatorIndex) // this guy cannot nominate again
             executionPlayerIndex.append(nominatedIndex)
             executionVoteCount.append(nominationVotes)
             aliveCountAtVote.append(aliveCount)
@@ -533,6 +540,8 @@ struct VotingView: View{
         }
       }else{
         ScrollView{
+          Spacer()
+            .frame(height: 10)
           ForEach(executionPlayerIndex.indices, id: \.self) { index in
             //            let nominationIndex = nominationPlayerIndex[index]
             //            let playerIndex = executionPlayerIndex[index]
@@ -540,9 +549,9 @@ struct VotingView: View{
             let aliveCount = aliveCountAtVote[index]
             let playerCount = playerCountAtVote[index]
             //            let imageURL = playerIndex < 20 ? playersAssignedCharacters[playerIndex].imageURL : ""
+            let totalVotes = voteCount.filter({$0 < 25}).count - voteCount.filter({$0 >= 25}).count
             VStack(alignment: .leading){
               HStack{
-                let totalVotes = voteCount.filter({$0 < 25}).count - voteCount.filter({$0 >= 25}).count
                 let nominationText = nominationPlayerIndex[index] < 20 ? "\(nominationPlayerIndex[index] + 1)" : "说书人"
                 let nominatedText = executionPlayerIndex[index] < 20 ? "\(executionPlayerIndex[index] + 1)" : "说书人"
                 let isTraveler = executionPlayerIndex[index] > 20 ? false : (executionPlayerIndex[index] < playersAssignedCharacters.count && playersAssignedCharacters[executionPlayerIndex[index]].team == "traveler")
@@ -567,6 +576,14 @@ struct VotingView: View{
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 10)
+            .padding(.horizontal, 10)
+            .overlay {
+              if Double(totalVotes) >= Double(aliveCount) / 2.0 {
+                Color.white
+                  .blendMode(.difference)
+              }
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 10))
             .padding(.horizontal, 5)
           }
           Spacer()
