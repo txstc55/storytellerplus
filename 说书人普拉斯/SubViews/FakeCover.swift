@@ -39,6 +39,7 @@ struct FakeCover: View {
         .padding(.horizontal, 5)
         .frame(maxWidth: .infinity)
         .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.warningRed, lineWidth: assignedCharacterNames.contains(character.name) ? 3 : 0))
+        .padding(.horizontal, 5)
       }
     }
 //    .padding(.horizontal, 2)

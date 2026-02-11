@@ -30,9 +30,9 @@ struct ContentView: View {
             .edgesIgnoringSafeArea(.all)
         }
       }
-//      Color.mainbg
-//        .edgesIgnoringSafeArea(.all)
-        
+      //      Color.mainbg
+      //        .edgesIgnoringSafeArea(.all)
+      
       ZStack{
         if viewNumber == 0 {
           VStack{
@@ -68,7 +68,7 @@ struct ContentView: View {
                 .background(.goodTextBg)
                 .cornerRadius(30)
                 .overlay(RoundedRectangle(cornerRadius: 30).stroke(Color.black, lineWidth: 3))
-                
+              
             }
             .padding(.top, 20)
             Spacer()
@@ -106,15 +106,26 @@ struct ContentView: View {
       return
     }
     defer { url.stopAccessingSecurityScopedResource() }
+    
     do {
       let data = try Data(contentsOf: url)
-      if let array = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
-        jsonArray = array
-        print("JSON Array Loaded")
-        viewNumber = 1
-      } else {
-        print("Expected an array of dictionaries at top level.")
+      let root = try JSONSerialization.jsonObject(with: data, options: [])
+      
+      guard let array = root as? [Any] else {
+        print("Expected a top-level array.")
+        return
       }
+      
+      let dictionaries = array.compactMap { $0 as? [String: Any] }
+      
+      if dictionaries.isEmpty {
+        print("No dictionary objects found in array.")
+      } else {
+        print("Loaded \(dictionaries.count) dictionary items (ignored \(array.count - dictionaries.count) non-dictionary items)")
+        jsonArray = dictionaries
+        viewNumber = 1
+      }
+      
     } catch {
       print("Failed to read JSON: \(error.localizedDescription)")
     }
@@ -124,5 +135,5 @@ struct ContentView: View {
 
 #Preview {
   ContentView()
-//    .modelContainer(for: Item.self, inMemory: true)
+  //    .modelContainer(for: Item.self, inMemory: true)
 }
