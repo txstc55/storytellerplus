@@ -37,56 +37,64 @@ struct ContentView: View {
         if viewNumber == 0 {
           VStack{
             Spacer()
-            Button(action: {
-              isFileImporterPresented = true
-              loadLast = false
-            }){
-              Text("上传JSON")
-                .font(.system(size: 20,  design: .rounded))
-                .fontWeight(.bold)
-                .padding()
-                .foregroundColor(.black)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 3)
-                .frame(width: 150)
-                .background(.goodTextBg)
-                .cornerRadius(30)
-                .overlay(RoundedRectangle(cornerRadius: 30).stroke(Color.black, lineWidth: 3))
+            HStack{
+              Text("本产品仍为测试版，遇到任何bug或有需求请大胆联系作者")
             }
-            Button(action: {
-              loadLast = true
-              viewNumber = 1
-            }){
-              Text("返回小镇")
-                .font(.system(size: 20,  design: .rounded))
-                .fontWeight(.bold)
-                .padding()
-                .foregroundColor(.black)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 3)
-                .frame(width: 150)
-                .background(.goodTextBg)
-                .cornerRadius(30)
-                .overlay(RoundedRectangle(cornerRadius: 30).stroke(Color.black, lineWidth: 3))
-              
-            }
-            .padding(.top, 20)
-            Spacer()
           }
-          .frame(maxWidth: .infinity, maxHeight: .infinity)
-          .transition(.opacity)
-          .fileImporter(
-            isPresented: $isFileImporterPresented,
-            allowedContentTypes: [.json],
-            allowsMultipleSelection: false
-          ) { result in
-            switch result {
-            case .success(let urls):
-              if let selectedFile = urls.first {
-                readJSON(from: selectedFile)
+          ZStack{
+            VStack{
+              Spacer()
+              Button(action: {
+                isFileImporterPresented = true
+                loadLast = false
+              }){
+                Text("上传JSON")
+                  .font(.system(size: 20,  design: .rounded))
+                  .fontWeight(.bold)
+                  .padding()
+                  .foregroundColor(.black)
+                  .padding(.horizontal, 10)
+                  .padding(.vertical, 3)
+                  .frame(width: 150)
+                  .background(.goodTextBg)
+                  .cornerRadius(30)
+                  .overlay(RoundedRectangle(cornerRadius: 30).stroke(Color.black, lineWidth: 3))
               }
-            case .failure(let error):
-              print("Failed to import file: \(error.localizedDescription)")
+              Button(action: {
+                loadLast = true
+                viewNumber = 1
+              }){
+                Text("返回小镇")
+                  .font(.system(size: 20,  design: .rounded))
+                  .fontWeight(.bold)
+                  .padding()
+                  .foregroundColor(.black)
+                  .padding(.horizontal, 10)
+                  .padding(.vertical, 3)
+                  .frame(width: 150)
+                  .background(.goodTextBg)
+                  .cornerRadius(30)
+                  .overlay(RoundedRectangle(cornerRadius: 30).stroke(Color.black, lineWidth: 3))
+                
+              }
+              .padding(.top, 20)
+              Spacer()
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .transition(.opacity)
+            .fileImporter(
+              isPresented: $isFileImporterPresented,
+              allowedContentTypes: [.json],
+              allowsMultipleSelection: false
+            ) { result in
+              switch result {
+              case .success(let urls):
+                if let selectedFile = urls.first {
+                  readJSON(from: selectedFile)
+                }
+              case .failure(let error):
+                print("Failed to import file: \(error.localizedDescription)")
+              }
             }
           }
         }else if viewNumber == 1{
