@@ -103,11 +103,12 @@ func loadGameData(
         showAlert = true
         continue
       }
-      if team.contains("jinxed"){
+      print("Loded team with team name \(team)")
+      if team.contains("jinx"){
         let name = jsonItem["name"] as? String ?? ""
-          let description = jsonItem["skill"] as? String ?? ""
+        let description = jsonItem["ability"] as? String ?? ""
         if !name.isEmpty && !description.isEmpty {
-          jinxList.append(Jinx(name: name, imageURL: "", type: 0, description: description))
+          jinxList.append(Jinx(name: name, imageURL: jsonItem["image"] as? String ?? "", type: 1, description: description))
         }
       }
       
