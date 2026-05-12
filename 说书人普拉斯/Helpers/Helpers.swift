@@ -98,6 +98,20 @@ func loadGameData(
       jinxList.append(jinx)
       
     } else {
+      guard let team = jsonItem["team"] as? String else {
+        alertMessage = "ID: \(id) 角色阵营缺失"
+        showAlert = true
+        continue
+      }
+      if team.contains("jinxed"){
+        let name = jsonItem["name"] as? String ?? ""
+          let description = jsonItem["skill"] as? String ?? ""
+        if !name.isEmpty && !description.isEmpty {
+          jinxList.append(Jinx(name: name, imageURL: "", type: 0, description: description))
+        }
+      }
+      
+      
       guard let name = jsonItem["name"] as? String else {
         alertMessage = "ID: \(id) 角色名称缺失"
         showAlert = true
@@ -120,11 +134,7 @@ func loadGameData(
       let otherNightReminder = jsonItem["otherNightReminder"] as? String ?? ""
       let setup = jsonItem["setup"] as? Bool ?? false
       
-      guard let team = jsonItem["team"] as? String else {
-        alertMessage = "ID: \(id) 角色阵营缺失"
-        showAlert = true
-        continue
-      }
+      
       
       let imageURL = jsonItem["image"] as? String ?? ""
       

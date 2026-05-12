@@ -130,7 +130,7 @@ struct ConversationLogView: View{
           }
         }else if type == 3{
           // MARK: 3 for player message
-          let isPlayer = (entry.messager) < playersAssignedCharacters.count
+          let isPlayer = (entry.messager) <= playersAssignedCharacters.count
           if isPlayer{
             HStack{
               playerNumberCircle(playerNumber: entry.messager, playerTeam: entry.playerTeams[0])
@@ -510,6 +510,7 @@ struct ConversationView: View {
           Button(action: {
             // send message
             if inputText != "" {
+              print("选择玩家为 \(currentSelection + 1)号，总共\(playersAssignedCharacters.count)个玩家")
               allLogs.append(GameLogEntry(message: inputText, messager: currentSelection < playersAssignedCharacters.count ? (currentSelection + 1) : 21, source: "", type: 3, characterName: currentSelection < playersAssignedCharacters.count ? playersAssignedCharacters[currentSelection].name : "说书人", playerCharacters: [currentSelection < playersAssignedCharacters.count ? playersAssignedCharacters[currentSelection].name : "说书人"], playerTeams: [currentSelection < playersAssignedCharacters.count ? team2Int(playersAssignedCharacters[currentSelection].team) : 5]))
               inputText = ""
             }
