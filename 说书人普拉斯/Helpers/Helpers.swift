@@ -57,6 +57,8 @@ struct GameSaveData: Codable {
   let currentlyAwakePlayerIndex: Int
   
   let selectedFabledCharacters: [Character]
+  
+  let globalStates: [Reminder]
 }
 
 
@@ -103,7 +105,6 @@ func loadGameData(
         showAlert = true
         continue
       }
-      print("Loded team with team name \(team)")
       if team.contains("jinx"){
         let name = jsonItem["name"] as? String ?? ""
         let description = jsonItem["ability"] as? String ?? ""

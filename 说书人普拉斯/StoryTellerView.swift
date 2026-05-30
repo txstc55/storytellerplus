@@ -45,6 +45,7 @@ struct StoryTellerView: View {
   // FOR REMINDERS
   @State private var allReminders: [Reminder] = []
   @State private var playersStates: [[Reminder]] = [[]]
+  @State private var globalStates: [Reminder] = []
   @State private var selectNewReminder: Bool = false
   @State private var currentSelectedPlayerIDForReminder: Int = 0
   @State private var selectedReminderIndex: Int = 0
@@ -109,7 +110,7 @@ struct StoryTellerView: View {
       }// end of the if loop for showing menu
       
       if selectNewReminder{
-        TagView(allReminders: $allReminders, playersAssignedCharacters: $playersAssignedCharacters, playersStates: $playersStates, currentSelectedPlayerIDForReminder: $currentSelectedPlayerIDForReminder, selectNewReminder: $selectNewReminder, selectedReminderIndex: $selectedReminderIndex, characters: $characters, gameState: $gameState, allLogs: $allLogs, selectedFabledCharacters: $selectedFabledCharacters)
+        TagView(allReminders: $allReminders, playersAssignedCharacters: $playersAssignedCharacters, playersStates: $playersStates, currentSelectedPlayerIDForReminder: $currentSelectedPlayerIDForReminder, selectNewReminder: $selectNewReminder, selectedReminderIndex: $selectedReminderIndex, characters: $characters, gameState: $gameState, allLogs: $allLogs, selectedFabledCharacters: $selectedFabledCharacters, globalStates: $globalStates)
           .zIndex(12)
       }
       
@@ -122,7 +123,7 @@ struct StoryTellerView: View {
           .zIndex(14)
       }
       if showAllCharacterInfos{
-        AllCharacterInfosView(playableCharacters: $playableCharacters, showAllCharacterInfos: $showAllCharacterInfos, travelersInPlay: $travelers)
+        AllCharacterInfosView(playableCharacters: $playableCharacters, showAllCharacterInfos: $showAllCharacterInfos, travelersInPlay: $travelers, fabledInPlay: $fabled)
           .zIndex(15)
       }
       
@@ -165,6 +166,7 @@ struct StoryTellerView: View {
                       aliveCount: $aliveCount,
                       gameState: $gameState,
                       allLogs: $allLogs,
+                      globalStates: $globalStates,
                       numCols: 3
           )
           if (gameState == 0){
@@ -340,6 +342,7 @@ struct StoryTellerView: View {
             self.firstNightOrder = decoded.firstNightOrder
             self.currentlyAwakePlayerIndex = decoded.currentlyAwakePlayerIndex
             self.selectedFabledCharacters = decoded.selectedFabledCharacters
+            self.globalStates = decoded.globalStates
             
             print("[Load] Successfully restored saved game.")
           } catch {
@@ -379,7 +382,8 @@ struct StoryTellerView: View {
         allLogs: allLogs,
         firstNightOrder: firstNightOrder,
         currentlyAwakePlayerIndex: currentlyAwakePlayerIndex,
-        selectedFabledCharacters: selectedFabledCharacters
+        selectedFabledCharacters: selectedFabledCharacters,
+        globalStates: globalStates
       )
       
       if let encoded = try? JSONEncoder().encode(saveData) {

@@ -1,18 +1,12 @@
 //
-//  PlayersView.swift
+//  PlayersCard.swift
 //  说书人普拉斯
 //
-//  Created by Xuan Tang on 5/22/25.
+//  Created by Xuan Tang on 5/29/26.
 //
+
 import SwiftUI
 import Flow
-
-//struct PlayerStatusCard: View{
-//  var body: some View{
-//
-//  }
-//}
-
 
 struct PlayerCard: View {
   let index: Int
@@ -220,67 +214,5 @@ struct PlayerCard: View {
       }
       .frame(maxWidth: .infinity)
     }
-  }
-}
-
-
-
-struct PlayersView: View {
-  @Binding var playersAssignedCharacters: [Character]
-  @Binding var playersStates: [[Reminder]]
-  @Binding var characters: [Character]
-  @Binding var currentSelectedPlayerID: Int
-  @Binding var selectNewCharacter: Bool
-  @Binding var currentSelectedPlayerIDForReminder: Int
-  @Binding var selectNewReminder: Bool
-  @Binding var selectedReminderIndex: Int
-  @Binding var playersIsAlive: [Bool]
-  @Binding var playersHasDeathVote: [Bool]
-  
-  @Binding var aliveCount: Int
-  @Binding var gameState: Int
-  @Binding var allLogs: [GameLogEntry]
-  let numCols: Int
-  
-  
-  var body: some View {
-    VStack{
-      ForEach(0 ..< Int(ceil(Double(playersAssignedCharacters.count) / Double(numCols))), id: \.self) { rowIndex in
-        HStack{
-          ForEach(0 ..< numCols, id: \.self) { colIndex in
-            let index = rowIndex * numCols + colIndex
-            if (index < playersAssignedCharacters.count &&
-                index < playersStates.count &&
-                index < playersIsAlive.count) {
-              PlayerCard(
-                index: index,
-                playersAssignedCharacters: $playersAssignedCharacters,
-                reminders: $playersStates[index],
-                characters: characters,
-                gameState: gameState,
-                currentSelectedPlayerID: $currentSelectedPlayerID,
-                selectNewCharacter: $selectNewCharacter,
-                currentSelectedPlayerIDForReminder: $currentSelectedPlayerIDForReminder,
-                selectNewReminder: $selectNewReminder,
-                selectedReminderIndex: $selectedReminderIndex,
-                playersIsAlive: $playersIsAlive,
-                playersHasDeathVote: $playersHasDeathVote,
-                aliveCount: $aliveCount,
-                allLogs: $allLogs
-              )
-              
-              .padding(.vertical, 15)
-              .padding(.horizontal, 5)
-              
-            }else{
-              Color.clear
-                .frame(maxWidth: .infinity)
-            }
-            
-          }
-        }
-      }
-    }
-    .animation(.easeInOut(duration: 0.3), value: playersAssignedCharacters.count)
   }
 }

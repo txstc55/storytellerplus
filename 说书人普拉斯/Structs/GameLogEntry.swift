@@ -86,6 +86,15 @@ struct GameLogEntry: Identifiable, Hashable, Codable {
       return "\(messager)号玩家 \(playerCharacters[0]) 失去标签 \(message)，来源为：\(playerCharacters[1])"
     case 15:
       return "\(messager)号玩家 \(playerCharacters[0]) 倒置标签 \(message)，来源为：\(playerCharacters[1])"
+    case 16:
+      // global reminder
+      return "添加全局标签：\(message)，来源为：\(playerNumbers[0] >= 0 ? "\(playerNumbers[0] + 1) " : "")\(playerCharacters[0])"
+    case 17:
+      // global reminder removal
+      return "去除全局标签：\(message)，来源为：\(playerNumbers[0] >= 0 ? "\(playerNumbers[0] + 1) " : "")\(playerCharacters[0])"
+    case 18:
+      // global reminder removal
+      return "全局标签倒置：\(message)，来源为：\(playerNumbers[0] >= 0 ? "\(playerNumbers[0] + 1) " : "")\(playerCharacters[0])"
     default:
       return ""
     }

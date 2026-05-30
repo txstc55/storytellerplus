@@ -19,6 +19,7 @@ struct TagView: View{
   @Binding var gameState: Int
   @Binding var allLogs: [GameLogEntry]
   @Binding var selectedFabledCharacters: [Character]
+  @Binding var globalStates: [Reminder] // those are global reminders, for keeping track of things that happen to the entire game
   @State private var showTagEditor: Bool = false
   @State private var newTagName: String = ""
   @State private var remindersWithSource: [Reminder] = []
@@ -139,9 +140,15 @@ struct TagView: View{
       VStack{
         ScrollView{
           HStack{
-            Text("为\(currentSelectedPlayerIDForReminder + 1)号玩家选择标记")
-              .font(.system(size: 25, design: .rounded))
-              .fontWeight(.bold)
+            if (currentSelectedPlayerIDForReminder >= 0){
+              Text("为\(currentSelectedPlayerIDForReminder + 1)号玩家选择标记")
+                .font(.system(size: 25, design: .rounded))
+                .fontWeight(.bold)
+            }else{
+              Text("为全局添加标记")
+                .font(.system(size: 25, design: .rounded))
+                .fontWeight(.bold)
+            }
           }
           .padding(.top, 25)
           .frame(maxWidth: .infinity)
@@ -223,13 +230,23 @@ struct TagView: View{
           Button(action: {
             selectNewReminder = false
             if selectedReminderIndex >= 0 {
-              let selectedReminder = remindersWithSource[selectedReminderIndex]
-              playersStates[currentSelectedPlayerIDForReminder].append(selectedReminder)
-              if gameState != 0 {
-                let selectedCharacter = playersAssignedCharacters[currentSelectedPlayerIDForReminder]
-                allLogs.append(GameLogEntry(message: "\(selectedReminder.effect)", messager: currentSelectedPlayerIDForReminder + 1, source: selectedReminder.from, type: 1, characterName: selectedCharacter.name, playerNumbers: [selectedReminder.playerId], playerCharacters: [selectedCharacter.name, selectedReminder.from], playerTeams: [team2Int(selectedCharacter.team), selectedReminder.team]))
+              if (currentSelectedPlayerIDForReminder >= 0){
+                let selectedReminder = remindersWithSource[selectedReminderIndex]
+                playersStates[currentSelectedPlayerIDForReminder].append(selectedReminder)
+                if gameState != 0 {
+                  let selectedCharacter = playersAssignedCharacters[currentSelectedPlayerIDForReminder]
+                  allLogs.append(GameLogEntry(message: "\(selectedReminder.effect)", messager: currentSelectedPlayerIDForReminder + 1, source: selectedReminder.from, type: 1, characterName: selectedCharacter.name, playerNumbers: [selectedReminder.playerId], playerCharacters: [selectedCharacter.name, selectedReminder.from], playerTeams: [team2Int(selectedCharacter.team), selectedReminder.team]))
+                }
+              }
+              else{
+                let selectedReminder = remindersWithSource[selectedReminderIndex]
+                globalStates.append(selectedReminder)
+                if gameState != 0 {
+                  allLogs.append(GameLogEntry(message: "\(selectedReminder.effect)", messager: -20, source: selectedReminder.from, type: 16, characterName: "全局", playerNumbers: [selectedReminder.playerId], playerCharacters: [selectedReminder.from], playerTeams: [selectedReminder.team]))
+                }
               }
             }
+            
           }) {
             Text("确认")
               .font(.system(size: 20, design: .rounded))

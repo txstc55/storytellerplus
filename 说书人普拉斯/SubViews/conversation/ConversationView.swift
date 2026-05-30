@@ -402,6 +402,81 @@ struct ConversationLogView: View{
           }
           .frame(maxWidth: .infinity, alignment: .leading)
           .padding(.vertical, 3)
+        }else if type == 16{
+          HStack{
+            Text("全局获得标签: ")
+              .font(.system(size: 20, design: .rounded))
+              .fontWeight(.semibold)
+              .foregroundColor(.black)
+            +
+            Text("\(entry.message)")
+              .font(.system(size: 20, design: .rounded))
+              .fontWeight(.semibold)
+              .foregroundColor(teamid2Color(entry.playerTeams[0]))
+            +
+            Text("，来源为：")
+              .font(.system(size: 20, design: .rounded))
+              .fontWeight(.semibold)
+              .foregroundColor(.black)
+            if (entry.playerNumbers.count > 0 && entry.playerNumbers[0] >= 0){
+              playerNumberCircle(playerNumber: entry.playerNumbers[0] + 1, playerTeam: entry.playerTeams[0])
+            }
+            playerCharacterBox(playerCharacter: entry.playerCharacters[0], playerTeam: entry.playerTeams[0])
+          }
+          .frame(maxWidth: .infinity)
+          .padding(.vertical, 5)
+          .border(width: 3, edges: [.top, .bottom], color: .black)
+          .padding(.vertical, 15)
+        }else if type == 17{
+          HStack{
+            Text("全局失去标签: ")
+              .font(.system(size: 20, design: .rounded))
+              .fontWeight(.semibold)
+              .foregroundColor(.black)
+            +
+            Text("\(entry.message)")
+              .font(.system(size: 20, design: .rounded))
+              .fontWeight(.semibold)
+              .foregroundColor(teamid2Color(entry.playerTeams[0]))
+            +
+            Text("，来源为：")
+              .font(.system(size: 20, design: .rounded))
+              .fontWeight(.semibold)
+              .foregroundColor(.black)
+            if (entry.playerNumbers.count > 0 && entry.playerNumbers[0] >= 0){
+              playerNumberCircle(playerNumber: entry.playerNumbers[0] + 1, playerTeam: entry.playerTeams[0])
+            }
+            playerCharacterBox(playerCharacter: entry.playerCharacters[0], playerTeam: entry.playerTeams[0])
+          }
+          .frame(maxWidth: .infinity)
+          .padding(.vertical, 5)
+          .border(width: 3, edges: [.top, .bottom], color: .black)
+          .padding(.vertical, 15)
+        }else if type == 18{
+          HStack{
+            Text("全局倒置标签: ")
+              .font(.system(size: 20, design: .rounded))
+              .fontWeight(.semibold)
+              .foregroundColor(.black)
+            +
+            Text("\(entry.message)")
+              .font(.system(size: 20, design: .rounded))
+              .fontWeight(.semibold)
+              .foregroundColor(teamid2Color(entry.playerTeams[0]))
+            +
+            Text("，来源为：")
+              .font(.system(size: 20, design: .rounded))
+              .fontWeight(.semibold)
+              .foregroundColor(.black)
+            if (entry.playerNumbers.count > 0 && entry.playerNumbers[0] >= 0){
+              playerNumberCircle(playerNumber: entry.playerNumbers[0] + 1, playerTeam: entry.playerTeams[0])
+            }
+            playerCharacterBox(playerCharacter: entry.playerCharacters[0], playerTeam: entry.playerTeams[0])
+          }
+          .frame(maxWidth: .infinity)
+          .padding(.vertical, 5)
+          .border(width: 3, edges: [.top, .bottom], color: .black)
+          .padding(.vertical, 15)
         }
       }
     }
@@ -510,7 +585,6 @@ struct ConversationView: View {
           Button(action: {
             // send message
             if inputText != "" {
-              print("选择玩家为 \(currentSelection + 1)号，总共\(playersAssignedCharacters.count)个玩家")
               allLogs.append(GameLogEntry(message: inputText, messager: currentSelection < playersAssignedCharacters.count ? (currentSelection + 1) : 21, source: "", type: 3, characterName: currentSelection < playersAssignedCharacters.count ? playersAssignedCharacters[currentSelection].name : "说书人", playerCharacters: [currentSelection < playersAssignedCharacters.count ? playersAssignedCharacters[currentSelection].name : "说书人"], playerTeams: [currentSelection < playersAssignedCharacters.count ? team2Int(playersAssignedCharacters[currentSelection].team) : 5]))
               inputText = ""
             }
