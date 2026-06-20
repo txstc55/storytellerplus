@@ -234,7 +234,7 @@ struct AllCharacterInfosLayout: View {
   private var firstNightOrders: [OrderInfo] {
     let combined = playableCharacters
       .enumerated()
-      .filter { $0.element.firstNightOrder != 0 }
+      .filter { $0.element.firstNightOrder != 0 && $0.element.team != "fabled"  && $0.element.team != "traveler" }
       .map {
         OrderInfo(
           order: $0.element.firstNightOrder,
@@ -252,7 +252,7 @@ struct AllCharacterInfosLayout: View {
   private var otherNightOrders: [OrderInfo] {
     let combined = playableCharacters
       .enumerated()
-      .filter { $0.element.otherNightOrder != 0 }
+      .filter { $0.element.otherNightOrder != 0 && $0.element.team != "fabled"  && $0.element.team != "traveler" }
       .map {
         OrderInfo(
           order: $0.element.otherNightOrder,

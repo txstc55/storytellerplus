@@ -40,6 +40,41 @@ class ImageLoader: ObservableObject {
         self?.image = downloadedImage
       }
   }
+//  func loadImage(from urlString: String) {
+//    guard let url = URL(string: urlString) else { return }
+//
+//    var request = URLRequest(url: url)
+//    request.setValue(
+//      "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 Safari/604.1",
+//      forHTTPHeaderField: "User-Agent"
+//    )
+//    request.setValue("image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+//                     forHTTPHeaderField: "Accept")
+//
+//    cancellable = URLSession.shared.dataTaskPublisher(for: request)
+//      .tryMap { output -> UIImage? in
+//        if let response = output.response as? HTTPURLResponse {
+//          print("status:", response.statusCode)
+//          print("content-type:", response.value(forHTTPHeaderField: "Content-Type") ?? "nil")
+//        }
+//
+//        let image = UIImage(data: output.data)
+//        print("data size:", output.data.count, "image nil?", image == nil)
+//        return image
+//      }
+//      .receive(on: DispatchQueue.main)
+//      .sink(
+//        receiveCompletion: { completion in
+//          print("completion:", completion)
+//        },
+//        receiveValue: { [weak self] downloadedImage in
+//          if let downloadedImage = downloadedImage {
+//            ImageCache.shared.setObject(downloadedImage, forKey: urlString as NSString)
+//          }
+//          self?.image = downloadedImage
+//        }
+//      )
+//  }
   
   func cancel() {
     cancellable?.cancel()

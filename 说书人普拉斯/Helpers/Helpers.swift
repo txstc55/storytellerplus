@@ -82,6 +82,10 @@ func loadGameData(
       playName = (jsonItem["name"] as? String).flatMap { $0.isEmpty ? nil : $0 } ?? "无名剧本"
       playAuthor = (jsonItem["author"] as? String).flatMap { $0.isEmpty ? nil : $0 } ?? "无名作者"
       let statusList = jsonItem["status"] as? [[String: String]] ?? []
+      let minionInfo = jsonItem["minionInfo"] as? Double ?? 4.5
+      let demonInfo = jsonItem["demonInfo"] as? Double ?? 4.5
+      爪牙信息.order = minionInfo
+      恶魔信息.order = demonInfo
       for status in statusList {
         let name = status["name"] ?? ""
         let description = status["skill"] ?? ""
